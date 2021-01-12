@@ -1,0 +1,23 @@
+plugins {
+    id 'application' // run 명령이 들어 있는 플러그인
+    id 'java'
+    id 'eclipse'
+}
+
+repositories {
+    // Use JCenter for resolving dependencies.
+    jcenter()
+}
+
+dependencies {
+    // Use JUnit test framework.
+    testImplementation 'junit:junit:4.13'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:29.0-jre'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'com.eomcs.pms.App'
+}
