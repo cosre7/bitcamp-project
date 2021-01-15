@@ -1,4 +1,5 @@
 package com.eomcs.pms;
+import java.sql.Date;
 import java.util.Scanner;
 public class App {
   public static void main(String[] args) {
@@ -14,7 +15,7 @@ public class App {
     String[] photos = new String[SIZE];
     String[] tels = new String[SIZE];
     int count = 0;
-    java.sql.Date[] now = new java.sql.Date[SIZE];
+    Date[] now = new Date[SIZE];
 
     for (int i = 0; i < SIZE; i++) {
       System.out.print("번호? ");
