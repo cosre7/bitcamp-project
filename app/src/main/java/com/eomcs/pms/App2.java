@@ -4,59 +4,69 @@ import java.sql.Date;
 import java.util.Scanner;
 
 public class App2 {
+
   public static void main(String[] args) {
-    Scanner keyboard = new Scanner(System.in);
-    Date day= new Date(0);
-    final int SIZE = 100;
-
-    int[] nos = new int[SIZE];
-    String[] titles = new String[SIZE];
-    String[] contents = new String[SIZE];
-    Date[] startDates = new Date[SIZE];
-    Date[] endDates = new Date[SIZE];
-    String[] owners = new String[SIZE];
-    String[] members = new String[SIZE];
-    int count = 0;
-
     System.out.println("[프로젝트]");
 
-    for (int i = 0; i < SIZE; i++) {
+    Scanner keyboardScan = new Scanner(System.in);
+
+    // 최대 100개의 프로젝트 정보를 저장할 메모리 준비
+    // => 배열의 크기를 미리 변수에 저장하여 사용한다.
+    // => 나중에 배열의 크기를 바꾸기 쉽다.
+    final int LENGTH = 100;
+
+    int[] no = new int[LENGTH];
+    String[] title = new String[LENGTH];
+    String[] content = new String[LENGTH];
+    Date[] startDate = new Date[LENGTH];
+    Date[] endDate = new Date[LENGTH];
+    String[] owner = new String[LENGTH];
+    String[] members = new String[LENGTH];
+
+    int size = 0;
+
+    for (int i = 0; i < LENGTH; i++) {
       System.out.print("번호? ");
-      nos[i] = keyboard.nextInt();
+      no[i] = Integer.valueOf(keyboardScan.nextLine());
 
       System.out.print("프로젝트명? ");
-      keyboard.nextLine();
-      titles[i] = keyboard.nextLine();
+      title[i] = keyboardScan.nextLine();
 
       System.out.print("내용? ");
-      contents[i] = keyboard.nextLine();
+      content[i] = keyboardScan.nextLine();
 
       System.out.print("시작일? ");
-      startDates[i] = Date.valueOf(keyboard.nextLine());
+      startDate[i] = Date.valueOf(keyboardScan.nextLine());
 
       System.out.print("종료일? ");
-      endDates[i] = Date.valueOf(keyboard.nextLine());
+      endDate[i] = Date.valueOf(keyboardScan.nextLine());
 
       System.out.print("만든이? ");
-      owners[i] = keyboard.nextLine();
+      owner[i] = keyboardScan.nextLine();
 
       System.out.print("팀원? ");
-      members[i] = keyboard.nextLine();
-      count++;
-      System.out.println();
+      members[i] = keyboardScan.nextLine();
+
+      size++;
+      System.out.println(); // 빈 줄 출력
+
       System.out.print("계속 입력하시겠습니까?(y/N) ");
-      String response = keyboard.nextLine();
-      System.out.println();
-      if (response.length() == 0 || response.equalsIgnoreCase("n") ) {
+      String str = keyboardScan.nextLine();
+      if (!str.equalsIgnoreCase("y")) {
         break;
       }
+      System.out.println(); // 빈 줄 출력
     }
-    keyboard.close();
 
-    System.out.println("---------------------------------");
+    keyboardScan.close();
 
-    for (int i = 0; i < count; i++) {
-      System.out.printf("%d, %s, %s, %s, %s\n", nos[i], titles[i], startDates[i], endDates[i], owners[i]);
+    System.out.println("--------------------------------");
+
+
+    for (int i = 0; i < size; i++) {
+      // 번호, 프로젝트명, 시작일, 종료일, 만든이
+      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
+          no[i], title[i], startDate[i], endDate[i], owner[i]);
     }
   }
 }
