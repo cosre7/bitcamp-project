@@ -4,6 +4,14 @@ plugins {
     id 'eclipse'
 }
 
+// 프로젝트 이름을 따로 지정하지 않으면
+// build.gradle 파일이 있는 폴더의 이름을 프로젝트 명으로 사용한다.
+// 변경하고 싶다면 다음과 같이 설정하라.
+eclipse {
+    project {
+        name = "bitcamp-project"
+    }
+}
 repositories {
     // Use JCenter for resolving dependencies.
     jcenter()
@@ -20,4 +28,10 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'com.eomcs.pms.App'
+}
+
+// 자바 소스를 컴파일 할 때 적용할 옵션
+tasks.withType(JavaCompile) {
+    // $javac -encoding UTF-8 ...
+    options.encoding = 'UTF-8';
 }
