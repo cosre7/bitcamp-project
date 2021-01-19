@@ -1,174 +1,66 @@
 package com.eomcs.pms;
 
-import java.sql.Date;
-import java.util.Scanner;
-
+// 1) 회원 정보를 다루는 메서드를 따로 분류한다.
+//    - MemberHandler 클래스를 생성한다.
+//    - addMember(), listMember() 메서드를 옮긴다.
+// 2) 프로젝트 정보를 다루는 메서드를 따로 분류한다.
+//    - ProjectHandler 클래스를 생성한다.
+//    - addProject(), listProject() 메서드를 옮긴다.
+// 3) 작업 정보를 다루는 메서드를 따로 분류한다.
+//    - TaskHandler 클래스를 생성한다.
+//    - addTask(), listTask() 메서드를 옮긴다.
+// 4) 프롬프트를 다루는 메서드를 따로 분류한다.
+//    - Prompt 클래스를 생성한다.
+//    - promptString(), promptInt(), promptDate() 메서드를 옮긴다.
+// 5) 배열 변수는 그 변수를 사용하는 클래스로 옮긴다. 
+//    - keyboardScan 변수를 Prompt 클래스로 옮긴다.
+//    - 멤버 데이터 관련 변수를 MemberHandler 클래스로 옮긴다.
+//    - 프로젝트 데이터 관련 변수를 ProjectHandler 클래스로 옮긴다.
+//    - 작업 데이터 관련 변수를 TaskHandler 클래스로 옮긴다.
 public class App {
-  static Scanner keyboardScan = new Scanner(System.in);
-
-  //회원 데이터
-  static final int LENGTH = 100;
-  static int[] no = new int[LENGTH];
-  static String[] name = new String[LENGTH];
-  static String[] email = new String[LENGTH];
-  static String[] password = new String[LENGTH];
-  static String[] photo = new String[LENGTH];
-  static String[] tel = new String[LENGTH];
-  static Date[] registeredDate = new Date[LENGTH];
-  static int size = 0;
-
-  static void addMember() {
-    System.out.println("[회원 등록]");
-
-    no[size] = promptInt("번호? ");
-    name[size] = promptString("이름? ");
-    email[size] = promptString("이메일? ");
-    password[size] = promptString("암호? ");
-    photo[size] = promptString("사진? ");
-    tel[size] = promptString("전화? ");
-
-    registeredDate[size] = new java.sql.Date(System.currentTimeMillis());
-
-    size++;
-  }
-
-  static void listMember() {
-    System.out.println("[회원 목록]");
-    for (int i = 0; i < size; i++) {
-      // 번호, 이름, 이메일, 전화, 가입일
-      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
-          no[i], name[i], email[i], tel[i], registeredDate[i]);
-    }
-  }
-
-  //프로젝트 데이터
-  static final int PLENGTH = 100;
-  static int[] pno = new int[PLENGTH];
-  static String[] ptitle = new String[PLENGTH];
-  static String[] pcontent = new String[PLENGTH];
-  static Date[] pstartDate = new Date[PLENGTH];
-  static Date[] pendDate = new Date[PLENGTH];
-  static String[] powner = new String[PLENGTH];
-  static String[] pmembers = new String[PLENGTH];
-  static int psize = 0;
-
-  static void addProject() {
-    System.out.println("[프로젝트 등록]");
-
-    pno[psize] = promptInt("번호? ");
-    ptitle[psize] = promptString("프로젝트명? ");
-    pcontent[psize] = promptString("내용? ");
-    pstartDate[psize] = promptDate("시작일? ");
-    pendDate[psize] = promptDate("종료일? ");
-    powner[psize] = promptString("만든이? ");
-    pmembers[psize] = promptString("팀원? ");
-
-    psize++;
-  }
-
-  static void listProject() {
-    System.out.println("[프로젝트 목록]");
-
-    for (int i = 0; i < psize; i++) {
-      // 번호, 프로젝트명, 시작일, 종료일, 만든이
-      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
-          pno[i], ptitle[i], pstartDate[i], pendDate[i], powner[i]);
-    }
-  }
-
-  //작업 데이터
-  static final int TLENGTH = 100;  
-  static int[] tno = new int[TLENGTH];
-  static String[] tcontent = new String[TLENGTH];
-  static Date[] tdeadline = new Date[TLENGTH];
-  static String[] towner = new String[TLENGTH];
-  static int[] tstatus = new int[TLENGTH];
-  static int tsize = 0;
-
-  static void addTask() {
-    System.out.println("[작업 등록]");
-
-    tno[tsize] = promptInt("번호? ");
-    tcontent[tsize] = promptString("내용? ");
-    tdeadline[tsize] = promptDate("마감일? ");
-    tstatus[tsize] = promptInt("상태?\n,0: 신규\n1: 진행중\n2: 완료\n> ");
-    towner[tsize] = promptString("담당자? ");
-
-    tsize++;
-  }
-
-  static void listTask() {
-    System.out.println("[작업 목록]");
-
-    for (int i = 0; i < tsize; i++) {
-      String stateLabel = null;
-      switch (tstatus[i]) {
-        case 1:
-          stateLabel = "진행중";
-          break;
-        case 2:
-          stateLabel = "완료";
-          break;
-        default:
-          stateLabel = "신규";
-      }
-      // 번호, 작업명, 마감일, 프로젝트, 상태, 담당자
-      System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
-          tno[i], tcontent[i], tdeadline[i], stateLabel, towner[i]);
-    }
-  }
-
-  static String promptString(String title) {
-    System.out.print(title);
-    return keyboardScan.nextLine();
-  }
-
-  static int promptInt(String title) {
-    return Integer.parseInt(promptString(title));
-  }
-
-  static Date promptDate(String title) {
-    System.out.print(title);
-    return Date.valueOf(promptString(title));
-  }
 
   public static void main(String[] args) {
 
     loop:
       while (true) {
-        String command = promptString("명령> ");
+        String command = Prompt.inputString("명령> ");
 
         switch (command) {
           case "/member/add":
-            addMember();
+            MemberHandler.add();
+            //MemberHandler 클래스에 있는 addMember()
             break;
           case "/member/list":
-            listMember();
+            MemberHandler.list();
             break;
           case "/project/add":
-            addProject();
+            ProjectHandler.add();
             break;
           case "/project/list":
-            listProject();
+            ProjectHandler.list();
             break;
           case "/task/add":
-            addTask();
+            TaskHandler.add();
             break;
           case "/task/list":
-            listTask();
+            TaskHandler.list();
             break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
             break loop;
-            // break loop -> 현재 switch 문을 나가는 것이 아니라 loop 라는 라벨이 붙어있는
-            // while문 자체를 나가라는 뜻.
           default:
             System.out.println("실행할 수 없는 명령입니다.");
         }
         System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
       }
+    Prompt.close();
+    // app 이 아니라 prompt에 close 할 것이 있음
+    // 근데 그걸 app 이 직접 닫을 수는 없다 -> 남의 짐 내가 정리해주는 꼴
+    // 그래서 prompt에게 close를 하라고 이야기 해줘야 한다.
+    // 이것이 바로 Prompt.close();
+    // Handler들과 App 모두 Prompt의 메소드를 사용했지만 가장 마지막 장소는 바로 App.
+    // 그래서 App 에서만 close를 해주는 것이고 이를 Prompt.close(); 형태로 실행.
 
-    keyboardScan.close();
   }
 }
