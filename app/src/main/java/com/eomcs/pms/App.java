@@ -20,23 +20,12 @@ public class App {
   static void addMember() {
     System.out.println("[회원 등록]");
 
-    System.out.print("번호? ");
-    no[size] = Integer.parseInt(keyboardScan.nextLine());
-
-    System.out.print("이름? ");
-    name[size] = keyboardScan.nextLine();
-
-    System.out.print("이메일? ");
-    email[size] = keyboardScan.nextLine();
-
-    System.out.print("암호? ");
-    password[size] = keyboardScan.nextLine();
-
-    System.out.print("사진? ");
-    photo[size] = keyboardScan.nextLine();
-
-    System.out.print("전화? ");
-    tel[size] = keyboardScan.nextLine();
+    no[size] = promptInt("번호? ");
+    name[size] = promptString("이름? ");
+    email[size] = promptString("이메일? ");
+    password[size] = promptString("암호? ");
+    photo[size] = promptString("사진? ");
+    tel[size] = promptString("전화? ");
 
     registeredDate[size] = new java.sql.Date(System.currentTimeMillis());
 
@@ -66,26 +55,13 @@ public class App {
   static void addProject() {
     System.out.println("[프로젝트 등록]");
 
-    System.out.print("번호? ");
-    pno[psize] = Integer.valueOf(keyboardScan.nextLine());
-
-    System.out.print("프로젝트명? ");
-    ptitle[psize] = keyboardScan.nextLine();
-
-    System.out.print("내용? ");
-    pcontent[psize] = keyboardScan.nextLine();
-
-    System.out.print("시작일? ");
-    pstartDate[psize] = Date.valueOf(keyboardScan.nextLine());
-
-    System.out.print("종료일? ");
-    pendDate[psize] = Date.valueOf(keyboardScan.nextLine());
-
-    System.out.print("만든이? ");
-    powner[psize] = keyboardScan.nextLine();
-
-    System.out.print("팀원? ");
-    pmembers[psize] = keyboardScan.nextLine();
+    pno[psize] = promptInt("번호? ");
+    ptitle[psize] = promptString("프로젝트명? ");
+    pcontent[psize] = promptString("내용? ");
+    pstartDate[psize] = promptDate("시작일? ");
+    pendDate[psize] = promptDate("종료일? ");
+    powner[psize] = promptString("만든이? ");
+    pmembers[psize] = promptString("팀원? ");
 
     psize++;
   }
@@ -101,7 +77,7 @@ public class App {
   }
 
   //작업 데이터
-  static final int TLENGTH = 100;
+  static final int TLENGTH = 100;  
   static int[] tno = new int[TLENGTH];
   static String[] tcontent = new String[TLENGTH];
   static Date[] tdeadline = new Date[TLENGTH];
@@ -112,24 +88,11 @@ public class App {
   static void addTask() {
     System.out.println("[작업 등록]");
 
-    System.out.print("번호? ");
-    tno[tsize] = Integer.parseInt(keyboardScan.nextLine());
-
-    System.out.print("내용? ");
-    tcontent[tsize] = keyboardScan.nextLine();
-
-    System.out.print("마감일? ");
-    tdeadline[tsize] = Date.valueOf(keyboardScan.nextLine());
-
-    System.out.println("상태?");
-    System.out.println("0: 신규");
-    System.out.println("1: 진행중");
-    System.out.println("2: 완료");
-    System.out.print("> ");
-    tstatus[tsize] = Integer.valueOf(keyboardScan.nextLine());
-
-    System.out.print("담당자? ");
-    towner[tsize] = keyboardScan.nextLine();
+    tno[tsize] = promptInt("번호? ");
+    tcontent[tsize] = promptString("내용? ");
+    tdeadline[tsize] = promptDate("마감일? ");
+    tstatus[tsize] = promptInt("상태?\n,0: 신규\n1: 진행중\n2: 완료\n> ");
+    towner[tsize] = promptString("담당자? ");
 
     tsize++;
   }
@@ -154,12 +117,26 @@ public class App {
           tno[i], tcontent[i], tdeadline[i], stateLabel, towner[i]);
     }
   }
+
+  static String promptString(String title) {
+    System.out.print(title);
+    return keyboardScan.nextLine();
+  }
+
+  static int promptInt(String title) {
+    return Integer.parseInt(promptString(title));
+  }
+
+  static Date promptDate(String title) {
+    System.out.print(title);
+    return Date.valueOf(promptString(title));
+  }
+
   public static void main(String[] args) {
 
     loop:
       while (true) {
-        System.out.print("명령> ");
-        String command = keyboardScan.nextLine();
+        String command = promptString("명령> ");
 
         switch (command) {
           case "/member/add":
@@ -184,6 +161,8 @@ public class App {
           case "exit":
             System.out.println("안녕!");
             break loop;
+            // break loop -> 현재 switch 문을 나가는 것이 아니라 loop 라는 라벨이 붙어있는
+            // while문 자체를 나가라는 뜻.
           default:
             System.out.println("실행할 수 없는 명령입니다.");
         }
