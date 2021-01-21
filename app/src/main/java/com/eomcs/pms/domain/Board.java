@@ -11,4 +11,6 @@ public class Board {
   public String writer;
   public Date registereDate;
   public int viewCount;
+  public int like;
+
 }

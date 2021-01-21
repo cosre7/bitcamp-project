@@ -38,8 +38,13 @@ public class BoardHandler6 {
     for (int i = 0; i < size; i++) {
       Board b = boards[i];
       // 번호, 이름, 이메일, 전화, 가입일
-      System.out.printf("%d, %s, %s, %s, %d\n", // 출력 형식 지정
-          b.no, b.title, b.writer, b.registereDate, b.viewCount);
+      System.out.printf("%d, %s, %s, %s, %d, %d\n", // 출력 형식 지정
+          b.no, 
+          b.title, 
+          b.writer, 
+          b.registereDate, 
+          b.viewCount, 
+          b.like);
     }
   }
 }
