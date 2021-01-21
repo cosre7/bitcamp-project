@@ -1,17 +1,9 @@
 package com.eomcs.pms.handler;
 import java.sql.Date;
+import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler4 {
-
-  static class Board {
-    int no;
-    String title;
-    String content;
-    String writer;
-    Date registereDate;
-    int viewCount;
-  }
 
   static final int LENGTH = 100;
   static Board[] boards = new Board[LENGTH];  // 레퍼런스 배열 준비  
