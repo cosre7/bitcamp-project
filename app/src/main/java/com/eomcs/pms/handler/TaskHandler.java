@@ -31,12 +31,12 @@ public class TaskHandler {
       if (name.length() == 0) {
         System.out.println("작업 등록을 취소합니다.");
         return;
-      } 
-      if (MemberHandler.exist(name)) {
+      } else if (MemberHandler.exist(name)) {
         t.owner = name;
         break;
+      } else {
+        System.out.println("등록된 회원이 아닙니다.");
       }
-      System.out.println("등록된 회원이 아닙니다.");
     }
 
     tasks[size++] = t;
