@@ -25,8 +25,11 @@ public class BoardHandler {
     b.title = Prompt.inputString("제목? ");
     b.content = Prompt.inputString("내용? ");
     b.writer = Prompt.inputString("작성자? ");
-    b.registeredDate = new java.sql.Date(System.currentTimeMillis());
-    b.viewCount = 0;
+    // add 하는 순간의 시간을 저장하도록
+    b.registeredDate = new Date(System.currentTimeMillis());
+    // viewCount의 경우 0으로 초기화하지 않아도 초기값이 0이기 때문에
+    // 굳이 0으로 초기화할 필요가 없다.
+    // b.viewCount = 0;
     boards[size++] = b;
 
     System.out.println("게시글을 등록하였습니다.");

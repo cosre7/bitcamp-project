@@ -38,7 +38,7 @@ public class MemberHandler {
     m.password = Prompt.inputString("암호? ");
     m.photo = Prompt.inputString("사진? ");
     m.tel = Prompt.inputString("전화? ");
-    m.registeredDate = new java.sql.Date(System.currentTimeMillis());
+    m.registeredDate = new Date(System.currentTimeMillis());
 
     // 3) 사용자의 정보가 저장된 인스턴스 주소를 레퍼런스 배열에 보관한다.
     members[size++] = m;
