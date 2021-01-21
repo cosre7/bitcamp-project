@@ -2,7 +2,7 @@ package com.eomcs.pms.handler;
 import java.sql.Date;
 import com.eomcs.util.Prompt;
 
-public class BoardHandler {
+public class BoardHandler4 {
 
   static class Board {
     int no;
