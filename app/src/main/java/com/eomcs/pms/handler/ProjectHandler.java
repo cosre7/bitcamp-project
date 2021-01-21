@@ -53,7 +53,12 @@ public class ProjectHandler {
         break;
       } else if (MemberHandler.exist(name)) {
         // 이름이 멤버에 존재하면 p.members 에 이름 추가
-        p.members = p.members + "," + name;
+        if (p.members.length() > 0) {
+          // p.members.length() = !p.members.isEmpty() 모두 가능
+          // p.members가 비어있지 않다면 , 붙여주기
+          p.members += ",";
+        }
+        p.members += name;
       } else {
         // 이름이 멤버에 없으면 "등록된 회원이 아닙니다."
         System.out.println("등록된 회원이 아닙니다.");
