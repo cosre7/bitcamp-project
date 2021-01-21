@@ -1,5 +1,6 @@
 package com.eomcs.pms;
 
+import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
@@ -42,6 +43,12 @@ public class App {
             break;
           case "/task/list":
             TaskHandler.list();
+            break;
+          case "/board/add":
+            BoardHandler.add();
+            break;
+          case "/board/list":
+            BoardHandler.list();
             break;
           case "quit":
           case "exit":
