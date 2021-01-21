@@ -59,4 +59,15 @@ public class MemberHandler {
           m.no, m.name, m.email, m.tel, m.registeredDate);
     }
   }
+
+  public static boolean exist(String name) {
+    // members[] 배열의 name에 입력한 name 이 존재하는지 물어보는 if 문을 반복하는 for 문
+    for (int i = 0; i <size; i++) {
+      if (name.equals(members[i].name)) {
+        //입력값과 MemberHandler의 members 배열에 있는 이름과 같으면 아래 문장 실행
+        return true;
+      }
+    }
+    return false;
+  }
 }
