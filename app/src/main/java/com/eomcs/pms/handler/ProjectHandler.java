@@ -73,8 +73,8 @@ public class ProjectHandler {
 
     for (int i = 0; i < size; i++) {
       Project p = projects[i];
-      System.out.printf("%d, %s, %s, %s, %s\n",
-          p.no, p.title, p.startDate, p.endDate, p.owner);
+      System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
+          p.no, p.title, p.startDate, p.endDate, p.owner, p.members);
     }
   }
 
