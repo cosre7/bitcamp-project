@@ -22,64 +22,74 @@ public class App {
     // BoardList 설계도에 따라 boardList 인스턴스를 만들어서 여러 개의 게시판을 사용할 수 있음
     // => 인스턴스 필드를 사용하는 이유
 
+    // 각 회원 목록 데이터를 저장할 메모리 준비
+    MemberHandler memberList = new MemberHandler();
+    // 유효한 인스턴스 주소 준비 => new MemberHandler();
+
+    // 각 프로젝트 목록 데이터를 저장할 메모리 준비
+    ProjectHandler projectList = new ProjectHandler();
+
+    // 각 작업 목록 데이터를 저장할 메모리 준비
+    TaskHandler taskList = new TaskHandler();
+
     loop:
       while (true) {
         String command = com.eomcs.util.Prompt.inputString("명령> ");
 
         switch (command) {
           case "/member/add":
-            MemberHandler.add();
+            memberList.add();
             break;
           case "/member/list":
-            MemberHandler.list();
+            memberList.list();
             break;
           case "/project/add":
-            ProjectHandler.add();
+            projectList.add(memberList);
             break;
           case "/project/list":
-            ProjectHandler.list();
+            projectList.list();
             break;
           case "/task/add":
-            TaskHandler.add();
+            taskList.add(memberList);
             break;
           case "/task/list":
-            TaskHandler.list();
+            taskList.list();
             break;
           case "/board/add":
-            BoardHandler.add(boardList1);
+            boardList1.add();
             break;
           case "/board/list":
-            BoardHandler.list(boardList1);
+            boardList1.list();
             break;
           case "/board2/add":
-            BoardHandler.add(boardList2);
+            boardList2.add();
             break;
           case "/board2/list":
-            BoardHandler.list(boardList2);
+            boardList2.list();
             break;
           case "/board3/add":
-            BoardHandler.add(boardList3);
+            boardList3.add();
             break;
           case "/board3/list":
-            BoardHandler.list(boardList3);
+            boardList3.list();
             break;
           case "/board4/add":
-            BoardHandler.add(boardList4);
+            boardList4.add();
             break;
           case "/board4/list":
-            BoardHandler.list(boardList4);
+            boardList4.list();
             break;
           case "/board5/add":
-            BoardHandler.add(boardList5);
+            boardList5.add();
             break;
           case "/board5/list":
-            BoardHandler.list(boardList5);
+            boardList5.list();
             break;
           case "/board6/add":
-            BoardHandler.add(boardList6);
+            boardList6.add();
             break;
           case "/board6/list":
-            BoardHandler.list(boardList6);
+            boardList6.list();
             break;
           case "quit":
           case "exit":

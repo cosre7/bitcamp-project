@@ -1,25 +1,17 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Date;
+import com.eomcs.pms.domain.Project;
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  static class Project {
-    int no;
-    String title;
-    String content;
-    Date startDate;
-    Date endDate;
-    String owner;
-    String members;  
-  }
-
   static final int LENGTH = 100;
-  static Project[] projects = new Project[LENGTH];
-  static int size = 0;
 
-  public static void add() {
+  Project[] projects = new Project[LENGTH];
+  int size = 0;
+
+  public void add (MemberHandler memberList) {
+    // add 메소드가 MemberHandler에 있는 memberList 인스턴스가 필요하다
     System.out.println("[프로젝트 등록]");
 
     Project p = new Project();
@@ -35,7 +27,7 @@ public class ProjectHandler {
         System.out.println("프로젝트 등록을 취소합니다.");
         return;
       } 
-      if (MemberHandler.exist(name)) {
+      if (memberList.exist(name)) {
         p.owner = name;
         break;
       }
@@ -47,7 +39,8 @@ public class ProjectHandler {
       String name = Prompt.inputString("팀원?(완료: 빈 문자열) ");
       if (name.length() == 0) {
         break;
-      } else if (MemberHandler.exist(name)) {
+      } else if (memberList.exist(name)) {
+        // 어떤 메소드가 작업을 하는데 값이 필요한 경우 파라미터를 통해 값을 받을 수 있다.
         if (!p.members.isEmpty()) {
           p.members += ",";
         }
@@ -57,14 +50,14 @@ public class ProjectHandler {
       }
     }
 
-    projects[size++] = p;
+    this.projects[this.size++] = p;
   }
 
-  public static void list() {
+  public void list() {
     System.out.println("[프로젝트 목록]");
 
     for (int i = 0; i < size; i++) {
-      Project p = projects[i];
+      Project p = this.projects[i];
       System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
           p.no, p.title, p.startDate, p.endDate, p.owner, p.members);
     }
