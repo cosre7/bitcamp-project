@@ -1,7 +1,6 @@
 package com.eomcs.pms;
 
 import com.eomcs.pms.handler.BoardHandler;
-import com.eomcs.pms.handler.BoardList;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
@@ -12,13 +11,13 @@ public class App {
   public static void main(String[] args) {
 
     // 각 게시판 데이터를 저장할 메모리 준비
-    BoardList boardList1 = new BoardList();
+    BoardHandler boardList1 = new BoardHandler();
     // BoardList 설계도에 따라 만든 인스턴스 주소
-    BoardList boardList2 = new BoardList();
-    BoardList boardList3 = new BoardList();
-    BoardList boardList4 = new BoardList();
-    BoardList boardList5 = new BoardList();
-    BoardList boardList6 = new BoardList();
+    BoardHandler boardList2 = new BoardHandler();
+    BoardHandler boardList3 = new BoardHandler();
+    BoardHandler boardList4 = new BoardHandler();
+    BoardHandler boardList5 = new BoardHandler();
+    BoardHandler boardList6 = new BoardHandler();
     // 게시판 add, list를 담당하는 BoardHandler는 1개만 필요
     // BoardList 설계도에 따라 boardList 인스턴스를 만들어서 여러 개의 게시판을 사용할 수 있음
     // => 인스턴스 필드를 사용하는 이유

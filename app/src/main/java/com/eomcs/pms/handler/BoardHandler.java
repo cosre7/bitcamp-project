@@ -6,7 +6,14 @@ import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  public static void add(BoardList boardList) {
+  //공통으로 사용하는 값은 스태틱 필드로 선언한다. (다 같은 값을 쓸 것 -> 공통적으로 관리)
+  static final int LENGTH = 100;
+
+  // 개별적으로 관리해야 하는 값은 인스턴스 필드로 선언한다. 
+  Board[] boards = new Board[LENGTH];   
+  int size = 0;
+
+  public static void add(BoardHandler boardList) {
     System.out.println("[게시글 등록]");
 
     Board b = new Board();
@@ -22,7 +29,7 @@ public class BoardHandler {
     System.out.println("게시글을 등록하였습니다.");
   }
 
-  public static void list(BoardList boardList) {
+  public static void list(BoardHandler boardList) {
     System.out.println("[게시글 목록]");
 
     for (int i = 0; i < boardList.size; i++) {
