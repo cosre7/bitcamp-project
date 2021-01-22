@@ -1,5 +1,5 @@
 package com.eomcs.pms.handler;
-// handler -> pms 에서만 사용할 패키지라서 pms 밑에 둔다.
+
 import java.sql.Date;
 import com.eomcs.util.Prompt;
 
@@ -9,8 +9,6 @@ public class MemberHandler {
   // - 각 항목의 데이터를 저장할 변수를 선언한다.
   // - 이 변수를 "필드(field)"라고 부른다.
   //
-
-  // 일단 감춘다 (default) 공개할 필요성이 있을 때만 public
   static class Member {
     int no;
     String name;
@@ -38,7 +36,7 @@ public class MemberHandler {
     m.password = Prompt.inputString("암호? ");
     m.photo = Prompt.inputString("사진? ");
     m.tel = Prompt.inputString("전화? ");
-    m.registeredDate = new Date(System.currentTimeMillis());
+    m.registeredDate = new java.sql.Date(System.currentTimeMillis());
 
     // 3) 사용자의 정보가 저장된 인스턴스 주소를 레퍼런스 배열에 보관한다.
     members[size++] = m;
@@ -61,13 +59,17 @@ public class MemberHandler {
   }
 
   public static boolean exist(String name) {
-    // members[] 배열의 name에 입력한 name 이 존재하는지 물어보는 if 문을 반복하는 for 문
-    for (int i = 0; i <size; i++) {
+    for (int i = 0; i < size; i++) {
       if (name.equals(members[i].name)) {
-        //입력값과 MemberHandler의 members 배열에 있는 이름과 같으면 아래 문장 실행
         return true;
       }
     }
     return false;
   }
 }
+
+
+
+
+
+
