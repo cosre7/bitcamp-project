@@ -7,11 +7,15 @@ public class TaskHandler {
 
   static final int LENGTH = 100;
 
+  // 의존 객체(dependency)를 담을 인스턴스 필드
+  // - 메서드가 작업할 때 사용할 객체를 담는다.
+  public MemberHandler memberList;
+
   // 인스턴스별로 따로따로 만들 수 있도록 미리 인스턴스 변수로 만들어둠
   Task[] tasks = new Task[LENGTH];
   int size = 0;
 
-  public void add(MemberHandler memberList) {
+  public void add() {
     System.out.println("[작업 등록]");
 
     Task t = new Task();
@@ -25,7 +29,7 @@ public class TaskHandler {
       if (name.length() == 0) {
         System.out.println("작업 등록을 취소합니다.");
         return;
-      } else if (memberList.exist(name)) {
+      } else if (this.memberList.exist(name)) {
         t.owner = name;
         break;
       } else {
