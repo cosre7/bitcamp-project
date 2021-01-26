@@ -9,13 +9,21 @@ public class ProjectHandler {
 
   // 의존 객체(dependency)를 담을 인스턴스 필드
   // - 메서드가 작업할 때 사용할 객체를 담는다.
-  public MemberHandler memberList;
+  MemberHandler memberList;
   // 따로따로 관리가 필요하기 때문에 static 불가
   // ex 해외 관리자, 국내 관리자
 
 
   Project[] projects = new Project[LENGTH];
   int size = 0;
+
+  // 생성자 정의
+  // - ProjectHandle가 의존하는 객체를 반드시 주입하도록 강요한다.
+  // - 다른 패키지에서 생성자를 호출할 수 있도록 공개한다.
+  public ProjectHandler(MemberHandler memberHandler) {
+    this.memberList = memberHandler;
+  }
+  // memberHandle 주입안하면 ProjectHandler 사용 못합니다~~
 
   public void add () {
     // add 메소드가 MemberHandler에 있는 memberList 인스턴스가 필요하다

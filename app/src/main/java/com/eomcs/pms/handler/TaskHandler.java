@@ -9,12 +9,18 @@ public class TaskHandler {
 
   // 의존 객체(dependency)를 담을 인스턴스 필드
   // - 메서드가 작업할 때 사용할 객체를 담는다.
-  public MemberHandler memberList;
+  MemberHandler memberList;
 
   // 인스턴스별로 따로따로 만들 수 있도록 미리 인스턴스 변수로 만들어둠
   Task[] tasks = new Task[LENGTH];
   int size = 0;
 
+  // 생성자 
+  // - TaskHandle가 의존하는 객체를 반드시 주입하도록 강요한다.
+  // - 다른 패키지에서 생성자를 호출할 수 있도록 공개한다.
+  public TaskHandler(MemberHandler memberHandler) {
+    this.memberList = memberHandler;
+  }
   public void add() {
     System.out.println("[작업 등록]");
 

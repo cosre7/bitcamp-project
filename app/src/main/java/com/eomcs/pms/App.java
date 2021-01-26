@@ -27,18 +27,14 @@ public class App {
     // 유효한 인스턴스 주소 준비 => new MemberHandler();
 
     // 각 프로젝트 목록 데이터를 저장할 메모리 준비
-    ProjectHandler projectList = new ProjectHandler();
-
-    // ProjectHandler 가 의존하는 객체 (dependency)를 주입한다.
-    // add() 메서드를 호출할 때 마다 파라미터에 넘기는 대신에
-    // 계속 사용할 수 있도록 인스턴스 필드에 담아 놓는다.
-    projectList.memberList = memberList;
+    // - 생성자에서 MemberHandler 객체를 주입하라고 강요한다.
+    // - ProjectHandler 객체를 만들려면 반드시 주입해야 한다.
+    ProjectHandler projectList = new ProjectHandler(memberList);
 
     // 각 작업 목록 데이터를 저장할 메모리 준비
-    TaskHandler taskList = new TaskHandler();
-
-    // TaskHandler가 사용할 의존 객체를 주입한다.
-    taskList.memberList = memberList;
+    // - 생성자에서 MemberHandler 객체를 주입하라고 강요한다. -> 생성자를 쓰는 이유
+    // - TaskHandler 객체를 만들려면 반드시 주입해야 한다.
+    TaskHandler taskList = new TaskHandler(memberList);
 
     loop:
       while (true) {
