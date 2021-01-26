@@ -30,6 +30,7 @@ public class App {
     // - 생성자에서 MemberHandler 객체를 주입하라고 강요한다.
     // - ProjectHandler 객체를 만들려면 반드시 주입해야 한다.
     ProjectHandler projectList = new ProjectHandler(memberList);
+    // new 명령어에서 괄호 안에 무엇이 있다 -> 생성자 문법이다
 
     // 각 작업 목록 데이터를 저장할 메모리 준비
     // - 생성자에서 MemberHandler 객체를 주입하라고 강요한다. -> 생성자를 쓰는 이유
