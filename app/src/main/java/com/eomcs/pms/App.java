@@ -29,6 +29,12 @@ public class App {
           case "/member/list":
             memberList.list();
             break;
+          case "/member/detail":
+            memberList.detail();
+            break;
+          case "/member/update":
+            memberList.update();
+            break;
           case "/project/add":
             projectList.add();
             break;

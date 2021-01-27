@@ -45,6 +45,78 @@ public class MemberHandler {
     }
     return false;
   }
+
+  public void detail() {
+    System.out.println("[회원 상세보기]");
+
+    int no = Prompt.inputInt("번호? ");
+
+    for (int i = 0; i < this.size; i++) {
+      Member member = this.members[i];
+      if (member.no == no) {
+        System.out.printf("이름: %s\n", member.name);
+        System.out.printf("이메일: %s\n", member.email);
+        System.out.printf("암호: %s\n", member.password);
+        System.out.printf("사진: %s\n", member.photo);
+        System.out.printf("전화: %s\n", member.tel);
+        return;
+      }
+    }
+    System.out.println("해당 번호의 회원 정보가 없습니다.");
+  }
+
+  public void update() {
+    System.out.println("[회원 상세보기]");
+
+    int no = Prompt.inputInt("번호? ");
+
+    for (int i = 0; i < this.size; i++) {
+      Member member = this.members[i];
+      if (member.no == no) {
+        String name = Prompt.inputString(String.format("이름(%s)? ", member.name));
+        String email = Prompt.inputString(String.format("이메일(%s)? ", member.email));
+        String password = Prompt.inputString(String.format("암호(%s)? ", member.password));
+        String photo = Prompt.inputString(String.format("사진(%s)? ", member.photo));
+        String tel = Prompt.inputString(String.format("전화(%s)? ", member.tel));
+
+        String input = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
+
+        if (input.equalsIgnoreCase("Y")) {
+          member.name = name;
+          member.email = email;
+          member.password = password;
+          member.photo = photo;
+          member.tel = tel;
+          System.out.println("회원정보를 변경하였습니다.");
+        } else {
+          System.out.println("회원정보 변경을 취소하였습니다.");
+        }
+        return;
+      }
+    }
+    System.out.println("해당 번호의 회원 정보가 없습니다.");
+  }
+
+  public void delete() {
+    System.out.println("[회원 삭제]");
+
+    int no = Prompt.inputInt("번호? ");
+    for (int i = 0; i < this.size; i++) {
+      Member member = this.members[i];
+      if (member.no == no) {
+        String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
+
+        if (input.equalsIgnoreCase("Y")) {
+          this.members[i] = null;
+          System.out.println("회원 정보를 삭제하였습니다.");
+        } else {
+          System.out.println("회원 정보 삭제를 취소하였습니다.");
+        }
+        return;
+      }
+    }
+    System.out.println("해당 번호의 회원 정보가 없습니다.");
+  }
 }
 
 
