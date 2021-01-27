@@ -66,6 +66,32 @@ public class BoardHandler {
     }
     System.out.println("해당 번호의 게시글이 없습니다.");
   }
+
+  public void update() {
+    System.out.println("[게시글 변경]");
+
+    int no = Prompt.inputInt("번호? ");   
+
+    for (int i = 0; i < this.size; i++) {
+      Board board = this.boards[i];
+      if (board.no == no) {
+
+        //        String promptCaption;
+        //     1_1) promptCaption = "제목(" + board.title + ")?";
+        //     1_2) String promptCaption = String.format("제목(%s)? ", board.title);
+        // 1_1과 1_2는 같은 것.
+        //        String str = Prompt.inputString(promptCaption);
+        //        위의 3줄 코드가 아래의 제목(%s)? 코드를 풀어쓴 것이다.
+
+        String title = Prompt.inputString(String.format("제목(%s)? ", board.title));
+        String content = Prompt.inputString(String.format("내용(%s)? ", board.content));
+        board.title = title;
+        board.content = content;
+        return;
+      }
+    }
+    System.out.println("해당 번호의 게시글이 없습니다.");
+  }
 }
 
 

@@ -50,6 +50,9 @@ public class App {
           case "/board/detail":
             boardList.detail();
             break;
+          case "/board/update":
+            boardList.update();
+            break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
