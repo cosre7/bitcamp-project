@@ -53,7 +53,7 @@ public class MemberHandler {
 
     for (int i = 0; i < this.size; i++) {
       Member member = this.members[i];
-      if (member.no == no) {
+      if (member != null && member.no == no) {
         System.out.printf("이름: %s\n", member.name);
         System.out.printf("이메일: %s\n", member.email);
         System.out.printf("암호: %s\n", member.password);
@@ -72,7 +72,7 @@ public class MemberHandler {
 
     for (int i = 0; i < this.size; i++) {
       Member member = this.members[i];
-      if (member.no == no) {
+      if (member != null && member.no == no) {
         String name = Prompt.inputString(String.format("이름(%s)? ", member.name));
         String email = Prompt.inputString(String.format("이메일(%s)? ", member.email));
         String password = Prompt.inputString(String.format("암호(%s)? ", member.password));
@@ -103,7 +103,7 @@ public class MemberHandler {
     int no = Prompt.inputInt("번호? ");
     for (int i = 0; i < this.size; i++) {
       Member member = this.members[i];
-      if (member.no == no) {
+      if (member != null && member.no == no) {
         String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
         if (input.equalsIgnoreCase("Y")) {
