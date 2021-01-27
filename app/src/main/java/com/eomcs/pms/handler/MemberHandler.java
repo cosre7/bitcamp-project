@@ -94,12 +94,11 @@ public class MemberHandler {
     }
   }
 
-
-
   public void delete() {
     System.out.println("[회원 삭제]");
 
     int no = Prompt.inputInt("번호? ");
+
     int i = indexOf(no);
     if (i == -1) {
       System.out.println("해당 번호의 회원 정보가 없습니다.");
@@ -109,7 +108,11 @@ public class MemberHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      this.members[i] = null;
+      for (int x = i + 1; x <  this.size; x++) {
+        this.members[x - 1] = this.members[x];
+      }
+      members[--this.size] = null;
+
       System.out.println("회원 정보를 삭제하였습니다.");
     } else {
       System.out.println("회원 정보 삭제를 취소하였습니다.");
@@ -119,7 +122,7 @@ public class MemberHandler {
   int indexOf(int memberNo) {
     for (int i = 0; i < this.size; i++) {
       Member member = this.members[i];
-      if (member != null && member.no == memberNo) {
+      if (member.no == memberNo) {
         return i;
       }
     }
@@ -131,7 +134,7 @@ public class MemberHandler {
     if (i == -1) {
       return null;
     } else {
-      return members[i];
+      return this.members[i];
     }
 
   }
