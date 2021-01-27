@@ -10,31 +10,12 @@ public class App {
 
   public static void main(String[] args) {
 
-    // 각 게시판 데이터를 저장할 메모리 준비
-    BoardHandler boardList1 = new BoardHandler();
-    // BoardList 설계도에 따라 만든 인스턴스 주소
-    BoardHandler boardList2 = new BoardHandler();
-    BoardHandler boardList3 = new BoardHandler();
-    BoardHandler boardList4 = new BoardHandler();
-    BoardHandler boardList5 = new BoardHandler();
-    BoardHandler boardList6 = new BoardHandler();
-    // 게시판 add, list를 담당하는 BoardHandler는 1개만 필요
-    // BoardList 설계도에 따라 boardList 인스턴스를 만들어서 여러 개의 게시판을 사용할 수 있음
-    // => 인스턴스 필드를 사용하는 이유
+    BoardHandler boardList = new BoardHandler();
 
-    // 각 회원 목록 데이터를 저장할 메모리 준비
     MemberHandler memberList = new MemberHandler();
-    // 유효한 인스턴스 주소 준비 => new MemberHandler();
 
-    // 각 프로젝트 목록 데이터를 저장할 메모리 준비
-    // - 생성자에서 MemberHandler 객체를 주입하라고 강요한다.
-    // - ProjectHandler 객체를 만들려면 반드시 주입해야 한다.
     ProjectHandler projectList = new ProjectHandler(memberList);
-    // new 명령어에서 괄호 안에 무엇이 있다 -> 생성자 문법이다
 
-    // 각 작업 목록 데이터를 저장할 메모리 준비
-    // - 생성자에서 MemberHandler 객체를 주입하라고 강요한다. -> 생성자를 쓰는 이유
-    // - TaskHandler 객체를 만들려면 반드시 주입해야 한다.
     TaskHandler taskList = new TaskHandler(memberList);
 
     loop:
@@ -61,10 +42,13 @@ public class App {
             taskList.list();
             break;
           case "/board/add":
-            boardList1.add();
+            boardList.add();
             break;
           case "/board/list":
-            boardList1.list();
+            boardList.list();
+            break;
+          case "/board/detail":
+            boardList.detail();
             break;
           case "quit":
           case "exit":
