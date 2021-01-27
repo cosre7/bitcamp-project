@@ -66,36 +66,6 @@ public class App {
           case "/board/list":
             boardList1.list();
             break;
-          case "/board2/add":
-            boardList2.add();
-            break;
-          case "/board2/list":
-            boardList2.list();
-            break;
-          case "/board3/add":
-            boardList3.add();
-            break;
-          case "/board3/list":
-            boardList3.list();
-            break;
-          case "/board4/add":
-            boardList4.add();
-            break;
-          case "/board4/list":
-            boardList4.list();
-            break;
-          case "/board5/add":
-            boardList5.add();
-            break;
-          case "/board5/list":
-            boardList5.list();
-            break;
-          case "/board6/add":
-            boardList6.add();
-            break;
-          case "/board6/list":
-            boardList6.list();
-            break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
