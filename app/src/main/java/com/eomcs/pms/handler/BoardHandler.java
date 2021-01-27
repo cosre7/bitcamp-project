@@ -36,6 +36,11 @@ public class BoardHandler {
 
     for (int i = 0; i < this.size; i++) {
       Board b = this.boards[i];
+
+      if (b == null)
+        continue;
+      // continue: 아래쪽으로 가지 않고 i++로 가기
+      // 원래 순서: i++ -> i < this.size -> Board b = this.board[i] ...
       // 번호, 제목, 등록일, 작성자, 조회수, 좋아요
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           b.no, 
@@ -54,7 +59,7 @@ public class BoardHandler {
 
     for (int i = 0; i < this.size; i++) {
       Board board = this.boards[i];
-      if (board.no == no) {
+      if (board != null && board.no == no) {
         board.viewCount++;
         System.out.printf("제목: %s\n", board.title);
         System.out.printf("내용: %s\n", board.content);
@@ -74,14 +79,7 @@ public class BoardHandler {
 
     for (int i = 0; i < this.size; i++) {
       Board board = this.boards[i];
-      if (board.no == no) {
-
-        //        String promptCaption;
-        //     1_1) promptCaption = "제목(" + board.title + ")?";
-        //     1_2) String promptCaption = String.format("제목(%s)? ", board.title);
-        // 1_1과 1_2는 같은 것.
-        //        String str = Prompt.inputString(promptCaption);
-        //        위의 3줄 코드가 아래의 제목(%s)? 코드를 풀어쓴 것이다.
+      if (board != null && board.no == no) {
 
         String title = Prompt.inputString(String.format("제목(%s)? ", board.title));
         String content = Prompt.inputString(String.format("내용(%s)? ", board.content));
@@ -110,7 +108,7 @@ public class BoardHandler {
 
     for (int i = 0; i < this.size; i++) {
       Board board = this.boards[i];
-      if (board.no == no) {
+      if (board != null && board.no == no) {
         String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N)");
 
         if (input.equalsIgnoreCase("Y")) {
