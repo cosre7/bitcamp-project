@@ -102,6 +102,31 @@ public class BoardHandler {
     }
     System.out.println("해당 번호의 게시글이 없습니다.");
   }
+
+  public void delete() {
+    System.out.println("[게시글 삭제]");
+
+    int no = Prompt.inputInt("번호? ");
+
+    for (int i = 0; i < this.size; i++) {
+      Board board = this.boards[i];
+      if (board.no == no) {
+        String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N)");
+
+        if (input.equalsIgnoreCase("Y")) {
+          this.boards[i] = null;
+          System.out.println("게시글을 삭제하였습니다.");
+
+        } else {
+          System.out.println("게시글 삭제를 취소하였습니다.");
+        }
+
+        return;
+      }
+    }
+    System.out.println("해당 번호의 게시글이 없습니다.");
+
+  }
 }
 
 

@@ -53,6 +53,9 @@ public class App {
           case "/board/update":
             boardList.update();
             break;
+          case "/board/delete":
+            boardList.delete();
+            break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
