@@ -57,15 +57,12 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int i = indexOf(no);
-    // 배열에 게시글이 있는지 없는지 확인
-    // 없으면 -1 리턴
-
-    if (i == -1) {
+    Board board = findByNo(no);
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     } 
-    Board board = this.boards[i];
+
     board.viewCount++;
     System.out.printf("제목: %s\n", board.title);
     System.out.printf("내용: %s\n", board.content);
@@ -79,13 +76,12 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");   
 
-    int i = indexOf(no);
+    Board board = findByNo(no);
 
-    if (i == -1) {
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     } 
-    Board board = this.boards[i];
 
     String title = Prompt.inputString(String.format("제목(%s)? ", board.title));
     String content = Prompt.inputString(String.format("내용(%s)? ", board.content));
@@ -135,6 +131,15 @@ public class BoardHandler {
     return -1;
     // 원래 배열 인스턴스에 있을 수 없는 수
     // 배열은 0부터
+  }
+
+  // 게시글 번호에 해당하는 인스턴스를 찾아 리턴한다.
+  Board findByNo(int boardNo) {
+    int i = indexOf(boardNo);
+    if (i == -1)
+      return null;
+    else
+      return boards[i];
   }
 }
 
