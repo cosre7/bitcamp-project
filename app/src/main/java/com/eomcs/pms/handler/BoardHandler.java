@@ -85,8 +85,18 @@ public class BoardHandler {
 
         String title = Prompt.inputString(String.format("제목(%s)? ", board.title));
         String content = Prompt.inputString(String.format("내용(%s)? ", board.content));
-        board.title = title;
-        board.content = content;
+
+        String input = Prompt.inputString("정말 변경하시겠습니까?(y/N)");
+
+        if (input.equalsIgnoreCase("Y")) {
+          board.title = title;
+          board.content = content;
+          System.out.println("게시글을 변경하였습니다.");
+
+        } else {
+          System.out.println("게시글 변경을 취소하였습니다.");
+        }
+
         return;
       }
     }
