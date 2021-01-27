@@ -57,19 +57,21 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    for (int i = 0; i < this.size; i++) {
-      Board board = this.boards[i];
-      if (board != null && board.no == no) {
-        board.viewCount++;
-        System.out.printf("제목: %s\n", board.title);
-        System.out.printf("내용: %s\n", board.content);
-        System.out.printf("작성자: %s\n", board.writer);
-        System.out.printf("등록일: %s\n", board.registeredDate);
-        System.out.printf("조회수: %d\n", board.viewCount);
-        return;
-      }
-    }
-    System.out.println("해당 번호의 게시글이 없습니다.");
+    int i = indexOf(no);
+    // 배열에 게시글이 있는지 없는지 확인
+    // 없으면 -1 리턴
+
+    if (i == -1) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    } 
+    Board board = this.boards[i];
+    board.viewCount++;
+    System.out.printf("제목: %s\n", board.title);
+    System.out.printf("내용: %s\n", board.content);
+    System.out.printf("작성자: %s\n", board.writer);
+    System.out.printf("등록일: %s\n", board.registeredDate);
+    System.out.printf("조회수: %d\n", board.viewCount);
   }
 
   public void update() {
@@ -77,28 +79,27 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");   
 
-    for (int i = 0; i < this.size; i++) {
-      Board board = this.boards[i];
-      if (board != null && board.no == no) {
+    int i = indexOf(no);
 
-        String title = Prompt.inputString(String.format("제목(%s)? ", board.title));
-        String content = Prompt.inputString(String.format("내용(%s)? ", board.content));
+    if (i == -1) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    } 
+    Board board = this.boards[i];
 
-        String input = Prompt.inputString("정말 변경하시겠습니까?(y/N)");
+    String title = Prompt.inputString(String.format("제목(%s)? ", board.title));
+    String content = Prompt.inputString(String.format("내용(%s)? ", board.content));
 
-        if (input.equalsIgnoreCase("Y")) {
-          board.title = title;
-          board.content = content;
-          System.out.println("게시글을 변경하였습니다.");
+    String input = Prompt.inputString("정말 변경하시겠습니까?(y/N)");
 
-        } else {
-          System.out.println("게시글 변경을 취소하였습니다.");
-        }
+    if (input.equalsIgnoreCase("Y")) {
+      board.title = title;
+      board.content = content;
+      System.out.println("게시글을 변경하였습니다.");
 
-        return;
-      }
+    } else {
+      System.out.println("게시글 변경을 취소하였습니다.");
     }
-    System.out.println("해당 번호의 게시글이 없습니다.");
   }
 
   public void delete() {
@@ -106,24 +107,34 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
+    int i = indexOf(no);
+
+    if (i == -1) {
+      System.out.println("해당 번호의 게시글이 없습니다.");
+      return;
+    } 
+    String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N)");
+
+    if (input.equalsIgnoreCase("Y")) {
+      this.boards[i] = null;
+      System.out.println("게시글을 삭제하였습니다.");
+
+    } else {
+      System.out.println("게시글 삭제를 취소하였습니다.");
+    }
+  }
+
+  // 게시글 번호에 해당하는 인스턴스를 배열에서 찾아 그 인덱스를 리턴한다.
+  int indexOf(int boardNo) {
     for (int i = 0; i < this.size; i++) {
       Board board = this.boards[i];
-      if (board != null && board.no == no) {
-        String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N)");
-
-        if (input.equalsIgnoreCase("Y")) {
-          this.boards[i] = null;
-          System.out.println("게시글을 삭제하였습니다.");
-
-        } else {
-          System.out.println("게시글 삭제를 취소하였습니다.");
-        }
-
-        return;
+      if (board != null && board.no == boardNo) {
+        return i;
       }
     }
-    System.out.println("해당 번호의 게시글이 없습니다.");
-
+    return -1;
+    // 원래 배열 인스턴스에 있을 수 없는 수
+    // 배열은 0부터
   }
 }
 
