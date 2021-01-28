@@ -45,20 +45,8 @@ public class TaskHandler {
 
     for (int i = 0; i < this.size; i++) {
       Task t = this.tasks[i];
-
-      String stateLabel = null;
-      switch (t.status) {
-        case 1:
-          stateLabel = "진행중";
-          break;
-        case 2:
-          stateLabel = "완료";
-          break;
-        default:
-          stateLabel = "신규";
-      }
       System.out.printf("%d, %s, %s, %s, %s\n", 
-          t.no, t.content, t.deadline, stateLabel, t.owner);
+          t.no, t.content, t.deadline, getStatusLabel(t.status), t.owner);
     }
   }
 
@@ -138,7 +126,6 @@ public class TaskHandler {
     } else {
       System.out.println("작업 삭제를 취소하였습니다.");
     }
-
   }
 
   // 작업 번호에 해당하는 인스턴스를 배열에서 찾아 그 인덱스를 리턴한다. 
