@@ -39,18 +39,7 @@ public class ProjectHandler {
       return;
     }
 
-    p.members = "";
-    while (true) {
-      String name = inputMember("팀원?(완료: 빈 문자열) ");
-      if (name == null) {
-        break;
-      } else {
-        if (!p.members.isEmpty()) {
-          p.members += ",";
-        }
-        p.members += name;
-      } 
-    }
+    p.members = inputMembers("팀원?(완료: 빈 문자열) ");
 
     this.projects[this.size++] = p;
   }
@@ -108,18 +97,7 @@ public class ProjectHandler {
       return;
     } 
 
-    String members = "";
-    while (true) {
-      String name = inputMember(String.format("팀원(%s)?(완료: 빈 문자열) ", project.members));
-      if (name == null) {
-        break;
-      } else {
-        if (!members.isEmpty()) {
-          members += ",";
-        }
-        members += name;
-      } 
-    }
+    String members = inputMembers(String.format("팀원(%s)?(완료: 빈 문자열) ", project.members));
 
     String input = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
 
@@ -199,6 +177,21 @@ public class ProjectHandler {
         return name;
       }
       System.out.println("등록된 회원이 아닙니다.");
+    }
+  }
+
+  String inputMembers(String promptTitle) {
+    String members = "";
+    while (true) {
+      String name = inputMember(promptTitle);
+      if (name == null) {
+        return members;
+      } else {
+        if (!members.isEmpty()) {
+          members += ",";
+        }
+        members += name;
+      } 
     }
   }
 
