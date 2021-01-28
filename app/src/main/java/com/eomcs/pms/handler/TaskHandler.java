@@ -31,7 +31,7 @@ public class TaskHandler {
     t.deadline = Prompt.inputDate("마감일? ");
     t.status = Prompt.inputInt("상태?\n0: 신규\n1: 진행중\n2: 완료\n> ");
 
-    t.owner = inputMember("담당자(취소: 빈 문자열)");
+    t.owner = inputMember("담당자?(취소: 빈 문자열) ");
     if (t.owner == null) {
       System.out.println("작업 등록을 취소합니다.");
       return;
@@ -75,21 +75,8 @@ public class TaskHandler {
 
     System.out.printf("내용: %s\n", task.content);
     System.out.printf("마감일: %s\n", task.deadline);
-
-    String stateLabel = null;
-    switch (task.status) {
-      case 1:
-        stateLabel = "진행중";
-        break;
-      case 2:
-        stateLabel = "완료";
-        break;
-      default:
-        stateLabel = "신규";
-    }
-    System.out.printf("상태: %s\n", stateLabel);
+    System.out.printf("상태: %s\n", getStatusLabel(task.status));
     System.out.printf("담당자: %s\n", task.owner);
-
   }
 
   public void update() {
@@ -105,33 +92,13 @@ public class TaskHandler {
 
     String content = Prompt.inputString(String.format("내용(%s)? ", task.content));
     Date deadline = Prompt.inputDate(String.format("마감일(%s)? ", task.deadline));
-
-    String stateLabel = null;
-    switch (task.status) {
-      case 1:
-        stateLabel = "진행중";
-        break;
-      case 2:
-        stateLabel = "완료";
-        break;
-      default:
-        stateLabel = "신규";
-    }
     int status = Prompt.inputInt(
-        String.format("상태(%s)?\n0: 신규\n1: 진행중\n2: 완료\n> ", stateLabel));
-
-    String owner = null;
-    while (true) {
-      owner = Prompt.inputString(String.format("담당자(%s)?(취소: 빈 문자열) ", task.owner));
-      if (owner.length() == 0) {
-        System.out.println("작업 등록을 취소합니다.");
-        return;
-      } else if (this.memberList.exist(owner)) {
-        break;
-      } else {
-        System.out.println("등록된 회원이 아닙니다.");
-      }
-    }
+        String.format("상태(%s)?\n0: 신규\n1: 진행중\n2: 완료\n> ", getStatusLabel(task.status)));
+    String owner = inputMember(String.format("담당자(%s)?(취소: 빈 문자열) ", task.owner));
+    if (owner == null) {
+      System.out.println("작업 변경을 취소합니다.");
+      return;
+    } 
 
     String input = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
 
@@ -201,10 +168,20 @@ public class TaskHandler {
         return null;
       } else if (this.memberList.exist(name)) {
         return name;
-      } 
-      System.out.println("등록된 회원이 아닙니다.");
+      } else {
+        System.out.println("등록된 회원이 아닙니다.");
+      }
     }
   }
 
-
+  String getStatusLabel(int status) {
+    switch (status) {
+      case 1:
+        return "진행중";
+      case 2:
+        return "완료";
+      default:
+        return "신규";
+    }
+  }
 }
