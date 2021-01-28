@@ -33,7 +33,7 @@ public class ProjectHandler {
     p.startDate = Prompt.inputDate("시작일? ");
     p.endDate = Prompt.inputDate("종료일? ");
 
-    p.owner = inputOwner("만든이?(취소: 빈 문자열) ");
+    p.owner = inputMember("만든이?(취소: 빈 문자열) ");
     if (p.owner == null) {
       System.out.println("프로젝트 입력을 취소합니다");
       return;
@@ -41,7 +41,7 @@ public class ProjectHandler {
 
     p.members = "";
     while (true) {
-      String name = inputOwner("팀원?(완료: 빈 문자열) ");
+      String name = inputMember("팀원?(완료: 빈 문자열) ");
       if (name == null) {
         break;
       } else {
@@ -101,7 +101,7 @@ public class ProjectHandler {
     Date startDate = Prompt.inputDate(String.format("시작일(%s)? ", project.startDate));
     Date endDate = Prompt.inputDate(String.format("종료일(%s)? ", project.endDate));
 
-    String owner = inputOwner(String.format("만든이(%s)?(취소: 빈 문자열) ", project.owner));
+    String owner = inputMember(String.format("만든이(%s)?(취소: 빈 문자열) ", project.owner));
     //굳이 로컬변수를 만들지 말고 메소드 속 메소드 속 메소드 형태로 만들어보자
     if (owner == null) {
       System.out.println("프로젝트 변경을 취소합니다.");
@@ -110,7 +110,7 @@ public class ProjectHandler {
 
     String members = "";
     while (true) {
-      String name = inputOwner(String.format("팀원(%s)?(완료: 빈 문자열) ", project.members));
+      String name = inputMember(String.format("팀원(%s)?(완료: 빈 문자열) ", project.members));
       if (name == null) {
         break;
       } else {
@@ -185,7 +185,7 @@ public class ProjectHandler {
       return this.projects[i];
   }
 
-  String inputOwner(String promptTitle) {
+  String inputMember(String promptTitle) {
     // 빈문자를 입력하든 존재하는지 아닌지 확인하든 둘 중 하나의 선택
     // title이 바뀔 수 있기 때문에 promptTitle을 파라미터로 받는다.
     while (true) {
