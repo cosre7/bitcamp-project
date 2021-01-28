@@ -11,12 +11,10 @@ public class App {
   public static void main(String[] args) {
 
     BoardHandler boardList = new BoardHandler();
-
     MemberHandler memberList = new MemberHandler();
-
     ProjectHandler projectList = new ProjectHandler(memberList);
-
     TaskHandler taskList = new TaskHandler(memberList);
+
 
     loop:
       while (true) {
@@ -29,12 +27,12 @@ public class App {
           case "/member/list":
             memberList.list();
             break;
-          case "/member/detail":
+          case "/member/ detail":
             memberList.detail();
-            break;
+            break;  
           case "/member/update":
             memberList.update();
-            break;
+            break; 
           case "/member/delete":
             memberList.delete();
             break;
@@ -44,17 +42,29 @@ public class App {
           case "/project/list":
             projectList.list();
             break;
-          case "/project/detail":
+          case "/project/detail": 
             projectList.detail();
-            break;
+            break;  
           case "/project/update":
             projectList.update();
+            break; 
+          case "/project/delete":
+            projectList.delete();
             break;
           case "/task/add":
             taskList.add();
             break;
           case "/task/list":
             taskList.list();
+            break;
+          case "/task/detail": 
+            taskList.detail();
+            break;  
+          case "/task/update":
+            taskList.update();
+            break; 
+          case "/task/delete":
+            taskList.delete();
             break;
           case "/board/add":
             boardList.add();
@@ -64,10 +74,10 @@ public class App {
             break;
           case "/board/detail":
             boardList.detail();
-            break;
+            break;  
           case "/board/update":
             boardList.update();
-            break;
+            break; 
           case "/board/delete":
             boardList.delete();
             break;
