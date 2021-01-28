@@ -1,5 +1,6 @@
 package com.eomcs.pms.handler;
 
+import java.sql.Date;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.util.Prompt;
 
@@ -78,6 +79,70 @@ public class ProjectHandler {
     }
   }
 
+  public void detail() {
+    System.out.println("[프로젝트 상세보기]");
+
+    int no = Prompt.inputInt("번호? ");
+
+    for (int i = 0; i < this.size; i++) {
+      Project project = this.projects[i];
+      if (project.no == no) {
+        System.out.printf("프로젝트명: %s\n", project.title);
+        System.out.printf("내용: %s\n", project.content);
+        System.out.printf("시작일: %s\n", project.startDate);
+        System.out.printf("종료일: %s\n", project.endDate);
+        return;
+      }
+    }
+    System.out.println("해당 번호의 프로젝트가 없습니다.");
+  }
+
+  public void update() {
+    System.out.println("[프로젝트 변경]");
+
+    int no = Prompt.inputInt("번호? ");
+    for (int i = 0; i < this.size; i++) {
+      Project project = this.projects[i];
+      if (project.no == no) {
+        String title = Prompt.inputString(String.format("프로젝트명(%s)? ", project.title));
+        String content = Prompt.inputString(String.format("내용(%s)? ", project.content));
+        Date startDate = Prompt.inputDate(String.format("시작일(%s)? ", project.startDate));
+        Date endDate = Prompt.inputDate(String.format("종료일(%s)? ", project.endDate));
+
+        String input = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
+
+        if (input.equalsIgnoreCase("Y")) {
+          project.title = title;
+          project.content = content;
+          project.startDate = startDate;
+          project.endDate = endDate;
+        } else {
+          System.out.println("프로젝트 변경을 취소하였습니다");
+        }
+      }
+    }
+  }
+
+  public void delete() {
+    System.out.println("[프로젝트 삭제]");
+
+    int no = Prompt.inputInt("번호? ");
+    for (int i = 0; i < this.size; i++) {
+      Project project = this.projects[i];
+      if (project.no == no) {
+        String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
+
+        if (input.equalsIgnoreCase("Y")) {
+          this.projects[i] = null;
+          System.out.println("프로젝트를 삭제하였습니다.");
+        } else {
+          System.out.println("프로젝트 삭제를 취소하였습니다.");
+        }
+        return;        
+      }
+    }
+    System.out.println("해당 번호의 프로젝트가 없습니다.");
+  }
 }
 
 

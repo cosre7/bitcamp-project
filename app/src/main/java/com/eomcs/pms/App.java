@@ -44,6 +44,12 @@ public class App {
           case "/project/list":
             projectList.list();
             break;
+          case "/project/detail":
+            projectList.detail();
+            break;
+          case "/project/update":
+            projectList.update();
+            break;
           case "/task/add":
             taskList.add();
             break;
