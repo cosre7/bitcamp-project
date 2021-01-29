@@ -1,6 +1,7 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
+import java.util.Arrays;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
 
@@ -23,23 +24,19 @@ public class BoardHandler {
     b.registeredDate = new Date(System.currentTimeMillis());
 
     if (this.size >= this.boards.length) {
-      // 배열이 꽉 찼으면, 배열을 늘린다.
-      // 1) 새 배열을 만든다. 크기는 기존 배열의 크기보다 50% 증가시킨다.
-      Board[] arr = new Board[this.size+ (this.size >> 1)];
-      // Board[] arr = new Board[this.boards.length + (this.boards.length / 2)]; 와 같은 문장
-      // board.length의 50%를 증가 -> 3 + 3/2 = 4 (int값들의 나누기 이기 때문에 3/2는 1)
-      // x / 2 는 x >> 1과 같다.
-      // 2) 기존 배열의 값을 새 배열로 복사한다.
-      for (int i = 0; i < this.size; i++) {
-        //for (int i = 0; i < this.boards.length; i++) { 와 같은 문장
-        arr[i] = this.boards[i];
-        // arr[i] 번째 값에 this.boards의 [i]번째 값을 복사해서 넣는다.
-      }
-      // 3) 배열 레퍼런스 boards에 새 배열의 주소를 저장한다.
-      boards = arr;
-      // 배열이 늘어났는지 확인
-      System.out.printf("배열 크기 증가(%d)\n", this.boards.length);
+      this.boards = Arrays.copyOf(this.boards, this.size+ (this.size >> 1));
+      // 자바에서 미리 만들어져 있는 메소드를 활용해서
+      // 배열을 늘리는 코드를 쉽게 표현하는 코드
     }
+
+    //    Board[] copyOf(Board[] original, int newLength) {
+    //      Board[] arr = new Board[newLength];
+    //      for (int i = 0; i > original.length; i++) {
+    //        arr[i] = original[i];
+    //      }
+    //      return arr;
+    //    }
+    //    자바에서 만들어 둔 copyOf 메소드
 
     this.boards[this.size++] = b;
 
@@ -158,6 +155,7 @@ public class BoardHandler {
     else 
       return this.boards[i];
   }
+
 }
 
 

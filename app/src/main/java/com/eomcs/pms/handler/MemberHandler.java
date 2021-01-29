@@ -1,5 +1,6 @@
 package com.eomcs.pms.handler;
 
+import java.util.Arrays;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.util.Prompt;
 
@@ -24,11 +25,7 @@ public class MemberHandler {
     m.registeredDate = new java.sql.Date(System.currentTimeMillis());
 
     if (this.size >= this.members.length) {
-      Member[] arr = new Member[this.size + (this.size >> 1)];
-      for (int i = 0; i < this.size; i++) {
-        arr[i] = this.members[i];
-      }
-      members = arr;
+      members = Arrays.copyOf(this.members, this.size + (this.size >> 1));
     }
 
     this.members[this.size++] = m;

@@ -1,6 +1,7 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
+import java.util.Arrays;
 import com.eomcs.pms.domain.Task;
 import com.eomcs.util.Prompt;
 
@@ -33,12 +34,7 @@ public class TaskHandler {
     }
 
     if (this.size >= this.tasks.length) {
-      Task[] arr = new Task[this.size + (this.size >> 1)];
-
-      for (int i = 0; i < this.size; i++) {
-        arr[i] = this.tasks[i];
-      }
-      tasks = arr;
+      tasks = Arrays.copyOf(this.tasks, this.size + (this.size >> 1));
     }
     this.tasks[this.size++] = t;
   }

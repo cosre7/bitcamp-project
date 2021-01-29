@@ -1,6 +1,7 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
+import java.util.Arrays;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.util.Prompt;
 
@@ -34,12 +35,7 @@ public class ProjectHandler {
     }
 
     if (this.size >= this.projects.length) {
-      Project[] arr = new Project[this.size + (this.size >> 1)];
-
-      for (int i = 0; i < this.size; i++) {
-        arr[i] = this.projects[i];
-      }
-      projects = arr;
+      projects = Arrays.copyOf(this.projects, this.size + (this.size >> 1));
     }
     p.members = inputMembers("팀원?(완료: 빈 문자열) ");
 
