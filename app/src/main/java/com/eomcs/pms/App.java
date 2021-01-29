@@ -15,7 +15,6 @@ public class App {
     ProjectHandler projectList = new ProjectHandler(memberList);
     TaskHandler taskList = new TaskHandler(memberList);
 
-
     loop:
       while (true) {
         String command = com.eomcs.util.Prompt.inputString("명령> ");

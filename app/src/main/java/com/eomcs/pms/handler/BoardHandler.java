@@ -1,7 +1,6 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
-import java.util.Arrays;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
 
@@ -9,7 +8,8 @@ public class BoardHandler {
 
   static final int DEFAULT_CAPACITY = 3;
 
-  Board[] boards = new Board[DEFAULT_CAPACITY];   
+  Box firstBox;
+  Box lastBox;
   int size = 0;
 
   public void add() {
@@ -23,22 +23,22 @@ public class BoardHandler {
     b.writer = Prompt.inputString("작성자? ");
     b.registeredDate = new Date(System.currentTimeMillis());
 
-    if (this.size >= this.boards.length) {
-      this.boards = Arrays.copyOf(this.boards, this.size+ (this.size >> 1));
-      // 자바에서 미리 만들어져 있는 메소드를 활용해서
-      // 배열을 늘리는 코드를 쉽게 표현하는 코드
+    //    Box box = new Box();
+    //    box.board = b;
+    // 아래의 코드와 같은 코드
+    Box box = new Box(b);
+
+    if (lastBox == null) { // 연결 리스트의 첫 항목이라면, (첫 박스 = 마지막 박스)
+      lastBox = box;
+      firstBox = box;
+      // firstBox = lastBox;
+    } else {
+      lastBox.next = box;
+      //라스트박스의 next에 box 주소를 넣는다.
+      lastBox = box;
+
     }
-
-    //    Board[] copyOf(Board[] original, int newLength) {
-    //      Board[] arr = new Board[newLength];
-    //      for (int i = 0; i > original.length; i++) {
-    //        arr[i] = original[i];
-    //      }
-    //      return arr;
-    //    }
-    //    자바에서 만들어 둔 copyOf 메소드
-
-    this.boards[this.size++] = b;
+    this.size++;
 
     System.out.println("게시글을 등록하였습니다.");
   }
@@ -46,11 +46,10 @@ public class BoardHandler {
   public void list() {
     System.out.println("[게시글 목록]");
 
-    for (int i = 0; i < this.size; i++) {
-      Board b = this.boards[i];
+    Box cursor = firstBox;
 
-      if (b == null)
-        continue;
+    while (cursor != null) {
+      Board b = cursor.board;
 
       // 번호, 제목, 등록일, 작성자, 조회수, 좋아요
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
@@ -60,6 +59,9 @@ public class BoardHandler {
           b.writer, 
           b.viewCount,
           b.like);
+
+      cursor = cursor.next;
+      // 주소를 담는 변수 = 주소.next 변수에 들어있는 주소
     }
   }
 
@@ -124,9 +126,9 @@ public class BoardHandler {
 
     if (input.equalsIgnoreCase("Y")) {
       for (int x = i + 1; x < this.size; x++) {
-        this.boards[x-1] = this.boards[x];
+        //this.boards[x-1] = this.boards[x];
       }
-      boards[--this.size] = null; // 앞으로 당긴 후 맨 뒤의 항목은 null로 설정한다.
+      //boards[--this.size] = null; // 앞으로 당긴 후 맨 뒤의 항목은 null로 설정한다.
 
       System.out.println("게시글을 삭제하였습니다.");
 
@@ -138,27 +140,32 @@ public class BoardHandler {
 
   // 게시글 번호에 해당하는 인스턴스를 배열에서 찾아 그 인덱스를 리턴한다. 
   int indexOf(int boardNo) {
-    for (int i = 0; i < this.size; i++) {
-      Board board = this.boards[i];
-      if (board.no == boardNo) {
-        return i;
-      }
-    }
+    //    for (int i = 0; i < this.size; i++) {
+    //      Board board = this.boards[i];
+    //      if (board.no == boardNo) {
+    //        return i;
+    //      }
+    //    }
     return -1;
   }
 
   // 게시글 번호에 해당하는 인스턴스를 찾아 리턴한다.
   Board findByNo(int boardNo) {
-    int i = indexOf(boardNo);
-    if (i == -1) 
-      return null;
-    else 
-      return this.boards[i];
+    return null;
+    //    int i = indexOf(boardNo);
+    //    if (i == -1) 
+    //      return null;
+    //    else 
+    //      return this.boards[i];
   }
 
   static class Box {
     Board board;
     Box next;
+
+    Box(Board b) {
+      this.board = b;
+    }
   }
 }
 
