@@ -8,8 +8,8 @@ public class BoardHandler {
 
   static final int DEFAULT_CAPACITY = 3;
 
-  Box firstBox;
-  Box lastBox;
+  Node first;
+  Node last;
   int size = 0;
 
   public void add() {
@@ -26,18 +26,18 @@ public class BoardHandler {
     //    Box box = new Box();
     //    box.board = b;
     // 아래의 코드와 같은 코드
-    Box box = new Box(b);
+    Node node = new Node(b);
 
-    if (lastBox == null) { // 연결 리스트의 첫 항목이라면, (첫 박스 = 마지막 박스)
-      lastBox = box;
-      firstBox = box;
+    if (last == null) { // 연결 리스트의 첫 항목이라면, (첫 박스 = 마지막 박스)
+      last = node;
+      first = node;
       // firstBox = lastBox;
 
     } else { // 연결 리스트에 이미 항목이 있다면,
-      lastBox.next = box; // 현재 마지막 상자의 다음 상자가 새 상자를 가리키게 한다.
-      box.prev = lastBox; // 새 상자에서 이전 상자로서 현재 마지막 상자를 가리키게 한다.
+      last.next = node; // 현재 마지막 상자의 다음 상자가 새 상자를 가리키게 한다.
+      node.prev = last; // 새 상자에서 이전 상자로서 현재 마지막 상자를 가리키게 한다.
       //라스트박스의 next에 box 주소를 넣는다.
-      lastBox = box; // 새 상자가 마지막 상자가 되게 한다.
+      last = node; // 새 상자가 마지막 상자가 되게 한다.
 
     }
     this.size++;
@@ -48,7 +48,7 @@ public class BoardHandler {
   public void list() {
     System.out.println("[게시글 목록]");
 
-    Box cursor = firstBox;
+    Node cursor = first;
 
     while (cursor != null) {
       Board b = cursor.board;
@@ -127,22 +127,40 @@ public class BoardHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      Box cursor = firstBox;
+      Node cursor = first;
       while (cursor != null) {
         if (cursor.board == board) {
-          if (cursor == firstBox) {
-            firstBox = cursor.next;
+          if (first == last) {
+            // 박스가 첫번째 박스이자 마지막 박스일 때
+            // 즉, 박스가 하나밖에 없는데 삭제하려고 할 때
+            first = last = null;
+            break;
+            // lastBox 에 null을 넣는다
+            // lastBox를 firstBox에 넣는다.
+            // 즉 null을 firstBox에 넣는다.
+            // 결과적으로 둘 다 null이 된다.
+          }
+          if (cursor == first) {
+            first = cursor.next;
+            // 첫번째 상자를 지우면 첫번째 상자의 다음 상자를 현재 상자로 가리키게 만든다.
+            cursor.prev = null;
           } else {
             cursor.prev.next = cursor.next;
             // 현재 상자(200)에서 가리키는 이전상자(100)로 가리킨다
             // 이전상자(100)가 가리키는 다음 상자를 현재 상자의 다음 상자(300)로 만든다.
             // 즉, 현재 상자가 300이 된다.
             // 200 상자는 가비지가 된다.
-            cursor.prev = null; //가비지가 된 객체가 기존 객체를 가리키지 않도록 만든다.
-            cursor.next = null; //가비지가 된 객체가 기존 객체를 가리키지 않도록 만든다.
+            if (cursor.next != null) {
+              cursor.next.prev = cursor.prev;
+            }
           }
+          if (cursor == last) {
+            last = cursor.prev;
+          }
+
           break;
         }
+        cursor = cursor.next;
       }
 
       System.out.println("게시글을 삭제하였습니다.");
@@ -150,23 +168,11 @@ public class BoardHandler {
     } else {
       System.out.println("게시글 삭제를 취소하였습니다.");
     }
-
-  }
-
-  // 게시글 번호에 해당하는 인스턴스를 배열에서 찾아 그 인덱스를 리턴한다. 
-  int indexOf(int boardNo) {
-    //    for (int i = 0; i < this.size; i++) {
-    //      Board board = this.boards[i];
-    //      if (board.no == boardNo) {
-    //        return i;
-    //      }
-    //    }
-    return -1;
   }
 
   // 게시글 번호에 해당하는 인스턴스를 찾아 리턴한다.
   Board findByNo(int boardNo) {
-    Box cursor = firstBox;
+    Node cursor = first;
     while (cursor != null) {
       Board b = cursor.board;
       if (b.no == boardNo) {
@@ -177,12 +183,12 @@ public class BoardHandler {
     return null;
   }
 
-  static class Box {
+  static class Node {
     Board board;
-    Box next;
-    Box prev;
+    Node next;
+    Node prev;
 
-    Box(Board b) {
+    Node(Board b) {
       this.board = b;
     }
   }
