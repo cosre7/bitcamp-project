@@ -33,6 +33,7 @@ public class MemberHandler {
       last = node;
     }
     this.size++;
+    System.out.println("회원을 등록하였습니다.");
   }
 
   public void list() {
@@ -57,11 +58,13 @@ public class MemberHandler {
 
   public boolean exist(String name) {
     Node cursor = first;
+
     while (cursor != null) {
       Member m = cursor.member;
-      if (m.name == name) {
+      if (name.equals(m.name)) {
         return true;
       }
+      cursor = cursor.next;
     }
     return false;
   }
@@ -82,7 +85,6 @@ public class MemberHandler {
     System.out.printf("사진: %s\n", member.photo);
     System.out.printf("전화: %s\n", member.tel);
     System.out.printf("가입일: %s\n", member.registeredDate);
-
   }
 
   public void update() {
