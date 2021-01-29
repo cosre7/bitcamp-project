@@ -151,12 +151,15 @@ public class BoardHandler {
 
   // 게시글 번호에 해당하는 인스턴스를 찾아 리턴한다.
   Board findByNo(int boardNo) {
+    Box cursor = firstBox;
+    while (cursor != null) {
+      Board b = cursor.board;
+      if (b.no == boardNo) {
+        return b;
+      }
+      cursor = cursor.next;
+    }
     return null;
-    //    int i = indexOf(boardNo);
-    //    if (i == -1) 
-    //      return null;
-    //    else 
-    //      return this.boards[i];
   }
 
   static class Box {
