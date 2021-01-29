@@ -32,10 +32,12 @@ public class BoardHandler {
       lastBox = box;
       firstBox = box;
       // firstBox = lastBox;
-    } else {
-      lastBox.next = box;
+
+    } else { // 연결 리스트에 이미 항목이 있다면,
+      lastBox.next = box; // 현재 마지막 상자의 다음 상자가 새 상자를 가리키게 한다.
+      box.prev = lastBox; // 새 상자에서 이전 상자로서 현재 마지막 상자를 가리키게 한다.
       //라스트박스의 next에 box 주소를 넣는다.
-      lastBox = box;
+      lastBox = box; // 새 상자가 마지막 상자가 되게 한다.
 
     }
     this.size++;
@@ -116,8 +118,8 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int i = indexOf(no);
-    if (i == -1) {
+    Board board = findByNo(no);
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
@@ -125,10 +127,23 @@ public class BoardHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      for (int x = i + 1; x < this.size; x++) {
-        //this.boards[x-1] = this.boards[x];
+      Box cursor = firstBox;
+      while (cursor != null) {
+        if (cursor.board == board) {
+          if (cursor == firstBox) {
+            firstBox = cursor.next;
+          } else {
+            cursor.prev.next = cursor.next;
+            // 현재 상자(200)에서 가리키는 이전상자(100)로 가리킨다
+            // 이전상자(100)가 가리키는 다음 상자를 현재 상자의 다음 상자(300)로 만든다.
+            // 즉, 현재 상자가 300이 된다.
+            // 200 상자는 가비지가 된다.
+            cursor.prev = null; //가비지가 된 객체가 기존 객체를 가리키지 않도록 만든다.
+            cursor.next = null; //가비지가 된 객체가 기존 객체를 가리키지 않도록 만든다.
+          }
+          break;
+        }
       }
-      //boards[--this.size] = null; // 앞으로 당긴 후 맨 뒤의 항목은 null로 설정한다.
 
       System.out.println("게시글을 삭제하였습니다.");
 
@@ -165,6 +180,7 @@ public class BoardHandler {
   static class Box {
     Board board;
     Box next;
+    Box prev;
 
     Box(Board b) {
       this.board = b;
