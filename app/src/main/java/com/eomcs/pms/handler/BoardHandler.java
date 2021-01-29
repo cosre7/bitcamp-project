@@ -156,6 +156,10 @@ public class BoardHandler {
       return this.boards[i];
   }
 
+  static class Box {
+    Board board;
+    Box next;
+  }
 }
 
 
