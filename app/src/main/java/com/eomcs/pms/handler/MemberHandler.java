@@ -5,49 +5,10 @@ import com.eomcs.util.Prompt;
 
 public class MemberHandler {
 
-  static final int LENGTH = 100;
+  static final int DEFAULT_CAPACITY = 3;
 
-  Member[] members = new Member[LENGTH];  // 레퍼런스 배열 준비  
+  Member[] members = new Member[DEFAULT_CAPACITY];  // 레퍼런스 배열 준비  
   int size = 0;
-  public void service () {
-    loop:
-      while (true) {
-        System.out.println("메인 / 회원 --------------------------------");
-        System.out.println("1. 등록");
-        System.out.println("2. 목록");
-        System.out.println("3. 상세 보기");
-        System.out.println("4. 변경");
-        System.out.println("5. 삭제");
-        System.out.println("0. 이전 메뉴");
-
-        String command = com.eomcs.util.Prompt.inputString("회원> ");
-        System.out.println();
-
-        switch (command) {
-          case "1":
-            this.add();
-            break;
-          case "2":
-            this.list();
-            break;
-          case "3":
-            this.detail();
-            break;  
-          case "4":
-            this.update();
-            break; 
-          case "5":
-            this.delete();
-            break; 
-          case "0":
-            break loop;
-          default:
-            System.out.println("메뉴 번호가 맞지 않습니다.");
-        }
-        System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
-
-      }
-  }
 
   public void add() {
     System.out.println("[회원 등록]");
@@ -61,6 +22,14 @@ public class MemberHandler {
     m.photo = Prompt.inputString("사진? ");
     m.tel = Prompt.inputString("전화? ");
     m.registeredDate = new java.sql.Date(System.currentTimeMillis());
+
+    if (this.size >= this.members.length) {
+      Member[] arr = new Member[this.size + (this.size >> 1)];
+      for (int i = 0; i < this.size; i++) {
+        arr[i] = this.members[i];
+      }
+      members = arr;
+    }
 
     this.members[this.size++] = m;
   }

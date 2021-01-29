@@ -6,61 +6,17 @@ import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  static final int LENGTH = 100;
+  static final int DEFAULT_CAPACITY = 3;
 
-  // 의존 객체(dependency)를 담을 인스턴스 필드
-  // - 메서드가 작업할 때 사용할 객체를 담는다.
   MemberHandler memberList;
 
-  Project[] projects = new Project[LENGTH];
+  Project[] projects = new Project[DEFAULT_CAPACITY];
   int size = 0;
 
-  // 생성자 정의
-  // - ProjectHandler가 의존하는 객체를 반드시 주입하도록 강요한다.
-  // - 다른 패키지에서 생성자를 호출할 수 있도록 공개한다.
   public ProjectHandler(MemberHandler memberHandler) {
     this.memberList = memberHandler;
   }
 
-  public void service () {
-    loop:
-      while (true) {
-        System.out.println("메인 / 프로젝트 --------------------------------");
-        System.out.println("1. 등록");
-        System.out.println("2. 목록");
-        System.out.println("3. 상세 보기");
-        System.out.println("4. 변경");
-        System.out.println("5. 삭제");
-        System.out.println("0. 이전 메뉴");
-
-        String command = com.eomcs.util.Prompt.inputString("프로젝트> ");
-        System.out.println();
-
-        switch (command) {
-          case "1":
-            this.add();
-            break;
-          case "2":
-            this.list();
-            break;
-          case "3":
-            this.detail();
-            break;  
-          case "4":
-            this.update();
-            break; 
-          case "5":
-            this.delete();
-            break; 
-          case "0":
-            break loop;
-          default:
-            System.out.println("메뉴 번호가 맞지 않습니다.");
-        }
-        System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
-
-      }
-  }
   public void add() {
     System.out.println("[프로젝트 등록]");
 
@@ -73,10 +29,18 @@ public class ProjectHandler {
 
     p.owner = inputMember("만든이?(취소: 빈 문자열) ");
     if (p.owner == null) {
-      System.out.println("프로젝트 입력을 취소합니다");
+      System.out.println("프로젝트 입력을 취소합니다.");
       return;
     }
 
+    if (this.size >= this.projects.length) {
+      Project[] arr = new Project[this.size + (this.size >> 1)];
+
+      for (int i = 0; i < this.size; i++) {
+        arr[i] = this.projects[i];
+      }
+      projects = arr;
+    }
     p.members = inputMembers("팀원?(완료: 빈 문자열) ");
 
     this.projects[this.size++] = p;
@@ -129,13 +93,13 @@ public class ProjectHandler {
     Date endDate = Prompt.inputDate(String.format("종료일(%s)? ", project.endDate));
 
     String owner = inputMember(String.format("만든이(%s)?(취소: 빈 문자열) ", project.owner));
-    //굳이 로컬변수를 만들지 말고 메소드 속 메소드 속 메소드 형태로 만들어보자
     if (owner == null) {
       System.out.println("프로젝트 변경을 취소합니다.");
       return;
-    } 
+    }
 
-    String members = inputMembers(String.format("팀원(%s)?(완료: 빈 문자열) ", project.members));
+    String members = inputMembers(
+        String.format("팀원(%s)?(완료: 빈 문자열) ", project.members));
 
     String input = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
 
@@ -202,16 +166,12 @@ public class ProjectHandler {
   }
 
   String inputMember(String promptTitle) {
-    // 빈문자를 입력하든 존재하는지 아닌지 확인하든 둘 중 하나의 선택
-    // title이 바뀔 수 있기 때문에 promptTitle을 파라미터로 받는다.
     while (true) {
       String name = Prompt.inputString(promptTitle);
       if (name.length() == 0) {
-        // 입력 안하고 엔터침 
         return null;
       } 
       if (this.memberList.exist(name)) {
-        // 입력함 -> 존재하는지 여부를 따짐 -> 정상적인 사용자 이름을 리턴
         return name;
       }
       System.out.println("등록된 회원이 아닙니다.");
@@ -229,7 +189,7 @@ public class ProjectHandler {
           members += ",";
         }
         members += name;
-      } 
+      }
     }
   }
 

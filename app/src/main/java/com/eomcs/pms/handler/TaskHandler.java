@@ -6,61 +6,17 @@ import com.eomcs.util.Prompt;
 
 public class TaskHandler {
 
-  static final int LENGTH = 100;
+  static final int DEFAULT_CAPACITY = 3;
 
-  // 의존 객체(dependency)를 담을 인스턴스 필드
-  // - 메서드가 작업할 때 사용할 객체를 담는다.
   MemberHandler memberList;
 
-  Task[] tasks = new Task[LENGTH];
+  Task[] tasks = new Task[DEFAULT_CAPACITY];
   int size = 0;
 
-  // 생성자
-  // - TaskHandler가 의존하는 객체를 반드시 주입하도록 강요한다.
-  // - 다른 패키지에서 생성자를 호출할 수 있도록 공개한다.
   public TaskHandler(MemberHandler memberHandler) {
     this.memberList = memberHandler;
   }
 
-  public void service () {
-    loop:
-      while (true) {
-        System.out.println("메인 / 작업 --------------------------------");
-        System.out.println("1. 등록");
-        System.out.println("2. 목록");
-        System.out.println("3. 상세 보기");
-        System.out.println("4. 변경");
-        System.out.println("5. 삭제");
-        System.out.println("0. 이전 메뉴");
-
-        String command = com.eomcs.util.Prompt.inputString("작업> ");
-        System.out.println();
-
-        switch (command) {
-          case "1":
-            this.add();
-            break;
-          case "2":
-            this.list();
-            break;
-          case "3":
-            this.detail();
-            break;  
-          case "4":
-            this.update();
-            break; 
-          case "5":
-            this.delete();
-            break; 
-          case "0":
-            break loop;
-          default:
-            System.out.println("메뉴 번호가 맞지 않습니다.");
-        }
-        System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
-
-      }
-  }
   public void add() {
     System.out.println("[작업 등록]");
 
@@ -72,10 +28,18 @@ public class TaskHandler {
 
     t.owner = inputMember("담당자?(취소: 빈 문자열) ");
     if (t.owner == null) {
-      System.out.println("작업 등록을 취소합니다.");
+      System.out.println("작업 등록을 취소하였습니다.");
       return;
     }
 
+    if (this.size >= this.tasks.length) {
+      Task[] arr = new Task[this.size + (this.size >> 1)];
+
+      for (int i = 0; i < this.size; i++) {
+        arr[i] = this.tasks[i];
+      }
+      tasks = arr;
+    }
     this.tasks[this.size++] = t;
   }
 
@@ -104,7 +68,10 @@ public class TaskHandler {
     System.out.printf("마감일: %s\n", task.deadline);
     System.out.printf("상태: %s\n", getStatusLabel(task.status));
     System.out.printf("담당자: %s\n", task.owner);
+
   }
+
+
 
   public void update() {
     System.out.println("[작업 변경]");
@@ -119,13 +86,13 @@ public class TaskHandler {
 
     String content = Prompt.inputString(String.format("내용(%s)? ", task.content));
     Date deadline = Prompt.inputDate(String.format("마감일(%s)? ", task.deadline));
-    int status = Prompt.inputInt(
-        String.format("상태(%s)?\n0: 신규\n1: 진행중\n2: 완료\n> ", getStatusLabel(task.status)));
+    int status = Prompt.inputInt(String.format(
+        "상태(%s)?\n0: 신규\n1: 진행중\n2: 완료\n> ", getStatusLabel(task.status)));
     String owner = inputMember(String.format("담당자(%s)?(취소: 빈 문자열) ", task.owner));
-    if (owner == null) {
+    if(owner == null) {
       System.out.println("작업 변경을 취소합니다.");
       return;
-    } 
+    }
 
     String input = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
 
@@ -165,6 +132,7 @@ public class TaskHandler {
     } else {
       System.out.println("작업 삭제를 취소하였습니다.");
     }
+
   }
 
   // 작업 번호에 해당하는 인스턴스를 배열에서 찾아 그 인덱스를 리턴한다. 
