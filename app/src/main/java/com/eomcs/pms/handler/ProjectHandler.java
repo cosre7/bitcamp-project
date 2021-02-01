@@ -8,8 +8,6 @@ public class ProjectHandler {
 
   ProjectList projectList = new ProjectList();
 
-  // 의존 객체(dependency)를 담을 인스턴스 필드
-  // - 메서드가 작업할 때 사용할 객체를 담는다.
   MemberList memberList;
 
   public ProjectHandler(MemberList memberList) {
