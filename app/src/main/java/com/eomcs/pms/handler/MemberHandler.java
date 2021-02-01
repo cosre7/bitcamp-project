@@ -36,16 +36,6 @@ public class MemberHandler {
     }
   }
 
-  public boolean exist(String name) {
-    Member[] members = memberList.toArray();
-    for (Member m : members) {
-      if (name.equals(m.name)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public void detail() {
     System.out.println("[회원 상세보기]");
 
