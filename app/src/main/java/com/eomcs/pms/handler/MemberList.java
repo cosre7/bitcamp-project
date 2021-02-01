@@ -4,9 +4,9 @@ import com.eomcs.pms.domain.Member;
 
 public class MemberList {
 
-  static final int LENGTH = 100;
+  static final int DEFAULT_CAPACITY = 100;
 
-  Member[] members = new Member[LENGTH];  // 레퍼런스 배열 준비  
+  Member[] members = new Member[DEFAULT_CAPACITY];  // 레퍼런스 배열 준비  
   int size = 0;
 
   void add(Member m) {
