@@ -111,7 +111,6 @@ public class BoardHandler {
     } else {
       System.out.println("게시글 삭제를 취소하였습니다.");
     }
-
   }
 }
 
