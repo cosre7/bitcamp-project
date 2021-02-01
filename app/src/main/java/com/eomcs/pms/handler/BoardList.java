@@ -1,5 +1,6 @@
 package com.eomcs.pms.handler;
 
+import java.util.Arrays;
 import com.eomcs.pms.domain.Board;
 
 public class BoardList {
@@ -11,6 +12,9 @@ public class BoardList {
   int size = 0;
 
   void add(Board b) {
+    if (this.size == this.boards.length) {
+      boards = Arrays.copyOf(this.boards, this.size + (this.size >> 1));
+    }
     this.boards[this.size++] = b;
   }
 

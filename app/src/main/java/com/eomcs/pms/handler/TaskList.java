@@ -1,5 +1,6 @@
 package com.eomcs.pms.handler;
 
+import java.util.Arrays;
 import com.eomcs.pms.domain.Task;
 
 public class TaskList {
@@ -9,6 +10,9 @@ public class TaskList {
   int size = 0;
 
   void add(Task t) {
+    if (this.size == this.tasks.length) {
+      tasks = Arrays.copyOf(this.tasks, this.size + (this.size >> 1));
+    }
     this.tasks[this.size++] = t;
   }
 
