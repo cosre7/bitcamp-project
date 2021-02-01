@@ -5,7 +5,7 @@ import com.eomcs.util.Prompt;
 
 public class MemberHandler {
 
-  MemberList memberList = new MemberList();
+  public MemberList memberList = new MemberList();
 
   public void add() {
     System.out.println("[회원 등록]");

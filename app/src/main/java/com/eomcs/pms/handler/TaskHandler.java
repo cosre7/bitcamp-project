@@ -6,13 +6,17 @@ import com.eomcs.util.Prompt;
 
 public class TaskHandler {
 
-  MemberHandler memberList;
+  MemberList memberList;
 
   TaskList taskList = new TaskList();
+  // taskList의 경우 자체적으로 여기서만 사용하기 때문에
+  // 여기서 new 로 만든다.
 
-  public TaskHandler(MemberHandler memberHandler) {
-    this.memberList = memberHandler;
+  public TaskHandler(MemberList memberList) {
+    this.memberList = memberList;
   }
+  // memberList의 경우 memberHandler에서 만든 것을 받아서 사용하기 때문에
+  // 생성자로 받아온다.
 
   public void add() {
     System.out.println("[작업 등록]");
