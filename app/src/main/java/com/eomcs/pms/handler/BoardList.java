@@ -24,27 +24,22 @@ public class BoardList {
   }
 
   Board get(int boardNo) {
-    for (int i = 0; i < this.size; i++) {
-      Board board = this.boards[i];
-      if (board.no == boardNo) {
-        return board;
-      }
+    // -> findByNo 대체 가능
+    // 해당 번호의 게시글을 찾는다.
+    int index = indexOf(boardNo);
+    if (index != -1) {
+      return boards[index];
     }
     return null;
   }
 
   void delete(int boardNo) {
-    int index = -1;
-
-    // 인덱스 찾기
     // 해당 번호의 게시글을 찾는다.
-    for (int i = 0; i < this.size; i++) {
-      Board board = this.boards[i];
-      if (board.no == boardNo) {
-        index = i;
-        break;
-      }
-    }
+    int index = indexOf(boardNo);
+
+    // 못찾았으면 delete 메소드 나가기
+    if (index == -1)
+      return;
 
     // 찾은 인덱스를 이용해서 당기기
     // 배열에서 뒷 번호의 게시글을 한 칸씩 앞으로 당긴다. -> 삭제 

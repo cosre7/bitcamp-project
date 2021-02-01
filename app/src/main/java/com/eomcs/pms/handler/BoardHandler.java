@@ -113,18 +113,6 @@ public class BoardHandler {
     }
 
   }
-
-  // 게시글 번호에 해당하는 인스턴스를 배열에서 찾아 그 인덱스를 리턴한다. 
-
-
-  // 게시글 번호에 해당하는 인스턴스를 찾아 리턴한다.
-  Board findByNo(int boardNo) {
-    int i = indexOf(boardNo);
-    if (i == -1) 
-      return null;
-    else 
-      return this.boards[i];
-  }
 }
 
 
