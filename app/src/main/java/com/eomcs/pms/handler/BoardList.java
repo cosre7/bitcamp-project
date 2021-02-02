@@ -48,16 +48,10 @@ public class BoardList {
   }
 
   void delete(int boardNo) {
-
-    Board board = get(boardNo);
-
-    if (board == null) {
-      return;
-    }
-
     Node cursor = first;
     while (cursor != null) {
-      if (cursor.board == board) {
+      if (cursor.board.no == boardNo) {
+        this.size--;
         if (first == last) {
           first = last = null;
           break;

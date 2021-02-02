@@ -85,7 +85,7 @@ public class MemberList {
 
     while (cursor != null) {
       Member m = cursor.member;
-      if (name.equals(m.name)) {
+      if (m.name.equals(name)) {
         return true;
       }
       cursor = cursor.next;
