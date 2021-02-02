@@ -4,11 +4,11 @@ import com.eomcs.pms.domain.Member;
 
 public class MemberList {
 
-  Node first;
-  Node last;
-  int size = 0; 
+  private Node first;
+  private Node last;
+  private int size = 0;  
 
-  void add(Member m) {
+  public void add(Member m) {
     Node node = new Node(m);
 
     if (last == null) { // 연결 리스트의 첫 항목이라면,
@@ -23,11 +23,12 @@ public class MemberList {
     size++;
   }
 
-  Member[] toArray() {
-    Member[] arr = new Member[this.size];
+  public Member[] toArray() {
+    Member[] arr = new Member[size];
 
     Node cursor = this.first;
     int i = 0;
+
     while (cursor != null) {
       arr[i++] = cursor.member;
       cursor = cursor.next;
@@ -35,11 +36,11 @@ public class MemberList {
     return arr;
   }
 
-  Member get(int memberNo) {
+  public Member get(int memberNo) {
     Node cursor = first;
     while (cursor != null) {
       Member m = cursor.member;
-      if (m.no == memberNo) {
+      if (m.getNo() == memberNo) {
         return m;
       }
       cursor = cursor.next;
@@ -47,7 +48,8 @@ public class MemberList {
     return null;
   }
 
-  void delete(int memberNo) {
+  public void delete(int memberNo) {
+
     Member member = get(memberNo);
 
     if (member == null) {
@@ -57,6 +59,7 @@ public class MemberList {
     Node cursor = first;
     while (cursor != null) {
       if (cursor.member == member) {
+        this.size--;
         if (first == last) {
           first = last = null;
           break;
@@ -73,7 +76,7 @@ public class MemberList {
         if (cursor == last) {
           last = cursor.prev;
         }
-        this.size--;
+
         break;
       }
       cursor = cursor.next;
@@ -82,10 +85,9 @@ public class MemberList {
 
   public boolean exist(String name) {
     Node cursor = first;
-
     while (cursor != null) {
       Member m = cursor.member;
-      if (m.name.equals(name)) {
+      if (m.getName().equals(name)) {
         return true;
       }
       cursor = cursor.next;

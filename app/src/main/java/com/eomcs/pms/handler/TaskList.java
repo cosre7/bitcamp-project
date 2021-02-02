@@ -4,11 +4,11 @@ import com.eomcs.pms.domain.Task;
 
 public class TaskList {
 
-  Node first;
-  Node last;
-  int size = 0; 
+  private Node first;
+  private Node last;
+  private int size = 0;  
 
-  void add(Task t) {
+  public void add(Task t) {
     Node node = new Node(t);
 
     if (last == null) { // 연결 리스트의 첫 항목이라면,
@@ -23,11 +23,12 @@ public class TaskList {
     size++;
   }
 
-  Task[] toArray() {
+  public Task[] toArray() {
     Task[] arr = new Task[size];
 
     Node cursor = this.first;
     int i = 0;
+
     while (cursor != null) {
       arr[i++] = cursor.task;
       cursor = cursor.next;
@@ -35,11 +36,11 @@ public class TaskList {
     return arr;
   }
 
-  Task get(int taskNo) {
+  public Task get(int taskNo) {
     Node cursor = first;
     while (cursor != null) {
       Task t = cursor.task;
-      if (t.no == taskNo) {
+      if (t.getNo() == taskNo) {
         return t;
       }
       cursor = cursor.next;
@@ -47,7 +48,8 @@ public class TaskList {
     return null;
   }
 
-  void delete(int taskNo) {
+  public void delete(int taskNo) {
+
     Task task = get(taskNo);
 
     if (task == null) {
@@ -57,6 +59,7 @@ public class TaskList {
     Node cursor = first;
     while (cursor != null) {
       if (cursor.task == task) {
+        this.size--;
         if (first == last) {
           first = last = null;
           break;
@@ -73,7 +76,7 @@ public class TaskList {
         if (cursor == last) {
           last = cursor.prev;
         }
-        this.size--;
+
         break;
       }
       cursor = cursor.next;
@@ -89,5 +92,4 @@ public class TaskList {
       this.task = t;
     }
   }
-
 }
