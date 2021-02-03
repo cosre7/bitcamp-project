@@ -1,15 +1,13 @@
-package com.eomcs.pms.handler;
+package com.eomcs.util;
 
-import com.eomcs.pms.domain.Board;
-
-public class BoardList {
+public class List {
 
   private Node first;
   private Node last;
   private int size = 0;  
 
-  public void add(Board b) {
-    Node node = new Node(b);
+  public void add(Object obj) {
+    Node node = new Node(obj);
 
     if (last == null) { // 연결 리스트의 첫 항목이라면,
       last = node;
@@ -23,42 +21,51 @@ public class BoardList {
     size++;
   }
 
-  public Board[] toArray() {
-    Board[] arr = new Board[size];
+  public Object[] toArray() {
+    Object[] arr = new Object[size];
 
     Node cursor = this.first;
     int i = 0;
 
     while (cursor != null) {
-      arr[i++] = cursor.board;
+      arr[i++] = cursor.obj;
       cursor = cursor.next;
     }
     return arr;
   }
 
-  public Board get(int boardNo) {
+  public Object get(int index) {
+    // no를 받게되면 board는 괜춘 member는? 이름으로 찾으면?
+    // -> index를 받는다
+    // index 유효 검증
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+
+    int count = 0;
     Node cursor = first;
     while (cursor != null) {
-      Board b = cursor.board;
-      if (b.getNo() == boardNo) {
-        return b;
+      if (index == count++) { // (cursor.obj.no == boardNo) -> 불가능 
+        // ((board)cursor.obj.no == boardNo) -> 이것도 불가능
+        return cursor.obj;
       }
       cursor = cursor.next;
     }
     return null;
   }
 
-  public void delete(int boardNo) {
-
-    Board board = get(boardNo);
-
-    if (board == null) {
+  public void delete(int index) {
+    if (index < 0 || index >= this.size) {
       return;
     }
+    // void 타입이기 때문에 null도 리턴안함
 
+    int count = 0;
     Node cursor = first;
     while (cursor != null) {
-      if (cursor.board == board) {
+      if (index == count++) {
+        // index와 count가 같은지 확인
+        // 삭제 방식은 기존과 동일
         this.size--;
         if (first == last) {
           first = last = null;
@@ -83,12 +90,15 @@ public class BoardList {
   }
 
   static class Node {
-    Board board;
+    // 다형적 변수
+    // - 해당 클래스의 객체(인스턴스의 주소) 뿐만 아니라 
+    //   그 하위 클래스의 객체(인스턴스의 주소)까지 저장할 수 있다.
+    Object obj;
     Node next;
     Node prev;
 
-    Node(Board b) {
-      this.board = b;
+    Node(Object obj) {
+      this.obj = obj;
     }
   }
 }

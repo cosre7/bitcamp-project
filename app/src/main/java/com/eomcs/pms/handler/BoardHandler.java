@@ -2,11 +2,12 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  private BoardList boardList = new BoardList();
+  private List boardList = new List();
 
   public void add() {
     System.out.println("[게시글 등록]");
@@ -21,15 +22,55 @@ public class BoardHandler {
 
     boardList.add(b);
 
+    //    1)
+    //    Board obj = new Board();
+    //    Member obj2 = new Member();
+    //    Project obj3 = new Project();
+    //    Task obj4 = new obj4
+
+    //    2)
+    //    Object obj = new Board();
+    //    obj = new Member();
+    //    obj = new Project();
+    //    obj = new Task();
+
+    // 1과 2는 같은 뜻
+
     System.out.println("게시글을 등록하였습니다.");
   }
+
+  //  class A{}
+  //  class B extends A{}
+  //  class C extends B{}
+  //  
+  // A: 자동차 B: 승용차 C: SUV
+
+  //  Object get() {
+  //    return new A();
+  //  }
+  // 자동차 get() {
+  // return new 승용차 (자동차) ();
+  // }
+  // get은 승용차를 리턴한다
+  // => get은 자동차를 리턴한다.
+  // -> 승용차도 자동차기 때문에 규칙에 어긋나지 않는다.
+
+  // 승용차 get() {
+  // return new 자동차 ();
+  // } => 불가능
 
   public void list() {
     System.out.println("[게시글 목록]");
 
-    Board[] boards = boardList.toArray();
+    //    Object obj = get();
 
-    for (Board b : boards) {
+    // B p = (B) get(); -> 컴파일러는 통과, 실행에서 문제
+    // 리턴하는게 A인데 B로 강제로 변환해버리면 문제가 되는 것
+
+    Object[] list = boardList.toArray();
+
+    for (Object obj : list) {
+      Board b = (Board) obj;
       // 번호, 제목, 등록일, 작성자, 조회수, 좋아요
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           b.getNo(), 
@@ -46,7 +87,7 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.get(no);
+    Board board = findByNo(no);
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
@@ -66,7 +107,7 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.get(no);
+    Board board = findByNo(no);
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
@@ -92,8 +133,8 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.get(no);
-    if (board == null) {
+    int index = indexOf(no);
+    if (index == -1) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
@@ -101,14 +142,37 @@ public class BoardHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      boardList.delete(no);
+      boardList.delete(index);
 
       System.out.println("게시글을 삭제하였습니다.");
 
     } else {
       System.out.println("게시글 삭제를 취소하였습니다.");
     }
+  }
 
+  private int indexOf(int boardNo) {
+    // 몇번째 항목인지 알아내기
+    Object[] list =  boardList.toArray();
+    for (int i = 0; i < list.length; i++) {
+      Board b = (Board) list[i];
+      if (b.getNo() == boardNo) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private Board findByNo(int boardNo) {
+    // 이건 Board에서만 사용할 것
+    Object[] list =  boardList.toArray();
+    for (Object obj : list) {
+      Board b = (Board)obj;
+      if (b.getNo() == boardNo) {
+        return b;
+      }
+    }
+    return null;
   }
 }
 
