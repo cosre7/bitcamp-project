@@ -133,8 +133,8 @@ public class BoardHandler {
 
     int no = Prompt.inputInt("번호? ");
 
-    int index = indexOf(no);
-    if (index == -1) {
+    Board board = findByNo(no);
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
@@ -142,25 +142,13 @@ public class BoardHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      boardList.delete(index);
+      boardList.delete(board); // 오버로딩한 메서드를 사용하여 삭제한다.
 
       System.out.println("게시글을 삭제하였습니다.");
 
     } else {
       System.out.println("게시글 삭제를 취소하였습니다.");
     }
-  }
-
-  private int indexOf(int boardNo) {
-    // 몇번째 항목인지 알아내기
-    Object[] list =  boardList.toArray();
-    for (int i = 0; i < list.length; i++) {
-      Board b = (Board) list[i];
-      if (b.getNo() == boardNo) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   private Board findByNo(int boardNo) {

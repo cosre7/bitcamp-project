@@ -54,18 +54,49 @@ public class List {
     return null;
   }
 
-  public void delete(int index) {
-    if (index < 0 || index >= this.size) {
-      return;
+  public boolean delete(Object obj) {
+    Node cursor = first;
+    while (cursor != null) {
+      if (cursor.obj.equals(obj)) {
+        // 인스턴스주소가 다르더라도 내용이 같으면 지운다
+        // cursor의 obj와 파라미터로 받은 obj 비교
+        this.size--;
+        if (first == last) {
+          first = last = null;
+          return true;
+        }
+        if (cursor == first) {
+          first = cursor.next;
+          cursor.prev = null;
+        } else {
+          cursor.prev.next = cursor.next;
+          if (cursor.next != null) {
+            cursor.next.prev = cursor.prev;
+          }
+        }
+        if (cursor == last) {
+          last = cursor.prev;
+        }
+        // 삭제했으면
+        return true;
+      }
+      cursor = cursor.next;
     }
-    // void 타입이기 때문에 null도 리턴안함
+    // 삭제 못했으면
+    return false;
+  }
 
+  public Object delete(int index) {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+
+    Object deleted = null;
     int count = 0;
     Node cursor = first;
     while (cursor != null) {
       if (index == count++) {
-        // index와 count가 같은지 확인
-        // 삭제 방식은 기존과 동일
+        deleted = cursor.obj; // 삭제될 항목을 보관해 둔다.
         this.size--;
         if (first == last) {
           first = last = null;
@@ -87,6 +118,17 @@ public class List {
       }
       cursor = cursor.next;
     }
+    return deleted;
+  }
+
+  public int indexOf(Object obj) {
+    Object[] list =  this.toArray();
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].equals(obj)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   static class Node {
