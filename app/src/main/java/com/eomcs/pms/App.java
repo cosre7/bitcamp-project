@@ -5,8 +5,12 @@ import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
+import com.eomcs.util.Stack;
 
 public class App {
+
+  // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
+  static Stack commandStack = new Stack();
 
   public static void main(String[] args) {
 
@@ -18,6 +22,11 @@ public class App {
     loop:
       while (true) {
         String command = com.eomcs.util.Prompt.inputString("명령> ");
+
+        // 사용자가 입력한 명령을 보관해둔다.
+        commandStack.push(command);
+        // add 대신 push를 쓰는 이유?
+        // stack 에서 add는 push로 표현되기 때문에 직관성을 위해서!
 
         switch (command) {
           case "/member/add":
@@ -80,6 +89,9 @@ public class App {
           case "/board/delete":
             boardHandler.delete();
             break;
+          case "history": // <== history 명령 추가
+            printCommandHistory();
+            break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
@@ -91,5 +103,19 @@ public class App {
       }
 
     Prompt.close();
+  }
+
+  static void printCommandHistory() {
+    int count = 0;
+    while (commandStack.size() > 0) {
+      System.out.println(commandStack.pop());
+      if ((++count % 5) == 0) {
+        // 5의 배수를 확인 -> 5개씩 끊어서 출력, 입력 등을 하기 위함
+        String input = Prompt.inputString(": ");
+        if (input.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
   }
 }
