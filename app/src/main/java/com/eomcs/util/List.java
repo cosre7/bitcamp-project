@@ -131,6 +131,9 @@ public class List {
     return -1;
   }
 
+  public int size() {
+    return this.size;
+  }
   static class Node {
     // 다형적 변수
     // - 해당 클래스의 객체(인스턴스의 주소) 뿐만 아니라 
