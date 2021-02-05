@@ -4,8 +4,8 @@ public class List {
 
   private Node first;
   private Node last;
-  private int size = 0;  
-
+  protected int size = 0;  
+  // 상속받은 클래스에서 접근 허용
   public void add(Object obj) {
     Node node = new Node(obj);
 

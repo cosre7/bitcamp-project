@@ -12,6 +12,6 @@ public class Stack extends List {
 
   public Object pop() {
     // 수퍼 클래스 List 의 메서드를 사용하여 항목을 꺼낸다.
-    return this.delete(this.size() - 1);
+    return this.delete(this.size - 1);
   }
 }
