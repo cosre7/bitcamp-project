@@ -5,12 +5,14 @@ import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
+import com.eomcs.util.Queue;
 import com.eomcs.util.Stack;
 
 public class App {
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
   static Stack commandStack = new Stack();
+  static Queue commandQueue = new Queue();
 
   public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -30,6 +32,8 @@ public class App {
         commandStack.push(command);
         // add 대신 push를 쓰는 이유?
         // stack 에서 add는 push로 표현되기 때문에 직관성을 위해서!
+
+        commandQueue.offer(command);
 
         switch (command) {
           case "/member/add":
@@ -95,6 +99,9 @@ public class App {
           case "history": // <== history 명령 추가
             printCommandHistory();
             break;
+          case "history2":
+            printCommandHistory2();
+            break;
           case "quit":
           case "exit":
             System.out.println("안녕!");
@@ -116,6 +123,26 @@ public class App {
     int count = 0;
     while (Stack.size() > 0) {
       System.out.println(Stack.pop());
+      if ((++count % 5) == 0) {
+        // 5의 배수를 확인 -> 5개씩 끊어서 출력, 입력 등을 하기 위함
+        String input = Prompt.inputString(": ");
+        if (input.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
+  }
+
+  static void printCommandHistory2() throws CloneNotSupportedException {
+
+    // 명령어가 들어 있는 큐를 복제한다.
+    Queue queue = commandQueue.clone();
+
+    int count = 0;
+    while (queue.size() > 0) {
+      System.out.println(queue.poll());
+      //poll, pop은 아예 목록에서 빼내는 것
+      // get은 확인만 하는 것
       if ((++count % 5) == 0) {
         // 5의 배수를 확인 -> 5개씩 끊어서 출력, 입력 등을 하기 위함
         String input = Prompt.inputString(": ");
