@@ -3,6 +3,7 @@ package com.eomcs.pms.handler;
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.util.List;
+import com.eomcs.util.ListIterator;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
@@ -67,10 +68,10 @@ public class BoardHandler {
     // B p = (B) get(); -> 컴파일러는 통과, 실행에서 문제
     // 리턴하는게 A인데 B로 강제로 변환해버리면 문제가 되는 것
 
-    Object[] list = boardList.toArray();
+    ListIterator iterator = new ListIterator(this.boardList);
 
-    for (Object obj : list) {
-      Board b = (Board) obj;
+    while (iterator.hasNext()) {
+      Board b = (Board) iterator.next();
       // 번호, 제목, 등록일, 작성자, 조회수, 좋아요
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           b.getNo(), 
