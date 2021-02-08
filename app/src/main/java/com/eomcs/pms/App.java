@@ -6,7 +6,9 @@ import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
+import com.eomcs.util.QueueIterator;
 import com.eomcs.util.Stack;
+import com.eomcs.util.StackIterator;
 
 public class App {
 
@@ -117,14 +119,15 @@ public class App {
 
   static void printCommandHistory() throws CloneNotSupportedException {
 
-    // 명령어가 들어 있는 스택을 복제한다.
-    Stack Stack = commandStack.clone();
+    // 스택에서 데이터를 꺼내 줄 전문가를 모신다.
+    StackIterator iterator = new StackIterator(commandStack);
 
     int count = 0;
-    while (Stack.size() > 0) {
-      System.out.println(Stack.pop());
+    while (iterator.hasNext()) {
+      //hasNext: 꺼낼게 있나요?
+      //next: 꺼내주세요
+      System.out.println(iterator.next());
       if ((++count % 5) == 0) {
-        // 5의 배수를 확인 -> 5개씩 끊어서 출력, 입력 등을 하기 위함
         String input = Prompt.inputString(": ");
         if (input.equalsIgnoreCase("q")) {
           break;
@@ -135,16 +138,13 @@ public class App {
 
   static void printCommandHistory2() throws CloneNotSupportedException {
 
-    // 명령어가 들어 있는 큐를 복제한다.
-    Queue queue = commandQueue.clone();
+    // 큐에서 데이터를 꺼내 줄 전문가를 모신다.
+    QueueIterator iterator = new QueueIterator(commandQueue);
 
     int count = 0;
-    while (queue.size() > 0) {
-      System.out.println(queue.poll());
-      //poll, pop은 아예 목록에서 빼내는 것
-      // get은 확인만 하는 것
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
       if ((++count % 5) == 0) {
-        // 5의 배수를 확인 -> 5개씩 끊어서 출력, 입력 등을 하기 위함
         String input = Prompt.inputString(": ");
         if (input.equalsIgnoreCase("q")) {
           break;
