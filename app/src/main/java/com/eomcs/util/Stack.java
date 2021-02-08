@@ -1,7 +1,7 @@
 package com.eomcs.util;
 // 상속을 이용해서 코드를 재사용(확장)하자!
 
-public class Stack extends List {
+public class Stack extends List implements Cloneable {
 
   public Object push(Object item) {
     // 수퍼 클래스 List 의 메서드를 사용하여 항목을 추가한다.
@@ -14,4 +14,21 @@ public class Stack extends List {
     // 수퍼 클래스 List 의 메서드를 사용하여 항목을 꺼낸다.
     return this.delete(this.size - 1);
   }
+
+  @Override
+  public Stack clone() throws CloneNotSupportedException {
+
+    // Stack deep copy
+    // 1) 새 스택 객체를 만든다.
+    Stack stack = new Stack(); 
+
+    // 2) 기존 스택의 값을 가져와서 새 스택에 넣는다.
+    for (int i = 0; i < this.size; i++) {
+      stack.push(this.get(i));
+    }
+
+    // 3) 복제한 스택을 리턴한다.
+    return stack;
+  }
+
 }

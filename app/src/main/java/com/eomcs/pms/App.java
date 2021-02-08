@@ -12,7 +12,7 @@ public class App {
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
   static Stack commandStack = new Stack();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws CloneNotSupportedException {
 
     BoardHandler boardHandler = new BoardHandler();
     MemberHandler memberHandler = new MemberHandler();
@@ -22,6 +22,9 @@ public class App {
     loop:
       while (true) {
         String command = com.eomcs.util.Prompt.inputString("명령> ");
+
+        if (command.length() == 0) // 사용자가 빈 문자열을 입력하면 다시 입력하도록 요구한다.
+          continue;
 
         // 사용자가 입력한 명령을 보관해둔다.
         commandStack.push(command);
@@ -105,10 +108,14 @@ public class App {
     Prompt.close();
   }
 
-  static void printCommandHistory() {
+  static void printCommandHistory() throws CloneNotSupportedException {
+
+    // 명령어가 들어 있는 스택을 복제한다.
+    Stack Stack = commandStack.clone();
+
     int count = 0;
-    while (commandStack.size() > 0) {
-      System.out.println(commandStack.pop());
+    while (Stack.size() > 0) {
+      System.out.println(Stack.pop());
       if ((++count % 5) == 0) {
         // 5의 배수를 확인 -> 5개씩 끊어서 출력, 입력 등을 하기 위함
         String input = Prompt.inputString(": ");
