@@ -8,7 +8,7 @@ public class Queue extends List implements Cloneable {
     return true; // 무조건 add
   }
 
-  public Object poll() {
+  public Object poll() { // 꺼내서 버리는 것이기 때문에 get이 아닌 delete를 쓴다
     return this.delete(0); // 젤 처음 것을 꺼낸다.
   }
 
