@@ -2,8 +2,8 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Task;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
-import com.eomcs.util.ListIterator;
 import com.eomcs.util.Prompt;
 
 public class TaskHandler {
@@ -35,10 +35,11 @@ public class TaskHandler {
     System.out.println("작업을 등록했습니다.");
   }
 
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[작업 목록]");
 
-    ListIterator iterator = new ListIterator(this.taskList);
+    Iterator iterator = taskList.iterator();
+
     while (iterator.hasNext()) {
       Task t = (Task) iterator.next();
       System.out.printf("%d, %s, %s, %s, %s\n", 

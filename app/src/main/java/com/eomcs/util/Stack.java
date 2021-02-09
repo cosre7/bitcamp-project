@@ -1,5 +1,4 @@
 package com.eomcs.util;
-// 상속을 이용해서 코드를 재사용(확장)하자!
 
 public class Stack extends List implements Cloneable {
 
@@ -29,6 +28,11 @@ public class Stack extends List implements Cloneable {
 
     // 3) 복제한 스택을 리턴한다.
     return stack;
+  }
+
+  @Override
+  public Iterator iterator() throws CloneNotSupportedException {
+    return new StackIterator(this.clone());
   }
 
 }

@@ -2,8 +2,8 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
-import com.eomcs.util.ListIterator;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
@@ -23,52 +23,14 @@ public class BoardHandler {
 
     boardList.add(b);
 
-    //    1)
-    //    Board obj = new Board();
-    //    Member obj2 = new Member();
-    //    Project obj3 = new Project();
-    //    Task obj4 = new obj4
-
-    //    2)
-    //    Object obj = new Board();
-    //    obj = new Member();
-    //    obj = new Project();
-    //    obj = new Task();
-
-    // 1과 2는 같은 뜻
-
     System.out.println("게시글을 등록하였습니다.");
   }
 
-  //  class A{}
-  //  class B extends A{}
-  //  class C extends B{}
-  //  
-  // A: 자동차 B: 승용차 C: SUV
 
-  //  Object get() {
-  //    return new A();
-  //  }
-  // 자동차 get() {
-  // return new 승용차 (자동차) ();
-  // }
-  // get은 승용차를 리턴한다
-  // => get은 자동차를 리턴한다.
-  // -> 승용차도 자동차기 때문에 규칙에 어긋나지 않는다.
-
-  // 승용차 get() {
-  // return new 자동차 ();
-  // } => 불가능
-
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[게시글 목록]");
 
-    //    Object obj = get();
-
-    // B p = (B) get(); -> 컴파일러는 통과, 실행에서 문제
-    // 리턴하는게 A인데 B로 강제로 변환해버리면 문제가 되는 것
-
-    ListIterator iterator = new ListIterator(this.boardList);
+    Iterator iterator = boardList.iterator();
 
     while (iterator.hasNext()) {
       Board b = (Board) iterator.next();

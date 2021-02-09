@@ -7,9 +7,7 @@ import com.eomcs.pms.handler.TaskHandler;
 import com.eomcs.util.Iterator;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
-import com.eomcs.util.QueueIterator;
 import com.eomcs.util.Stack;
-import com.eomcs.util.StackIterator;
 
 public class App {
 
@@ -100,10 +98,10 @@ public class App {
             boardHandler.delete();
             break;
           case "history": // <== history 명령 추가
-            printCommandHistory(new StackIterator(commandStack.clone()));
+            printCommandHistory(commandStack.iterator());
             break;
           case "history2":
-            printCommandHistory(new QueueIterator(commandQueue.clone()));
+            printCommandHistory(commandQueue.iterator());
             break;
           case "quit":
           case "exit":

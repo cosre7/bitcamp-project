@@ -146,4 +146,8 @@ public class List {
       this.obj = obj;
     }
   }
+
+  public Iterator iterator() throws CloneNotSupportedException {
+    return new ListIterator(this);
+  }
 }

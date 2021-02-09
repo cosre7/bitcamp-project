@@ -23,4 +23,10 @@ public class Queue extends List implements Cloneable {
     }
     return queue;
   }
+
+  @Override
+  public Iterator iterator() throws CloneNotSupportedException {
+    return new QueueIterator(this.clone());
+    // QueueIterator 에 필요할 것은 Queue가 제일 잘 아니까 여기서 만든다.
+  }
 }

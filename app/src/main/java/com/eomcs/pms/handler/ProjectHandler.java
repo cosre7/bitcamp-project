@@ -2,8 +2,8 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Project;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
-import com.eomcs.util.ListIterator;
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
@@ -39,10 +39,10 @@ public class ProjectHandler {
     System.out.println("프로젝트를 등록했습니다.");
   }
 
-  public void list() {
+  public void list() throws CloneNotSupportedException {
     System.out.println("[프로젝트 목록]");
 
-    ListIterator iterator = new ListIterator(this.projectList);
+    Iterator iterator = projectList.iterator();
 
     while (iterator.hasNext()) {
       Project p = (Project) iterator.next();
