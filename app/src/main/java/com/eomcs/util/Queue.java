@@ -29,4 +29,22 @@ public class Queue extends List implements Cloneable {
     return new QueueIterator(this.clone());
     // QueueIterator 에 필요할 것은 Queue가 제일 잘 아니까 여기서 만든다.
   }
+
+  private static class QueueIterator implements Iterator {
+    Queue queue;
+
+    public QueueIterator(Queue queue) throws CloneNotSupportedException {
+      this.queue = queue.clone();
+    }
+
+    @Override
+    public boolean hasNext() {
+      return this.queue.size() > 0;
+    }
+
+    @Override
+    public Object next() {
+      return this.queue.poll();
+    }
+  }
 }

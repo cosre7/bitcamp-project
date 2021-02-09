@@ -134,10 +134,8 @@ public class List {
   public int size() {
     return this.size;
   }
-  static class Node {
-    // 다형적 변수
-    // - 해당 클래스의 객체(인스턴스의 주소) 뿐만 아니라 
-    //   그 하위 클래스의 객체(인스턴스의 주소)까지 저장할 수 있다.
+  private static class Node {
+    // 어차피 여기서만 쓸 것이기 때문에 private 해도 됨
     Object obj;
     Node next;
     Node prev;
@@ -149,5 +147,25 @@ public class List {
 
   public Iterator iterator() throws CloneNotSupportedException {
     return new ListIterator(this);
+  }
+
+  private static class ListIterator implements Iterator {
+    // 어차피 여기서만 쓸 것이기 때문에 private 해도 됨
+    List list;
+    int cursor = 0;
+
+    public ListIterator(List list) {
+      this.list = list;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return cursor < list.size();
+    }
+
+    @Override
+    public Object next() {
+      return list.get(cursor++);
+    }
   }
 }
