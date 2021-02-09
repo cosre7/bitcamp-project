@@ -146,16 +146,32 @@ public class List {
     }
   }
 
+  //  interface I {}
+
   public Iterator iterator() throws CloneNotSupportedException {
-    // 로컬 클래스 -> 이 안에서만 사용가능한 클래스
-    class ListIterator implements Iterator {
+
+    //    class A implements I {}
+    //    class B {}
+    //    class {} // 익명 클래스
+    //    class {}
+    //    
+    //    obj = new (); // 이름이 없는 클래스의 레퍼런스는 만들 수 없다.
+    //    obj2 = new ();
+    //    
+    //    Object obj = new class extends X {};
+    //    Object obj = new X() {};
+    //    여기서 X는 인터페이스 이거나 수퍼클래스 이름이다.
+    //    // 위의 두 코드가 같은 것 
+
+    // class ListIterator implements Iterator { //원래
+    Iterator iterator = new Iterator() { // 익명
+      // 위의 코드는 수퍼클래스
+      // Object obj = new Iterator() {
+      // 위의 코드는 인터페이스
       int cursor = 0;
 
       @Override
       public boolean hasNext() {
-        // 로컬 클래스에서 바깥 클래스의 인스턴스 주소를 사용할 때는
-        // => 바깥클래스명.this 
-        // => 예) List.this
         return cursor < List.this.size();
       }
 
@@ -163,14 +179,9 @@ public class List {
       public Object next() {
         return List.this.get(cursor++);
       }
-    }
-    // non-static 중첩 클래스의 인스턴스를 생성할 때는
-    // new 연산자 앞에 바깥 클래스의 인스턴스 주소를 줘야 한다.
-    return new ListIterator();
-
-    //    int a;
-    //    a = 100;
-    //    this.a = 100; // 로컬변수에는 this 가 붙지 않는다.
+    };
+    // 생성된 객체주소
+    return iterator;
   }
 
 
