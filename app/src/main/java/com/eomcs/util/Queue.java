@@ -26,28 +26,28 @@ public class Queue extends List implements Cloneable {
 
   @Override
   public Iterator iterator() throws CloneNotSupportedException {
+    // 로컬 변수
+    Queue queue = this.clone();
+    // Iterator는 원래 Queue의 메소드이기 때문에 Queue.this가 아닌 그냥 this.
 
     class QueueIterator implements Iterator {
-      Queue queue;
-      // 바깥 클래스의 복제판 만들기
-
-      public QueueIterator() throws CloneNotSupportedException {
-        this.queue = Queue.this.clone();
-        // 생성자에서 만들기
-      }
+      // 만약 로컬 클래스에서 바깥 메서드의 로컬 변수를 사용한다면,
+      // 컴파일러는 로컬 변수의 값을 저장할 필드를 자동 생성한다.
 
       @Override
       public boolean hasNext() {
-        return this.queue.size() > 0;
+        // 로컬 클래스에서는 바깥 메서드의 로컬 변수를 직접 사용할 수 있다. -> 이것만 기억하자
+        // => 실제적으로는 로컬 클래스에 자동 생성된 필드를 가리킨다.
+        return queue.size() > 0;
       }
 
       @Override
       public Object next() {
-        return this.queue.poll();
+        // 로컬 클래스에서는 바깥 메서드의 로컬 변수를 직접 사용할 수 있다.
+        // => 실제적으로는 로컬 클래스에 자동 생성된 필드를 가리킨다.
+        return queue.poll();
       }
     }
     return new QueueIterator();
   }
-
-
 }

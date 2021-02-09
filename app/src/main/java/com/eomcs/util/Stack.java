@@ -32,21 +32,17 @@ public class Stack extends List implements Cloneable {
 
   @Override
   public Iterator iterator() throws CloneNotSupportedException {
+    Stack stack = this.clone();
+
     class StackIterator implements Iterator {
-      Stack stack;
-
-      public StackIterator()  throws CloneNotSupportedException {
-        this.stack = Stack.this.clone();
-      }
-
       @Override
       public boolean hasNext() {
-        return this.stack.size() > 0;
+        return stack.size() > 0;
       }
 
       @Override
       public Object next() {
-        return this.stack.pop();
+        return stack.pop();
       }
     }
     return new StackIterator();
