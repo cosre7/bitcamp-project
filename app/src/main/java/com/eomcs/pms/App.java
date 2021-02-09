@@ -4,7 +4,7 @@ import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
-import com.eomcs.util.AbstractIterator;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
 import com.eomcs.util.QueueIterator;
@@ -118,7 +118,7 @@ public class App {
     Prompt.close();
   }
 
-  static void printCommandHistory(AbstractIterator iterator) {
+  static void printCommandHistory(Iterator iterator) {
     int count = 0;
     while (iterator.hasNext()) {
       System.out.println(iterator.next());

@@ -1,6 +1,6 @@
 package com.eomcs.util;
 
-public class ListIterator extends AbstractIterator {
+public class ListIterator implements Iterator {
 
   // 리스트에서 데이터를 꺼내려면 리스트 객체를 알아야 한다.
   List list;
