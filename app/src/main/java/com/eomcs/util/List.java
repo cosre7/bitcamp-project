@@ -146,30 +146,10 @@ public class List {
     }
   }
 
-  //  interface I {}
-
   public Iterator iterator() throws CloneNotSupportedException {
 
-    //    class A implements I {}
-    //    class B {}
-    //    class {} // 익명 클래스
-    //    class {}
-    //    
-    //    obj = new (); // 이름이 없는 클래스의 레퍼런스는 만들 수 없다.
-    //    obj2 = new ();
-    //    
-    //    Object obj = new class extends X {};
-    //    Object obj = new X() {};
-    //    여기서 X는 인터페이스 이거나 수퍼클래스 이름이다.
-    //    // 위의 두 코드가 같은 것 
-
-    // class ListIterator implements Iterator { //원래
-    Iterator iterator = new Iterator() { // 익명
-      // 위의 코드는 수퍼클래스
-      // Object obj = new Iterator() {
-      // 위의 코드는 인터페이스
+    return new Iterator() {
       int cursor = 0;
-
       @Override
       public boolean hasNext() {
         return cursor < List.this.size();
@@ -180,9 +160,7 @@ public class List {
         return List.this.get(cursor++);
       }
     };
-    // 생성된 객체주소
-    return iterator;
   }
-
-
 }
+
+
