@@ -4,6 +4,7 @@ import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
+import com.eomcs.util.AbstractIterator;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
 import com.eomcs.util.QueueIterator;
@@ -99,10 +100,10 @@ public class App {
             boardHandler.delete();
             break;
           case "history": // <== history 명령 추가
-            printCommandHistory();
+            printCommandHistory(new StackIterator(commandStack.clone()));
             break;
           case "history2":
-            printCommandHistory2();
+            printCommandHistory(new QueueIterator(commandQueue.clone()));
             break;
           case "quit":
           case "exit":
@@ -117,30 +118,7 @@ public class App {
     Prompt.close();
   }
 
-  static void printCommandHistory() throws CloneNotSupportedException {
-
-    // 스택에서 데이터를 꺼내 줄 전문가를 모신다.
-    StackIterator iterator = new StackIterator(commandStack);
-
-    int count = 0;
-    while (iterator.hasNext()) {
-      //hasNext: 꺼낼게 있나요?
-      //next: 꺼내주세요
-      System.out.println(iterator.next());
-      if ((++count % 5) == 0) {
-        String input = Prompt.inputString(": ");
-        if (input.equalsIgnoreCase("q")) {
-          break;
-        }
-      }
-    }
-  }
-
-  static void printCommandHistory2() throws CloneNotSupportedException {
-
-    // 큐에서 데이터를 꺼내 줄 전문가를 모신다.
-    QueueIterator iterator = new QueueIterator(commandQueue);
-
+  static void printCommandHistory(AbstractIterator iterator) {
     int count = 0;
     while (iterator.hasNext()) {
       System.out.println(iterator.next());

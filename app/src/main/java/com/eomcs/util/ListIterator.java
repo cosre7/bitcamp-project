@@ -1,6 +1,6 @@
 package com.eomcs.util;
 
-public class ListIterator {
+public class ListIterator extends AbstractIterator {
 
   // 리스트에서 데이터를 꺼내려면 리스트 객체를 알아야 한다.
   List list;
@@ -14,10 +14,12 @@ public class ListIterator {
     this.list = list;
   }
 
+  @Override
   public boolean hasNext() {
     return cursor < list.size();
   }
 
+  @Override
   public Object next() {
     return list.get(cursor++);
 

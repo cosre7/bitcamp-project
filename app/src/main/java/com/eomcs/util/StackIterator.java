@@ -1,6 +1,6 @@
 package com.eomcs.util;
 
-public class StackIterator {
+public class StackIterator extends AbstractIterator {
 
   // 스택에서 데이터를 꺼내려면 스택 객체를 알아야 한다.
   Stack stack;
@@ -10,12 +10,13 @@ public class StackIterator {
     this.stack = stack.clone();
   }
 
+  @Override
   public boolean hasNext() {
     return this.stack.size() > 0;
   }
 
+  @Override
   public Object next() {
     return this.stack.pop();
-    // Iterator : 껍데기를 하나 더 씌운다고 생각.
   }
 }
