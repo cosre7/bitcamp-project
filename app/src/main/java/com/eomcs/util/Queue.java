@@ -26,25 +26,21 @@ public class Queue extends List implements Cloneable {
 
   @Override
   public Iterator iterator() throws CloneNotSupportedException {
-    return new QueueIterator(this.clone());
-    // QueueIterator 에 필요할 것은 Queue가 제일 잘 아니까 여기서 만든다.
+    Queue clone = this.clone();
+    return clone.new QueueIterator();
   }
 
-  private static class QueueIterator implements Iterator {
-    Queue queue;
-
-    public QueueIterator(Queue queue) throws CloneNotSupportedException {
-      this.queue = queue.clone();
-    }
-
+  private class QueueIterator implements Iterator {
+    // 내장 필드 Queue.this 에는 iterator() 메서드에서 생성한 Queue 복제판이 들어 있다.
+    // 바깥 클래스의 인스턴스를 사용할 필요가 있을 때 -> non-static 이 편하다
     @Override
     public boolean hasNext() {
-      return this.queue.size() > 0;
+      return Queue.this.size() > 0;
     }
 
     @Override
     public Object next() {
-      return this.queue.poll();
+      return Queue.this.poll();
     }
   }
 }

@@ -32,24 +32,22 @@ public class Stack extends List implements Cloneable {
 
   @Override
   public Iterator iterator() throws CloneNotSupportedException {
-    return new StackIterator(this.clone());
+    return this.clone().new StackIterator();
+    // non-static -> this.clone()에서 주소를 받는다.
+    // 따로 파라미터를 받을 필요가 없다.
+    // 따로 생성자를 만들 필요도 없다.
   }
 
-  private static class StackIterator implements Iterator {
-    Stack stack;
-
-    public StackIterator(Stack stack) throws CloneNotSupportedException {
-      this.stack = stack.clone();
-    }
+  private class StackIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-      return this.stack.size() > 0;
+      return Stack.this.size() > 0;
     }
 
     @Override
     public Object next() {
-      return this.stack.pop();
+      return Stack.this.pop();
     }
   }
 }

@@ -136,6 +136,7 @@ public class List {
   }
   private static class Node {
     // 어차피 여기서만 쓸 것이기 때문에 private 해도 됨
+
     Object obj;
     Node next;
     Node prev;
@@ -146,26 +147,65 @@ public class List {
   }
 
   public Iterator iterator() throws CloneNotSupportedException {
-    return new ListIterator(this);
+    // non-static 중첩 클래스의 인스턴스를 생성할 때는
+    // new 연산자 앞에 바깥 클래스의 인스턴스 주소를 줘야 한다.
+    return this.new ListIterator();
+    //this는 생략 가능
   }
 
-  private static class ListIterator implements Iterator {
-    // 어차피 여기서만 쓸 것이기 때문에 private 해도 됨
-    List list;
-    int cursor = 0;
+  //  public static void m() {
+  //    /*List.*/x(); // ok!
+  //    List.y(); // 불가능 -> this가 없다
+  //    this.y(); // 불가능 -> static에는 this가 없다
+  //
+  //    // List객체 주소를 저장하는 this 변수가 없다.
+  //    ListIterator obj;
+  //    obj = new ListIterator(); // 불가능 -> this. 이 반드시 있어야 함
+  //    obj = this.new ListIterator(); // this 가 없기 때문에 불가능
+  //    
+  //  }
+  //
+  //  public void m2() {
+  //    X obj;
+  //    obj = new X();
+  //    
+  //    Y obj2;
+  //    obj2 = this.new Y();
+  //  }
+  //  
+  //  static void x() {
+  //
+  //  }
+  //  
+  //  static class X {
+  //    
+  //  }
+  //  
+  //  class Y {
+  //    
+  //  }
+  //  void y() {
+  //    //인스턴스 멤버 -> 인스턴스 주소가 있어야만 사용 가능하다
+  //  }
 
-    public ListIterator(List list) {
-      this.list = list;
-    }
+  private class ListIterator implements Iterator {
+    // non-static 중첩 클래스는 바깥 클래스의 인스턴스가 있어야만
+    // 객체를 생성할 수 있다.
+    // 객체가 생성될 때, 바깥 클래스의 인스턴스 주소를 내장 필드에 보관한다.
+    // => 바깥 클래스의 인스턴스 주소를 보관하는 내장 필드를 사용하려면,
+    //       바깥 클래스명.this
+    //    예) List.this
+
+    int cursor = 0;
 
     @Override
     public boolean hasNext() {
-      return cursor < list.size();
+      return cursor < List.this.size();
     }
 
     @Override
     public Object next() {
-      return list.get(cursor++);
+      return List.this.get(cursor++);
     }
   }
 }
