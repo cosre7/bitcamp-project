@@ -26,6 +26,7 @@ public class Queue extends List implements Cloneable {
 
   @Override
   public Iterator iterator() throws CloneNotSupportedException {
+    // 익명 클래스 -> 인스턴스를 하나만 생성할 때 사용
     Queue queue = this.clone();
 
     return new Iterator() {
