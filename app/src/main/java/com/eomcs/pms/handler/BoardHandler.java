@@ -2,6 +2,7 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
@@ -41,21 +42,21 @@ public class BoardHandler {
     // 위의 코드보다 밑의 코드를 더 추천
     // 혹시 배열의 갯수가 boardList가 가지고 있는 값보다 작을 경우가 있는데
     // 새로 배열을 만들어서 리턴해줄 것. => 가장 안전한 방법
-    Board[] arr = boardList.toArray(new Board[boardList.size()]);
-    // 파라미터 타입 Board, 리턴타입 Board인 배열 생성
-    // 형변환(타입 캐스팅) 필요 없다!
+    //    Board[] arr = boardList.toArray(new Board[boardList.size()]);
+    //    // 파라미터 타입 Board, 리턴타입 Board인 배열 생성
+    //    // 형변환(타입 캐스팅) 필요 없다!
+    //
+    //    for (Board b : arr) {
+    //      System.out.printf("%d, %s, %s, %s, %d, %d\n", 
+    //          b.getNo(), 
+    //          b.getTitle(), 
+    //          b.getRegisteredDate(), 
+    //          b.getWriter(), 
+    //          b.getViewCount(),
+    //          b.getLike());
+    //    }
 
-    for (Board b : arr) {
-      System.out.printf("%d, %s, %s, %s, %d, %d\n", 
-          b.getNo(), 
-          b.getTitle(), 
-          b.getRegisteredDate(), 
-          b.getWriter(), 
-          b.getViewCount(),
-          b.getLike());
-    }
-
-    /*
+    // Iterator 사용하여 데이터 조회하기
     Iterator iterator = boardList.iterator();
 
     while (iterator.hasNext()) {
@@ -69,7 +70,6 @@ public class BoardHandler {
           b.getViewCount(),
           b.getLike());
     }
-     */
   }
 
   public void detail() {

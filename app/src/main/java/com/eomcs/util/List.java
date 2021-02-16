@@ -5,12 +5,12 @@ import java.lang.reflect.Array;
 public class List<E> {
   // 리스트 객체를 만들 때 넘어오는 값을 E라고 한다.
 
-  private Node first;
-  private Node last;
+  private Node<E> first;
+  private Node<E> last;
   protected int size = 0;  
   // 상속받은 클래스에서 접근 허용
   public void add(E obj) {
-    Node node = new Node(obj);
+    Node<E> node = new Node<>(obj);
 
     if (last == null) { // 연결 리스트의 첫 항목이라면,
       last = node;
@@ -27,7 +27,7 @@ public class List<E> {
   public Object[] toArray() {
     Object[] arr = new Object[size];
 
-    Node cursor = this.first;
+    Node<E> cursor = this.first;
     int i = 0;
 
     while (cursor != null) {
@@ -54,27 +54,26 @@ public class List<E> {
       // 배열의 한 항목의 타입을 알아낸 후 size만큼 배열을 만든다.
     }
 
-    Node cursor = this.first;
+    Node<E> cursor = this.first;
     for (int i = 0; i < size; i++) {
       // while문으로 해도 상관은 없다
       // for문도 써보자~
-      arr[i] = (E) cursor.obj;
+      arr[i] = cursor.obj;
       cursor = cursor.next;
     }
     return arr;
   }
 
-  @SuppressWarnings("unchecked")
   public E get(int index) {
     if (index < 0 || index >= this.size) {
       return null;
     }
 
     int count = 0;
-    Node cursor = first;
+    Node<E> cursor = first;
     while (cursor != null) {
       if (index == count++) { 
-        return (E) cursor.obj;
+        return cursor.obj;
       }
       cursor = cursor.next;
     }
@@ -82,7 +81,7 @@ public class List<E> {
   }
 
   public boolean delete(E obj) {
-    Node cursor = first;
+    Node<E> cursor = first;
     while (cursor != null) {
       if (cursor.obj.equals(obj)) {
         // 인스턴스주소가 다르더라도 내용이 같으면 지운다
@@ -113,15 +112,14 @@ public class List<E> {
     return false;
   }
 
-  @SuppressWarnings("unchecked")
   public E delete(int index) {
     if (index < 0 || index >= this.size) {
       return null;
     }
 
-    Object deleted = null;
+    E deleted = null;
     int count = 0;
-    Node cursor = first;
+    Node<E> cursor = first;
     while (cursor != null) {
       if (index == count++) {
         deleted = cursor.obj; // 삭제될 항목을 보관해 둔다.
@@ -146,15 +144,19 @@ public class List<E> {
       }
       cursor = cursor.next;
     }
-    return (E) deleted;
+    return deleted;
   }
 
   public int indexOf(E obj) {
-    Object[] list =  this.toArray();
-    for (int i = 0; i < list.length; i++) {
-      if (list[i].equals(obj)) {
-        return i;
+    int index = 0;
+    Node<E> cursor = first;
+
+    while (cursor != null) {
+      if (cursor.obj == obj) {
+        return index;
       }
+      cursor = cursor.next;
+      index++;
     }
     return -1;
   }
@@ -162,14 +164,12 @@ public class List<E> {
   public int size() {
     return this.size;
   }
-  private static class Node {
-    // 어차피 여기서만 쓸 것이기 때문에 private 해도 됨
+  private static class Node<T> {
+    T obj;
+    Node<T> next;
+    Node<T> prev;
 
-    Object obj;
-    Node next;
-    Node prev;
-
-    Node(Object obj) {
+    Node(T obj) {
       this.obj = obj;
     }
   }
