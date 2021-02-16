@@ -174,17 +174,18 @@ public class List<E> {
     }
   }
 
-  public Iterator iterator() throws CloneNotSupportedException {
+  public Iterator<E> iterator() throws CloneNotSupportedException {
 
-    return new Iterator() {
+    return new Iterator<E>() {
       int cursor = 0;
+
       @Override
       public boolean hasNext() {
         return cursor < List.this.size();
       }
 
       @Override
-      public Object next() {
+      public E next() {
         return List.this.get(cursor++);
       }
     };

@@ -57,11 +57,10 @@ public class BoardHandler {
     //    }
 
     // Iterator 사용하여 데이터 조회하기
-    Iterator iterator = boardList.iterator();
+    Iterator<Board> iterator = boardList.iterator();
 
     while (iterator.hasNext()) {
-      Board b = (Board) iterator.next();
-      // 번호, 제목, 등록일, 작성자, 조회수, 좋아요
+      Board b = iterator.next();
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           b.getNo(), 
           b.getTitle(), 
