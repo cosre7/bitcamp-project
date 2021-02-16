@@ -1,12 +1,15 @@
 package com.eomcs.util;
 
-public class List {
+import java.lang.reflect.Array;
+
+public class List<E> {
+  // 리스트 객체를 만들 때 넘어오는 값을 E라고 한다.
 
   private Node first;
   private Node last;
   protected int size = 0;  
   // 상속받은 클래스에서 접근 허용
-  public void add(Object obj) {
+  public void add(E obj) {
     Node node = new Node(obj);
 
     if (last == null) { // 연결 리스트의 첫 항목이라면,
@@ -34,10 +37,35 @@ public class List {
     return arr;
   }
 
-  public Object get(int index) {
-    // no를 받게되면 board는 괜춘 member는? 이름으로 찾으면?
-    // -> index를 받는다
-    // index 유효 검증
+  // 제네릭에서 지정한 타입의 배열을 만들어 리턴한다.
+  // @SuppressWarnings  - 경고를 억제하다
+  // - 컴파일러가 타입이 맞는지 확인할 수 없는 경우 경고를 띄우는데
+  //   '그 경고를 띄우지 말라고 지정하고 싶다면'
+  //   다음 애노테이션을 붙인다.
+  @SuppressWarnings("unchecked") 
+  public E[] toArray(E[] arr) {
+
+    if (arr.length < size) {
+      // 파라미터로 받은 배열이 현재 저장된 항목의 크기보다 작을 경우
+      // 새 배열을 만든다.
+      arr = (E[]) Array.newInstance(arr.getClass().getComponentType(), size);
+      // E[] arr 와 똑같은 배열을 만들고 싶을 때 
+      // arr.getClass().getComponentType() 를 사용해서
+      // 배열의 한 항목의 타입을 알아낸 후 size만큼 배열을 만든다.
+    }
+
+    Node cursor = this.first;
+    for (int i = 0; i < size; i++) {
+      // while문으로 해도 상관은 없다
+      // for문도 써보자~
+      arr[i] = (E) cursor.obj;
+      cursor = cursor.next;
+    }
+    return arr;
+  }
+
+  @SuppressWarnings("unchecked")
+  public E get(int index) {
     if (index < 0 || index >= this.size) {
       return null;
     }
@@ -45,16 +73,15 @@ public class List {
     int count = 0;
     Node cursor = first;
     while (cursor != null) {
-      if (index == count++) { // (cursor.obj.no == boardNo) -> 불가능 
-        // ((board)cursor.obj.no == boardNo) -> 이것도 불가능
-        return cursor.obj;
+      if (index == count++) { 
+        return (E) cursor.obj;
       }
       cursor = cursor.next;
     }
     return null;
   }
 
-  public boolean delete(Object obj) {
+  public boolean delete(E obj) {
     Node cursor = first;
     while (cursor != null) {
       if (cursor.obj.equals(obj)) {
@@ -86,7 +113,8 @@ public class List {
     return false;
   }
 
-  public Object delete(int index) {
+  @SuppressWarnings("unchecked")
+  public E delete(int index) {
     if (index < 0 || index >= this.size) {
       return null;
     }
@@ -118,10 +146,10 @@ public class List {
       }
       cursor = cursor.next;
     }
-    return deleted;
+    return (E) deleted;
   }
 
-  public int indexOf(Object obj) {
+  public int indexOf(E obj) {
     Object[] list =  this.toArray();
     for (int i = 0; i < list.length; i++) {
       if (list[i].equals(obj)) {

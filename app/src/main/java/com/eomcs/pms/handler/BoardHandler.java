@@ -2,13 +2,13 @@ package com.eomcs.pms.handler;
 
 import java.sql.Date;
 import com.eomcs.pms.domain.Board;
-import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  private List boardList = new List();
+  private List<Board> boardList = new List<>();
+  // List 클래스의 <E>를 <Board>로 하자!
 
   public void add() {
     System.out.println("[게시글 등록]");
@@ -22,6 +22,8 @@ public class BoardHandler {
     b.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     boardList.add(b);
+    // add의 파라미터가 Board obj로 한정
+    // -> 제네릭을 쓰는 이유
 
     System.out.println("게시글을 등록하였습니다.");
   }
@@ -30,6 +32,30 @@ public class BoardHandler {
   public void list() throws CloneNotSupportedException {
     System.out.println("[게시글 목록]");
 
+    // 방법1)
+    //    Board[] arr = new Board[boardList.size()];
+    //    boardList.toArray(arr);
+    // 배열에 아무것도 없는 상황이 생김
+
+    // 방법2)
+    // 위의 코드보다 밑의 코드를 더 추천
+    // 혹시 배열의 갯수가 boardList가 가지고 있는 값보다 작을 경우가 있는데
+    // 새로 배열을 만들어서 리턴해줄 것. => 가장 안전한 방법
+    Board[] arr = boardList.toArray(new Board[boardList.size()]);
+    // 파라미터 타입 Board, 리턴타입 Board인 배열 생성
+    // 형변환(타입 캐스팅) 필요 없다!
+
+    for (Board b : arr) {
+      System.out.printf("%d, %s, %s, %s, %d, %d\n", 
+          b.getNo(), 
+          b.getTitle(), 
+          b.getRegisteredDate(), 
+          b.getWriter(), 
+          b.getViewCount(),
+          b.getLike());
+    }
+
+    /*
     Iterator iterator = boardList.iterator();
 
     while (iterator.hasNext()) {
@@ -43,6 +69,7 @@ public class BoardHandler {
           b.getViewCount(),
           b.getLike());
     }
+     */
   }
 
   public void detail() {
@@ -116,9 +143,13 @@ public class BoardHandler {
 
   private Board findByNo(int boardNo) {
     // 이건 Board에서만 사용할 것
-    Object[] list =  boardList.toArray();
-    for (Object obj : list) {
-      Board b = (Board)obj;
+    Board[] arr =  boardList.toArray(new Board[boardList.size()]);
+    // 자기가 받은 배열이 가지고 있는 값보다 작으면
+    // 새 배열 만들어서 리턴
+    // new Board[0]을 받으면 무조건 새 배열을 만들게 된다 -> 가비지 발생
+    // new Board[boardList.size()]을 받으면 boardList의 크기만큼 배열을 만들기 때문에
+    // 새 배열을 만들지 않을 수 있다.
+    for (Board b : arr) {
       if (b.getNo() == boardNo) {
         return b;
       }
