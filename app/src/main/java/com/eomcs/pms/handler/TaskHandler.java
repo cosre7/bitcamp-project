@@ -1,14 +1,14 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import com.eomcs.pms.domain.Task;
-import com.eomcs.util.Iterator;
-import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class TaskHandler {
 
-  private List<Task> taskList = new List<>();
+  private LinkedList<Task> taskList = new LinkedList<>();
 
   private MemberHandler memberHandler;
 
@@ -116,7 +116,7 @@ public class TaskHandler {
     String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
 
     if (input.equalsIgnoreCase("Y")) {
-      taskList.delete(task);
+      taskList.remove(task);
       System.out.println("작업을 삭제하였습니다.");
 
     } else {

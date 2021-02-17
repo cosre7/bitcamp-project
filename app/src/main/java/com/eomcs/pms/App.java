@@ -1,19 +1,19 @@
 package com.eomcs.pms;
 
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.LinkedList;
 import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
-import com.eomcs.util.Iterator;
 import com.eomcs.util.Prompt;
-import com.eomcs.util.Queue;
-import com.eomcs.util.Stack;
 
 public class App {
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
-  static Stack<String> commandStack = new Stack<>();
-  static Queue<String> commandQueue = new Queue<>();
+  static ArrayDeque<String> commandStack = new ArrayDeque<>();
+  static LinkedList<String> commandQueue = new LinkedList<>();
 
   public static void main(String[] args) throws CloneNotSupportedException {
 
