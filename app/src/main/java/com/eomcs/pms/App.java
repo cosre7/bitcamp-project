@@ -110,8 +110,9 @@ public class App {
           }
         } catch (Exception e) {
           System.out.println("----------------------------------------");                                                       
-          System.out.printf("명령어 실행 중 오류 발생: %s\n", e.getMessage());
-          // 예외 메시지 출력
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
+          // 예외가 발생한 클래스의 이름, 예외 메시지
           // 예외 처리 -> 예외가 발생했을 때 프로그램을 멈추지 않고
           // 오류 메시지만 출력하고 프로그램은 계속해서 작동되도록 하기 위함
           System.out.println("----------------------------------------");
