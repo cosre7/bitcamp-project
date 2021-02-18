@@ -24,8 +24,6 @@ public class App {
   public static void main(String[] args) throws CloneNotSupportedException {
 
     ArrayList<Board> boardList = new ArrayList<>();
-    // List의 아무 종류나 넘겨도상관 없다
-    // -> BoardxxxHandler에 인터페이스 List로 boardList를 받기 때문
     BoardAddHandler boardAddHandler = new BoardAddHandler(boardList);
     BoardListHandler boardListHandler = new BoardListHandler(boardList);
     BoardDetailHandler boardDetailHandler = new BoardDetailHandler(boardList);
