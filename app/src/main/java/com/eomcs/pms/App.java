@@ -12,7 +12,9 @@ import com.eomcs.pms.handler.BoardAddHandler;
 import com.eomcs.pms.handler.BoardDeleteHandler;
 import com.eomcs.pms.handler.BoardDetailHandler;
 import com.eomcs.pms.handler.BoardListHandler;
+import com.eomcs.pms.handler.BoardSearchHandler;
 import com.eomcs.pms.handler.BoardUpdateHandler;
+import com.eomcs.pms.handler.HelloHandler;
 import com.eomcs.pms.handler.MemberAddHandler;
 import com.eomcs.pms.handler.MemberDeleteHandler;
 import com.eomcs.pms.handler.MemberDetailHandler;
@@ -32,6 +34,9 @@ import com.eomcs.pms.handler.TaskUpdateHandler;
 import com.eomcs.util.Prompt;
 
 public class App {
+  // 한 클래스당 길이가 작을 수록 유지보수가 더 쉽다
+  // => 한 클래스에 여러 메서드를 넣는 것 보다는 여러 클래스로 나누는 것이 낫다!
+  // - command pattern의 핵심 -> 한 기능 한 클래스
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
   static ArrayDeque<String> commandStack = new ArrayDeque<>();
@@ -67,6 +72,11 @@ public class App {
     TaskDetailHandler taskDetailHandler = new TaskDetailHandler(taskList);
     TaskUpdateHandler taskUpdateHandler = new TaskUpdateHandler(taskList, memberValidatorHandler);
     TaskDeleteHandler taskDeleteHandler = new TaskDeleteHandler(taskList);
+
+    // 새 기능 추가
+    BoardSearchHandler boardSearchHandler = new BoardSearchHandler(boardList);
+
+    HelloHandler helloHandler = new HelloHandler();
 
     loop:
       while (true) {
@@ -128,15 +138,9 @@ public class App {
               break;
             case "/board/add":
               boardAddHandler.add();
-              // boardAddHandler에 데이터가 들어있다 (add 메서드가 사용할 데이터)
-              // add로 데이터를 더한다.
-              // => 객체지향 문법
               break;
             case "/board/list":
               boardListHandler.list();
-              // boardListHandler에 데이터가 들어있다 (list 메서드가 사용할 데이터)
-              // list로 데이터의 목록을 조회한다.
-              // => 객체지향 문법
               break;
             case "/board/detail":
               boardDetailHandler.detail();
@@ -147,11 +151,17 @@ public class App {
             case "/board/delete":
               boardDeleteHandler.delete();
               break;
+            case "/board/search":
+              boardSearchHandler.search();
+              break;
             case "history": // <== history 명령 추가
               printCommandHistory(commandStack.iterator());
               break;
             case "history2":
               printCommandHistory(commandQueue.iterator());
+              break;
+            case "/hello":
+              helloHandler.hello();
               break;
             case "quit":
             case "exit":
