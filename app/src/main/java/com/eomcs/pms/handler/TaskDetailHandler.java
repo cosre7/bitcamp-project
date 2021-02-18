@@ -6,8 +6,6 @@ import com.eomcs.util.Prompt;
 
 public class TaskDetailHandler extends AbstractTaskHandler {
 
-  private AbstractMemberHandler memberHandler;
-
   public TaskDetailHandler(List<Task> taskList) {
     super(taskList);
   }

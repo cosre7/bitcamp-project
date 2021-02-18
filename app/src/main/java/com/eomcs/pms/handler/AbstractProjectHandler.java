@@ -11,7 +11,7 @@ public abstract class AbstractProjectHandler {
     this.projectList = projectList;
   }
 
-  public Project findByNo(int projectNo) {
+  protected Project findByNo(int projectNo) {
     Project[] arr =  projectList.toArray(new Project[projectList.size()]);
     for (Project p : arr) {
       if (p.getNo() == projectNo) {
