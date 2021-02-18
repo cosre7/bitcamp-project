@@ -1,9 +1,15 @@
 package com.eomcs.pms;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import com.eomcs.pms.handler.BoardHandler;
+import com.eomcs.pms.domain.Board;
+import com.eomcs.pms.handler.BoardAddHandler;
+import com.eomcs.pms.handler.BoardDeleteHandler;
+import com.eomcs.pms.handler.BoardDetailHandler;
+import com.eomcs.pms.handler.BoardListHandler;
+import com.eomcs.pms.handler.BoardUpdateHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
@@ -17,7 +23,15 @@ public class App {
 
   public static void main(String[] args) throws CloneNotSupportedException {
 
-    BoardHandler boardHandler = new BoardHandler();
+    ArrayList<Board> boardList = new ArrayList<>();
+    // List의 아무 종류나 넘겨도상관 없다
+    // -> BoardxxxHandler에 인터페이스 List로 boardList를 받기 때문
+    BoardAddHandler boardAddHandler = new BoardAddHandler(boardList);
+    BoardListHandler boardListHandler = new BoardListHandler(boardList);
+    BoardDetailHandler boardDetailHandler = new BoardDetailHandler(boardList);
+    BoardUpdateHandler boardUpdateHandler = new BoardUpdateHandler(boardList);
+    BoardDeleteHandler boardDeleteHandler = new BoardDeleteHandler(boardList);
+
     MemberHandler memberHandler = new MemberHandler();
     ProjectHandler projectHandler = new ProjectHandler(memberHandler);
     TaskHandler taskHandler = new TaskHandler(memberHandler);
@@ -81,22 +95,25 @@ public class App {
               taskHandler.delete();
               break;
             case "/board/add":
-              boardHandler.add();
+              boardAddHandler.add();
+              // boardAddHandler에 데이터가 들어있다 (add 메서드가 사용할 데이터)
+              // add로 데이터를 더한다.
+              // => 객체지향 문법
               break;
             case "/board/list":
-              boardHandler.list();
+              boardListHandler.list();
+              // boardListHandler에 데이터가 들어있다 (list 메서드가 사용할 데이터)
+              // list로 데이터의 목록을 조회한다.
+              // => 객체지향 문법
               break;
             case "/board/detail":
-              boardHandler.detail();
+              boardDetailHandler.detail();
               break;  
             case "/board/update":
-              boardHandler.update();
+              boardUpdateHandler.update();
               break; 
             case "/board/delete":
-              boardHandler.delete();
-              break;
-            case "/board/search":
-              boardHandler.search();
+              boardDeleteHandler.delete();
               break;
             case "history": // <== history 명령 추가
               printCommandHistory(commandStack.iterator());
