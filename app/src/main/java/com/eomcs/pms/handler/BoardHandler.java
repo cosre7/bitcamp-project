@@ -140,14 +140,49 @@ public class BoardHandler {
     }
   }
 
+  public void search() {
+    String keyword = Prompt.inputString("검색어? ");
+
+    if (keyword.length() == 0) {
+      System.out.println("검색어를 입력하세요.");
+      return;
+    }
+
+    // 검색 결과를 담을 컬렉션을 준비한다.
+    ArrayList<Board> list = new ArrayList<>();
+
+    // 전체 게시글을 가져와서 검색어를 포함하는 게시글을 찾는다.
+    Board[] boards = boardList.toArray(new Board[boardList.size()]);
+    for (Board b : boards) {
+      if (b.getTitle().contains(keyword) ||
+          b.getContent().contains(keyword) ||
+          b.getWriter().contains(keyword)) {
+        // 키워드가 포함된 b 찾기
+        // 키워드가 포함되어 있으면 list에 포함
+        list.add(b);
+      }
+    }
+
+    if (list.size() == 0) {
+      // list.isEmpty() 도 가능
+      System.out.println("검색어에 해당하는 게시글이 없습니다.");
+      return;
+    }
+
+    // 검색 결과를 출력한다.
+    for (Board b : list) {
+      System.out.printf("%d, %s, %s, %s, %d, %d\n", 
+          b.getNo(), 
+          b.getTitle(), 
+          b.getRegisteredDate(), 
+          b.getWriter(), 
+          b.getViewCount(),
+          b.getLike());
+    }
+  }
+
   private Board findByNo(int boardNo) {
-    // 이건 Board에서만 사용할 것
     Board[] arr =  boardList.toArray(new Board[boardList.size()]);
-    // 자기가 받은 배열이 가지고 있는 값보다 작으면
-    // 새 배열 만들어서 리턴
-    // new Board[0]을 받으면 무조건 새 배열을 만들게 된다 -> 가비지 발생
-    // new Board[boardList.size()]을 받으면 boardList의 크기만큼 배열을 만들기 때문에
-    // 새 배열을 만들지 않을 수 있다.
     for (Board b : arr) {
       if (b.getNo() == boardNo) {
         return b;

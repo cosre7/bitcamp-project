@@ -95,6 +95,9 @@ public class App {
             case "/board/delete":
               boardHandler.delete();
               break;
+            case "/board/search":
+              boardHandler.search();
+              break;
             case "history": // <== history 명령 추가
               printCommandHistory(commandStack.iterator());
               break;
