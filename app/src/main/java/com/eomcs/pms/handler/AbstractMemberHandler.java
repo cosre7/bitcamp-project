@@ -2,7 +2,6 @@ package com.eomcs.pms.handler;
 
 import java.util.List;
 import com.eomcs.pms.domain.Member;
-import com.eomcs.util.Prompt;
 
 public abstract class AbstractMemberHandler {
 
@@ -10,34 +9,6 @@ public abstract class AbstractMemberHandler {
 
   public AbstractMemberHandler(List<Member> memberList) {
     this.memberList = memberList;
-  }
-
-  public String inputMember(String promptTitle) {
-    while (true) {
-      String name = Prompt.inputString(promptTitle);
-      if (name.length() == 0) {
-        return null;
-      } 
-      if (findByName(name) != null) {
-        return name;
-      }
-      System.out.println("등록된 회원이 아닙니다.");
-    }
-  }
-
-  public String inputMembers(String promptTitle) {
-    String members = "";
-    while (true) {
-      String name = inputMember(promptTitle);
-      if (name == null) {
-        return members;
-      } else {
-        if (!members.isEmpty()) {
-          members += ",";
-        }
-        members += name;
-      }
-    }
   }
 
   protected Member findByNo(int memberNo) {
@@ -59,6 +30,37 @@ public abstract class AbstractMemberHandler {
     }
     return null;
   }
+
+  // 리팩토링 수행
+  // - MemberValidatorHandler 클래스로 옮긴다.
+  //
+  //  public String inputMember(String promptTitle) {
+  //    while (true) {
+  //      String name = Prompt.inputString(promptTitle);
+  //      if (name.length() == 0) {
+  //        return null;
+  //      } 
+  //      if (findByName(name) != null) {
+  //        return name;
+  //      }
+  //      System.out.println("등록된 회원이 아닙니다.");
+  //    }
+  //  }
+  //
+  //  public String inputMembers(String promptTitle) {
+  //    String members = "";
+  //    while (true) {
+  //      String name = inputMember(promptTitle);
+  //      if (name == null) {
+  //        return members;
+  //      } else {
+  //        if (!members.isEmpty()) {
+  //          members += ",";
+  //        }
+  //        members += name;
+  //      }
+  //    }
+  //  }
 }
 
 
