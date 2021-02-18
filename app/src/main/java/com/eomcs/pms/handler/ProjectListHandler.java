@@ -10,7 +10,8 @@ public class ProjectListHandler extends AbstractProjectHandler {
     super(projectList);
   }
 
-  public void list() throws CloneNotSupportedException {
+  @Override
+  public void service() {
     System.out.println("[프로젝트 목록]");
 
     Iterator<Project> iterator = projectList.iterator();

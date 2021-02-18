@@ -3,9 +3,9 @@ package com.eomcs.pms.handler;
 import java.util.List;
 import com.eomcs.pms.domain.Board;
 
-public abstract class AbstractBoardHandler {
-  //abstract : App 클래스에서 new BoardHandler(boardList)를 사용하지 못하게 하기 위함
-  //그 후 직관적으로 abstract 클래스임을 확인시키기 위해 BoardHandler 이름 앞에 Abstract를 붙여준다
+// 이 클래스를 상속 받는 서브 클래스는
+// 반드시 Command 규칙을 따르도록 강제한다.
+public abstract class AbstractBoardHandler implements Command {
 
   //특정 클래스를 지정하기 보다는
   // List 규칙에 따라 사용할 수 있는 객체를 요구하라!

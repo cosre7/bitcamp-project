@@ -13,7 +13,8 @@ public class TaskAddHandler extends AbstractTaskHandler {
     this.memberValidatorHandler = memberValidatorHandler;
   }
 
-  public void add() {
+  @Override
+  public void service() {
     System.out.println("[작업 등록]");
 
     Task t = new Task();

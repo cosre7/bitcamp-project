@@ -10,7 +10,8 @@ public class MemberAddHandler extends AbstractMemberHandler {
     super(memberList); 
   }
 
-  public void add() {
+  @Override
+  public void service() {
     System.out.println("[회원 등록]");
 
     Member m = new Member();

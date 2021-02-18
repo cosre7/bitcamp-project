@@ -11,7 +11,8 @@ public class BoardSearchHandler extends AbstractBoardHandler {
     super(boardList);
   }
 
-  public void search() {
+  @Override
+  public void service() {
     String keyword = Prompt.inputString("검색어? ");
 
     if (keyword.length() == 0) {

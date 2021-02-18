@@ -13,7 +13,8 @@ public class BoardUpdateHandler extends AbstractBoardHandler {
     // 그걸 쓰겠다는 뜻!
   }
 
-  public void update() {
+  @Override
+  public void service() {
     System.out.println("[게시글 변경]");
 
     int no = Prompt.inputInt("번호? ");

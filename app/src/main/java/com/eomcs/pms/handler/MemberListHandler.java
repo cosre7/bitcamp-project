@@ -10,7 +10,8 @@ public class MemberListHandler extends AbstractMemberHandler {
     super(memberList); 
   }
 
-  public void list() throws CloneNotSupportedException {
+  @Override
+  public void service() {
     System.out.println("[회원 목록]");
 
     Iterator<Member> iterator = memberList.iterator();

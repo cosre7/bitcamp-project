@@ -10,7 +10,8 @@ public class TaskListHandler extends AbstractTaskHandler {
     super(taskList);
   }
 
-  public void list() throws CloneNotSupportedException {
+  @Override
+  public void service() {
     System.out.println("[작업 목록]");
 
     Iterator<Task> iterator = taskList.iterator();

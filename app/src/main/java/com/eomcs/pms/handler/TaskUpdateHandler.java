@@ -14,7 +14,8 @@ public class TaskUpdateHandler extends AbstractTaskHandler {
     this.memberValidatorHandler = memberValidatorHandler;
   }
 
-  public void update() {
+  @Override
+  public void service() {
     System.out.println("[작업 변경]");
 
     int no = Prompt.inputInt("번호? ");

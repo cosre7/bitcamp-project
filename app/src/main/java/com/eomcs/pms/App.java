@@ -92,67 +92,67 @@ public class App {
         try {
           switch (command) {
             case "/member/add":
-              memberAddHandler.add();
+              memberAddHandler.service();
               break;
             case "/member/list":
-              memberListHandler.list();
+              memberListHandler.service();
               break;
             case "/member/detail":
-              memberDetailHandler.detail();
+              memberDetailHandler.service();
               break;  
             case "/member/update":
-              memberUpdateHandler.update();
+              memberUpdateHandler.service();
               break; 
             case "/member/delete":
-              memberDeleteHandler.delete();
+              memberDeleteHandler.service();
               break;
             case "/project/add":
-              projectAddHandler.add();
+              projectAddHandler.service();
               break;
             case "/project/list":
-              projectListHandler.list();
+              projectListHandler.service();
               break;
             case "/project/detail": 
-              projectDetailHandler.detail();
+              projectDetailHandler.service();
               break;  
             case "/project/update":
-              projectUpdateHandler.update();
+              projectUpdateHandler.service();
               break; 
             case "/project/delete":
-              projectDeleteHandler.delete();
+              projectDeleteHandler.service();
               break;
             case "/task/add":
-              taskAddHandler.add();
+              taskAddHandler.service();
               break;
             case "/task/list":
-              taskListHandler.list();
+              taskListHandler.service();
               break;
             case "/task/detail": 
-              taskDetailHandler.detail();
+              taskDetailHandler.service();
               break;  
             case "/task/update":
-              taskUpdateHandler.update();
+              taskUpdateHandler.service();
               break; 
             case "/task/delete":
-              taskDeleteHandler.delete();
+              taskDeleteHandler.service();
               break;
             case "/board/add":
-              boardAddHandler.add();
+              boardAddHandler.service();
               break;
             case "/board/list":
-              boardListHandler.list();
+              boardListHandler.service();
               break;
             case "/board/detail":
-              boardDetailHandler.detail();
+              boardDetailHandler.service();
               break;  
             case "/board/update":
-              boardUpdateHandler.update();
+              boardUpdateHandler.service();
               break; 
             case "/board/delete":
-              boardDeleteHandler.delete();
+              boardDeleteHandler.service();
               break;
             case "/board/search":
-              boardSearchHandler.search();
+              boardSearchHandler.service();
               break;
             case "history": // <== history 명령 추가
               printCommandHistory(commandStack.iterator());
@@ -161,7 +161,7 @@ public class App {
               printCommandHistory(commandQueue.iterator());
               break;
             case "/hello":
-              helloHandler.hello();
+              helloHandler.service();
               break;
             case "quit":
             case "exit":

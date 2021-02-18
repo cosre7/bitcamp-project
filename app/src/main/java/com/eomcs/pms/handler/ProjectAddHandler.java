@@ -13,7 +13,8 @@ public class ProjectAddHandler extends AbstractProjectHandler {
     this.memberValidatorHandler = memberValidatorHandler;
   }
 
-  public void add() {
+  @Override
+  public void service() {
     System.out.println("[프로젝트 등록]");
 
     Project p = new Project();

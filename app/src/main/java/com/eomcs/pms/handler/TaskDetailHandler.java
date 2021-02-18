@@ -10,7 +10,8 @@ public class TaskDetailHandler extends AbstractTaskHandler {
     super(taskList);
   }
 
-  public void detail() {
+  @Override
+  public void service() {
     System.out.println("[작업 상세보기]");
 
     int no = Prompt.inputInt("번호? ");

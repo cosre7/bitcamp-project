@@ -10,7 +10,8 @@ public class ProjectDeleteHandler extends AbstractProjectHandler {
     super(projectList);
   }
 
-  public void delete() {
+  @Override
+  public void service() {
     System.out.println("[프로젝트 삭제]");
 
     int no = Prompt.inputInt("번호? ");

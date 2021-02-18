@@ -10,7 +10,8 @@ public class BoardListHandler extends AbstractBoardHandler {
     super(boardList);
   }
 
-  public void list() throws CloneNotSupportedException {
+  @Override
+  public void service() {
     System.out.println("[게시글 목록]");
 
     Iterator<Board> iterator = boardList.iterator();

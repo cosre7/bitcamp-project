@@ -3,7 +3,7 @@ package com.eomcs.pms.handler;
 import java.util.List;
 import com.eomcs.pms.domain.Task;
 
-public abstract class AbstractTaskHandler {
+public abstract class AbstractTaskHandler implements Command {
 
   protected List<Task> taskList;
 

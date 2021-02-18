@@ -10,7 +10,8 @@ public class TaskDeleteHandler extends AbstractTaskHandler {
     super(taskList);
   }
 
-  public void delete() {
+  @Override
+  public void service() {
     System.out.println("[작업 삭제]");
 
     int no = Prompt.inputInt("번호? ");

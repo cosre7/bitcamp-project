@@ -14,7 +14,8 @@ public class ProjectUpdateHandler extends AbstractProjectHandler {
     this.memberValidatorHandler = memberValidatorHandler;
   }
 
-  public void update() {
+  @Override
+  public void service() {
     System.out.println("[프로젝트 변경]");
 
     int no = Prompt.inputInt("번호? ");
