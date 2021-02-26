@@ -51,6 +51,8 @@ public class App {
     ArrayList<Member> memberList = new ArrayList<>();
     LinkedList<Project> projectList = new LinkedList<>();
     LinkedList<Task> taskList = new LinkedList<>();
+
+
     // 사용자 명령을 처리하는 객체를 맵에 보관한다.
     HashMap<String,Command> commandMap = new HashMap<>();
 
@@ -130,17 +132,71 @@ public class App {
       }
 
     // 게시글 데이터를 파일로 출력한다.
-    FileOutputStream out = null;
-    try {
-      out = new FileOutputStream("boards.data");
+
+    try (FileOutputStream out = new FileOutputStream("boards.data")){
+
+      // boards.data 파일 포맷
+      // - 2바이트: 저장된 게시글 개수
+      // - 게시글 데이터 목록
+      //   - 4바이트: 게시글 번호
+      //   - 게시글 제목
+      //     - 2바이트: 게시글 제목의 바이트 배열 개수
+      //     - x바이트: 게시글 제목의 바이트 배열
+      //   - 게시글 내용
+      //     - 2바이트: 게시글 내용의 바이트 배열 개수
+      //     - x바이트: 게시글 내용의 바이트 배열
+      //    - 작성자
+      //     - 2바이트: 작성자의 바이트 배열 개수
+      //     - x바이트: 작성자의 바이트 배열
+      //    - 등록일
+      //     - 2바이트: 등록일의 바이트 배열 개수
+      //     - x바이트: 등록일의 바이트 배열
+      int size = boardList.size(); 
+      out.write(size >> 8);
+      out.write(size);
+
+      for (Board b : boardList) {
+        // 게시글 번호
+        out.write(b.getNo() >> 24);
+        out.write(b.getNo() >> 16);
+        out.write(b.getNo() >> 8);
+        out.write(b.getNo());
+
+        // 게시글 제목
+        byte[] buf = b.getTitle().getBytes("UTF-8");
+        // - 게시글 제목의 바이트 개수
+        out.write(buf.length >> 8); // 최소 2바이트는 출력하자
+        out.write(buf.length);
+        // - 게시글 제목의 바이트 배열
+        out.write(buf);
+
+        // 게시글 내용
+        buf = b.getContent().getBytes("UTF-8");
+        out.write(buf.length >> 8); 
+        out.write(buf.length);
+        out.write(buf);
+
+        // 작성자
+        buf = b.getWriter().getBytes("UTF-8");
+        out.write(buf.length >> 8); 
+        out.write(buf.length);
+        out.write(buf);
+
+        // 등록일
+        buf = b.getRegisteredDate().toString().getBytes("UTF-8");
+        out.write(buf.length >> 8); 
+        out.write(buf.length);
+        out.write(buf);
+
+        // 조회수
+        out.write(b.getViewCount() >> 24); // 4바이트 저장
+        out.write(b.getViewCount() >> 16);
+        out.write(b.getViewCount() >> 8);
+        out.write(b.getViewCount());
+      }
     } catch (Exception e) {
       System.out.println("게시글 데이터를 파일로 저장하는 중에 오류 발생!");
-    } finally {
-      try {out.close();} catch (Exception e) {}
-      // finally에서 발생된 예외는 finally에서 처리한다
-      // 하지만 파일을 닫다가 발생되는 예외이므로 그냥 try catch만 쓴다
-    }
-
+    } 
 
     Prompt.close();
   }
