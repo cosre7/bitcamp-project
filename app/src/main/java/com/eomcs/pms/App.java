@@ -2,16 +2,16 @@ package com.eomcs.pms;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.sql.Date;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
@@ -52,10 +52,10 @@ public class App {
   static LinkedList<String> commandQueue = new LinkedList<>();
 
   // VO 를 저장할 컬렉션 객체
-  static ArrayList<Board> boardList = new ArrayList<>();
-  static ArrayList<Member> memberList = new ArrayList<>();
-  static LinkedList<Project> projectList = new LinkedList<>();
-  static LinkedList<Task> taskList = new LinkedList<>();
+  static List<Board> boardList;
+  static List<Member> memberList;
+  static List<Project> projectList;
+  static List<Task> taskList;
 
   public static void main(String[] args) {
 
@@ -163,46 +163,27 @@ public class App {
     }
   }
 
+  @SuppressWarnings("unchecked")
   static void loadBoards() {
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
             new FileInputStream("boards.data")))) {
 
-      int size = in.readInt();
-
-      for (int i = 0; i < size; i++) {
-        Board b = new Board();
-        b.setNo(in.readInt());
-        b.setTitle(in.readUTF());
-        b.setContent(in.readUTF());
-        b.setWriter(in.readUTF());
-        b.setRegisteredDate(Date.valueOf(in.readUTF())); // 문자열로 읽어서 Date 객체로 만들어야 한다.
-        b.setViewCount(in.readInt()); // 4바이트 값으로 만들기
-
-        boardList.add(b);
-      }
+      boardList = (List<Board>) in.readObject();
       System.out.println("게시글 데이터 로딩!");
 
     } catch (Exception e) {
       System.out.println("게시글 데이터 로딩 중 오류 발생!");
+      boardList = new ArrayList<>();
     }
   }
 
   static void saveBoards() {
-    try (DataOutputStream out = new DataOutputStream(
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
             new FileOutputStream("boards.data")))) {
 
-      out.writeInt(boardList.size());
-
-      for (Board b : boardList) {
-        out.writeInt(b.getNo());
-        out.writeUTF(b.getTitle());
-        out.writeUTF(b.getContent());
-        out.writeUTF(b.getWriter());
-        out.writeUTF(b.getRegisteredDate().toString());
-        out.writeInt(b.getViewCount());
-      }
+      out.writeObject(boardList);
       System.out.println("게시글 데이터 저장!");
 
     } catch (Exception e) {
@@ -210,47 +191,27 @@ public class App {
     } 
   }
 
+  @SuppressWarnings("unchecked")
   static void loadMembers() {
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
             new FileInputStream("members.data")))) {
 
-      int size = in.readInt();
-
-      for (int i = 0; i < size; i++) {
-        Member m = new Member();
-        m.setNo(in.readInt());
-        m.setName(in.readUTF());
-        m.setEmail(in.readUTF());
-        m.setPassword(in.readUTF());
-        m.setPhoto(in.readUTF());
-        m.setTel(in.readUTF());
-        m.setRegisteredDate(Date.valueOf(in.readUTF()));
-
-        memberList.add(m);
-      }
+      memberList = (List<Member>) in.readObject();
       System.out.println("회원 데이터 로딩!");
 
     } catch (Exception e){
       System.out.println("회원 데이터 로딩 중 오류 발생!");
+      memberList = new ArrayList<>();
     }
   }
 
   static void saveMembers() {
-    try (DataOutputStream out = new DataOutputStream(
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
             new FileOutputStream("members.data")))) {
-      out.writeInt(memberList.size());
 
-      for (Member m : memberList) {
-        out.writeInt(m.getNo());
-        out.writeUTF(m.getName());
-        out.writeUTF(m.getEmail());
-        out.writeUTF(m.getPassword());
-        out.writeUTF(m.getPhoto());
-        out.writeUTF(m.getTel());
-        out.writeUTF(m.getRegisteredDate().toString());
-      }
+      out.writeObject(memberList);
       System.out.println("회원 데이터 저장!");
 
     } catch (Exception e) {
@@ -258,48 +219,27 @@ public class App {
     }
   }
 
+  @SuppressWarnings("unchecked")
   static void loadProjects() {
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
             new FileInputStream("projects.data")))) {
 
-      int size = in.readInt();
-
-      for (int i = 0; i < size; i++) {
-        Project p = new Project();
-        p.setNo(in.readInt());
-        p.setTitle(in.readUTF());
-        p.setContent(in.readUTF());
-        p.setStartDate(Date.valueOf(in.readUTF()));
-        p.setEndDate(Date.valueOf(in.readUTF()));
-        p.setOwner(in.readUTF());
-        p.setMembers(in.readUTF());
-
-        projectList.add(p);
-      }
+      projectList = (List<Project>) in.readObject();
       System.out.println("프로젝트 데이터 로딩!");
 
     } catch (Exception e){
       System.out.println("프로젝트 데이터 로딩 중 오류 발생!");
+      projectList = new LinkedList<>();
     }
   }
 
   static void saveProjects() {
-    try (DataOutputStream out = new DataOutputStream(
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
             new FileOutputStream("projects.data")))) {
 
-      out.writeInt(projectList.size());
-
-      for (Project p : projectList) {
-        out.writeInt(p.getNo());
-        out.writeUTF(p.getTitle());
-        out.writeUTF(p.getContent());
-        out.writeUTF(p.getStartDate().toString());
-        out.writeUTF(p.getEndDate().toString());
-        out.writeUTF(p.getOwner());
-        out.writeUTF(p.getMembers());
-      }
+      out.writeObject(projectList);
       System.out.println("프로젝트 데이터 저장!");
 
     } catch (Exception e) {
@@ -307,45 +247,27 @@ public class App {
     }
   }
 
+  @SuppressWarnings("unchecked")
   static void loadTasks() {
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
             new FileInputStream("tasks.data")))) {
 
-      int size = in.readInt();
-
-      for (int i = 0; i < size; i++) {
-        Task t = new Task();
-        t.setNo(in.readInt());
-        t.setContent(in.readUTF());
-        t.setDeadline(Date.valueOf(in.readUTF()));
-        t.setStatus(in.readInt());
-        t.setOwner(in.readUTF());
-
-        taskList.add(t);
-      }
+      taskList = (List<Task>) in.readObject();
       System.out.println("작업 데이터 로딩!");
 
     } catch (Exception e){
       System.out.println("작업 데이터 로딩 중 오류 발생!");
+      taskList = new LinkedList<>();
     }
   }
 
   static void saveTasks() {
-    try (DataOutputStream out = new DataOutputStream(
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
             new FileOutputStream("tasks.data")))) {
 
-      out.writeInt(taskList.size());
-
-      for (Task t : taskList) {
-
-        out.writeInt(t.getNo());
-        out.writeUTF(t.getContent());
-        out.writeUTF(t.getDeadline().toString());
-        out.writeInt(t.getStatus());
-        out.writeUTF(t.getOwner());
-      }
+      out.writeObject(taskList);
       System.out.println("작업 데이터 저장!");
 
     } catch (Exception e) {

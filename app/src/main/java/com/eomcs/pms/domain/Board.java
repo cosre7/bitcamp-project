@@ -1,8 +1,12 @@
 package com.eomcs.pms.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Board {
+public class Board implements Serializable {
+  private static final long serialVersionUID = 1L; // L은 long 값이라는 것을 확인해주기 위해 있는것
+  // 빼도 되긴하지만 굳이 ..? 그냥 두자
+
   private int no;
   private String title;
   private String content;
