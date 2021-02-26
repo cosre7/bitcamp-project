@@ -2,6 +2,7 @@ package com.eomcs.pms;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -56,6 +57,12 @@ public class App {
   static List<Member> memberList;
   static List<Project> projectList;
   static List<Task> taskList;
+
+  // 데이터 파일 정보
+  static File boardFile = new File("boards.data");
+  static File memberFile = new File("members.data");
+  static File projectFile = new File("projects.data");
+  static File taskFile = new File("tasks.data");
 
   public static void main(String[] args) {
 
@@ -167,7 +174,7 @@ public class App {
   static void loadBoards() {
     try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
-            new FileInputStream("boards.data")))) {
+            new FileInputStream(boardFile)))) {
 
       boardList = (List<Board>) in.readObject();
       System.out.println("게시글 데이터 로딩!");
@@ -181,7 +188,7 @@ public class App {
   static void saveBoards() {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
-            new FileOutputStream("boards.data")))) {
+            new FileOutputStream(boardFile)))) {
 
       out.writeObject(boardList);
       System.out.println("게시글 데이터 저장!");
@@ -195,7 +202,7 @@ public class App {
   static void loadMembers() {
     try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
-            new FileInputStream("members.data")))) {
+            new FileInputStream(memberFile)))) {
 
       memberList = (List<Member>) in.readObject();
       System.out.println("회원 데이터 로딩!");
@@ -209,7 +216,7 @@ public class App {
   static void saveMembers() {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
-            new FileOutputStream("members.data")))) {
+            new FileOutputStream(memberFile)))) {
 
       out.writeObject(memberList);
       System.out.println("회원 데이터 저장!");
@@ -223,7 +230,7 @@ public class App {
   static void loadProjects() {
     try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
-            new FileInputStream("projects.data")))) {
+            new FileInputStream(projectFile)))) {
 
       projectList = (List<Project>) in.readObject();
       System.out.println("프로젝트 데이터 로딩!");
@@ -237,7 +244,7 @@ public class App {
   static void saveProjects() {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
-            new FileOutputStream("projects.data")))) {
+            new FileOutputStream(projectFile)))) {
 
       out.writeObject(projectList);
       System.out.println("프로젝트 데이터 저장!");
@@ -251,7 +258,7 @@ public class App {
   static void loadTasks() {
     try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(
-            new FileInputStream("tasks.data")))) {
+            new FileInputStream(taskFile)))) {
 
       taskList = (List<Task>) in.readObject();
       System.out.println("작업 데이터 로딩!");
@@ -265,7 +272,7 @@ public class App {
   static void saveTasks() {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
-            new FileOutputStream("tasks.data")))) {
+            new FileOutputStream(taskFile)))) {
 
       out.writeObject(taskList);
       System.out.println("작업 데이터 저장!");
