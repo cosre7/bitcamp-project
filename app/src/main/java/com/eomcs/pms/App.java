@@ -1,5 +1,6 @@
 package com.eomcs.pms;
 
+import java.io.FileOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class App {
   static ArrayDeque<String> commandStack = new ArrayDeque<>();
   static LinkedList<String> commandQueue = new LinkedList<>();
 
-  public static void main(String[] args) throws CloneNotSupportedException {
+  public static void main(String[] args) {
 
     ArrayList<Board> boardList = new ArrayList<>();
     ArrayList<Member> memberList = new ArrayList<>();
@@ -127,6 +128,19 @@ public class App {
         }
         System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
       }
+
+    // 게시글 데이터를 파일로 출력한다.
+    FileOutputStream out = null;
+    try {
+      out = new FileOutputStream("boards.data");
+    } catch (Exception e) {
+      System.out.println("게시글 데이터를 파일로 저장하는 중에 오류 발생!");
+    } finally {
+      try {out.close();} catch (Exception e) {}
+      // finally에서 발생된 예외는 finally에서 처리한다
+      // 하지만 파일을 닫다가 발생되는 예외이므로 그냥 try catch만 쓴다
+    }
+
 
     Prompt.close();
   }
