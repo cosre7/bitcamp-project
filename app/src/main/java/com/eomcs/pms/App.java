@@ -1,5 +1,7 @@
 package com.eomcs.pms;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.Date;
@@ -160,49 +162,19 @@ public class App {
   }
 
   static void loadBoards() {
-    // 파일에서 데이터를 읽어온다. (데이터 로딩)
-    try (FileInputStream in = new FileInputStream("boards.data")) {
-      // boards.data 파일 포맷에 따라 데이터를 읽는다.
-      // 1) 게시글 개수
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(new FileInputStream("boards.data"))) {
 
-      // 2) 게시글 개수 만큼 게시글을 읽는다.
+      int size = in.readInt();
+
       for (int i = 0; i < size; i++) {
-        // 게시글 데이터를 저장할 객체 준비
         Board b = new Board();
+        b.setNo(in.readInt());
+        b.setTitle(in.readUTF());
+        b.setContent(in.readUTF());
+        b.setWriter(in.readUTF());
+        b.setRegisteredDate(Date.valueOf(in.readUTF())); // 문자열로 읽어서 Date 객체로 만들어야 한다.
+        b.setViewCount(in.readInt()); // 4바이트 값으로 만들기
 
-        // 게시글 데이터를 읽어서 객체에 저장
-        // - 게시글 번호를 읽어서 객체에 저장
-        b.setNo(in.read() << 24 | in.read() << 16 | in.read() << 8 | in.read());
-
-        // - 게시글 제목을 읽어서 객체에 저장
-        int len = in.read() << 8 | in.read(); // 2바이트 정수값으로 만든다.
-        byte[] buf = new byte[len];
-        in.read(buf);
-        b.setTitle(new String(buf, "UTF-8"));
-
-        // - 게시글 내용을 읽어서 객체에 저장
-        len = in.read() << 8 | in.read(); 
-        buf = new byte[len];
-        in.read(buf);
-        b.setContent(new String(buf, "UTF-8"));
-
-        // - 게시글 작성자를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read(); 
-        buf = new byte[len];
-        in.read(buf);
-        b.setWriter(new String(buf, "UTF-8"));
-
-        // - 게시글 등록일을 읽어서 객체에 저장
-        len = in.read() << 8 | in.read(); 
-        buf = new byte[len];
-        in.read(buf);
-        b.setRegisteredDate(Date.valueOf(new String(buf, "UTF-8"))); // 문자열로 읽어서 Date 객체로 만들어야 한다.
-
-        // - 게시글 조회수를 읽어서 객체에 저장
-        b.setViewCount(in.read() << 24 | in.read() << 16 | in.read() << 8 | in.read()); // 4바이트 값으로 만들기
-
-        // 게시글 객체를 컬렉션에 저장
         boardList.add(b);
       }
       System.out.println("게시글 데이터 로딩!");
@@ -213,67 +185,17 @@ public class App {
   }
 
   static void saveBoards() {
-    try (FileOutputStream out = new FileOutputStream("boards.data")){
+    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("boards.data"))) {
 
-      // boards.data 파일 포맷
-      // - 2바이트: 저장된 게시글 개수
-      // - 게시글 데이터 목록
-      //   - 4바이트: 게시글 번호
-      //   - 게시글 제목
-      //     - 2바이트: 게시글 제목의 바이트 배열 개수
-      //     - x바이트: 게시글 제목의 바이트 배열
-      //   - 게시글 내용
-      //     - 2바이트: 게시글 내용의 바이트 배열 개수
-      //     - x바이트: 게시글 내용의 바이트 배열
-      //    - 작성자
-      //     - 2바이트: 작성자의 바이트 배열 개수
-      //     - x바이트: 작성자의 바이트 배열
-      //    - 등록일
-      //     - 2바이트: 등록일의 바이트 배열 개수
-      //     - x바이트: 등록일의 바이트 배열
-      //    - 4바이트: 조회수
-      int size = boardList.size(); 
-      out.write(size >> 8);
-      out.write(size);
+      out.writeInt(boardList.size());
 
       for (Board b : boardList) {
-        // 게시글 번호
-        out.write(b.getNo() >> 24);
-        out.write(b.getNo() >> 16);
-        out.write(b.getNo() >> 8);
-        out.write(b.getNo());
-
-        // 게시글 제목
-        byte[] buf = b.getTitle().getBytes("UTF-8");
-        // - 게시글 제목의 바이트 개수
-        out.write(buf.length >> 8); // 최소 2바이트는 출력하자
-        out.write(buf.length);
-        // - 게시글 제목의 바이트 배열
-        out.write(buf);
-
-        // 게시글 내용
-        buf = b.getContent().getBytes("UTF-8");
-        out.write(buf.length >> 8); 
-        out.write(buf.length);
-        out.write(buf);
-
-        // 작성자
-        buf = b.getWriter().getBytes("UTF-8");
-        out.write(buf.length >> 8); 
-        out.write(buf.length);
-        out.write(buf);
-
-        // 등록일
-        buf = b.getRegisteredDate().toString().getBytes("UTF-8");
-        out.write(buf.length >> 8); 
-        out.write(buf.length);
-        out.write(buf);
-
-        // 조회수
-        out.write(b.getViewCount() >> 24); // 4바이트 저장
-        out.write(b.getViewCount() >> 16);
-        out.write(b.getViewCount() >> 8);
-        out.write(b.getViewCount());
+        out.writeInt(b.getNo());
+        out.writeUTF(b.getTitle());
+        out.writeUTF(b.getContent());
+        out.writeUTF(b.getWriter());
+        out.writeUTF(b.getRegisteredDate().toString());
+        out.writeInt(b.getViewCount());
       }
       System.out.println("게시글 데이터 저장!");
 
@@ -283,167 +205,62 @@ public class App {
   }
 
   static void loadMembers() {
-    try (FileInputStream in = new FileInputStream("members.data")) {
-      // 1) 멤버 수
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(new FileInputStream("members.data"))) {
 
-      // 2) 멤버 수만큼 읽는다.
+      int size = in.readInt();
+
       for (int i = 0; i < size; i++) {
-        // 멤버 데이터를 저장할 객체 준비
         Member m = new Member();
-
-        // 멤버 데이터를 읽어서 객체에 저장
-        // - 멤버 번호를 읽어서 객체에 저장
-        m.setNo(in.read() << 24 | in.read() << 16 | in.read() << 8 | in.read());
-
-        // - 멤버 이름을 읽어서 객체에 저장
-        int len = in.read() << 8 | in.read();
-        byte[] buf = new byte[len];
-        in.read(buf);
-        m.setName(new String(buf, "utf-8"));
-
-        // - 멤버 이메일을 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        m.setEmail(new String(buf, "utf-8"));
-
-        // - 멤버 password를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        m.setPassword(new String(buf, "utf-8"));
-
-        // - 멤버 photo를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        m.setPhoto(new String(buf, "utf-8"));
-
-        // - 멤버 tel을 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        m.setTel(new String(buf, "utf-8"));
-
-        // - 멤버 registeredDate를 읽어서 객체에 저장
-        m.setRegisteredDate(Date.valueOf(new String(buf, "utf-8")));
+        m.setNo(in.readInt());
+        m.setName(in.readUTF());
+        m.setEmail(in.readUTF());
+        m.setPassword(in.readUTF());
+        m.setPhoto(in.readUTF());
+        m.setTel(in.readUTF());
+        m.setRegisteredDate(Date.valueOf(in.readUTF()));
 
         memberList.add(m);
       }
-      System.out.println("멤버 데이터 로딩!");
+      System.out.println("회원 데이터 로딩!");
 
     } catch (Exception e){
-      System.out.println("멤버 데이터 로딩 중 오류 발생!");
+      System.out.println("회원 데이터 로딩 중 오류 발생!");
     }
   }
 
   static void saveMembers() {
-    try (FileOutputStream out = new FileOutputStream("members.data")) {
-      int size = memberList.size();
-      out.write(size >> 8);
-      out.write(size);
+    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("members.data"))) {
+      out.writeInt(memberList.size());
 
       for (Member m : memberList) {
-
-        // 멤버 번호
-        out.write(m.getNo() >> 24);
-        out.write(m.getNo() >> 16);
-        out.write(m.getNo() >> 8);
-        out.write(m.getNo());
-
-        // 멤버 이름
-        byte[] buf = m.getName().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 멤버 이메일
-        buf = m.getEmail().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 멤버 password
-        buf = m.getPassword().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 멤버 photo
-        buf = m.getPhoto().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 멤버 tel
-        buf = m.getTel().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 멤버 registeredDate
-        buf = m.getRegisteredDate().toString().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
+        out.writeInt(m.getNo());
+        out.writeUTF(m.getName());
+        out.writeUTF(m.getEmail());
+        out.writeUTF(m.getPassword());
+        out.writeUTF(m.getPhoto());
+        out.writeUTF(m.getTel());
+        out.writeUTF(m.getRegisteredDate().toString());
       }
-      System.out.println("멤버 데이터 저장!");
+      System.out.println("회원 데이터 저장!");
 
     } catch (Exception e) {
-      System.out.println("멤버 데이터를 파일로 저장하는 중에 오류 발생!");
+      System.out.println("회원 데이터를 파일로 저장하는 중에 오류 발생!");
     }
   }
 
   static void loadProjects() {
-    try (FileInputStream in = new FileInputStream("projects.data")) {
-      // 1) 프로젝트 수
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(new FileInputStream("projects.data"))) {
+      int size = in.readInt();
 
-      // 2) 프로젝트 수만큼 읽는다.
       for (int i = 0; i < size; i++) {
-        // 프로젝트 데이터를 저장할 객체 준비
         Project p = new Project();
-
-        // 프로젝트 데이터를 읽어서 객체에 저장
-        // - 프로젝트 번호를 읽어서 객체에 저장
-        p.setNo(in.read() << 24 | in.read() << 16 | in.read() << 8 | in.read());
-
-        // - 프로젝트 제목을 읽어서 객체에 저장
-        int len = in.read() << 8 | in.read();
-        byte[] buf = new byte[len];
-        in.read(buf);
-        p.setTitle(new String(buf, "utf-8"));
-
-        // - 프로젝트 내용을 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        p.setContent(new String(buf, "utf-8"));
-
-        // - 프로젝트 시작일 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        p.setStartDate(Date.valueOf(new String(buf, "utf-8")));
-
-        // - 프로젝트 종료일 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        p.setEndDate(Date.valueOf(new String(buf, "utf-8")));
-
-        // - 프로젝트 담당자를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        p.setOwner(new String(buf, "utf-8"));
-
-        // - 프로젝트 멤버를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        p.setMembers(new String(buf, "utf-8"));
+        p.setNo(in.readInt());
+        p.setTitle(in.readUTF());
+        p.setContent(in.readUTF());
+        p.setStartDate(Date.valueOf(in.readUTF()));
+        p.setEndDate(Date.valueOf(in.readUTF()));
+        p.setOwner(in.readUTF());
+        p.setMembers(in.readUTF());
 
         projectList.add(p);
       }
@@ -455,54 +272,18 @@ public class App {
   }
 
   static void saveProjects() {
-    try (FileOutputStream out = new FileOutputStream("projects.data")) {
-      int size = projectList.size();
-      out.write(size >> 8);
-      out.write(size);
+    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("projects.data"))) {
+
+      out.writeInt(projectList.size());
 
       for (Project p : projectList) {
-
-        // 프로젝트 번호
-        out.write(p.getNo() >> 24);
-        out.write(p.getNo() >> 16);
-        out.write(p.getNo() >> 8);
-        out.write(p.getNo());
-
-        // 프로젝트 제목
-        byte[] buf = p.getTitle().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 프로젝트 내용
-        buf = p.getContent().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 프로젝트 시작일
-        buf = p.getStartDate().toString().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 프로젝트 종료일
-        buf = p.getEndDate().toString().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 프로젝트 담당자
-        buf = p.getOwner().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 프로젝트 멤버
-        buf = p.getMembers().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
+        out.writeInt(p.getNo());
+        out.writeUTF(p.getTitle());
+        out.writeUTF(p.getContent());
+        out.writeUTF(p.getStartDate().toString());
+        out.writeUTF(p.getEndDate().toString());
+        out.writeUTF(p.getOwner());
+        out.writeUTF(p.getMembers());
       }
       System.out.println("프로젝트 데이터 저장!");
 
@@ -512,42 +293,17 @@ public class App {
   }
 
   static void loadTasks() {
-    try (FileInputStream in = new FileInputStream("tasks.data")) {
-      // 1) 작업 수
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(new FileInputStream("tasks.data"))) {
 
-      // 2) 작업 수만큼 읽는다.
+      int size = in.readInt();
+
       for (int i = 0; i < size; i++) {
-        // 작업 데이터를 저장할 객체 준비
         Task t = new Task();
-
-        // 작업 데이터를 읽어서 객체에 저장
-        // - 작업 번호를 읽어서 객체에 저장
-        t.setNo(in.read() << 24 | in.read() << 16 | in.read() << 8 | in.read());
-
-        // - 작업 내용을 읽어서 객체에 저장
-        int len = in.read() << 8 | in.read();
-        byte[] buf = new byte[len];
-        in.read(buf);
-        t.setContent(new String(buf, "utf-8"));
-
-        // - 작업 마감일 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        t.setDeadline(Date.valueOf(new String(buf, "utf-8")));
-
-        // - 작업 상태를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        t.setStatus(Integer.valueOf(new String(buf, "utf-8")));
-
-        // - 작업 담당자를 읽어서 객체에 저장
-        len = in.read() << 8 | in.read();
-        buf = new byte[len];
-        in.read(buf);
-        t.setOwner(new String(buf, "utf-8"));
+        t.setNo(in.readInt());
+        t.setContent(in.readUTF());
+        t.setDeadline(Date.valueOf(in.readUTF()));
+        t.setStatus(in.readInt());
+        t.setOwner(in.readUTF());
 
         taskList.add(t);
       }
@@ -559,43 +315,17 @@ public class App {
   }
 
   static void saveTasks() {
-    try (FileOutputStream out = new FileOutputStream("tasks.data")) {
-      int size = taskList.size();
-      out.write(size >> 8);
-      out.write(size);
+    try (DataOutputStream out = new DataOutputStream(new FileOutputStream("tasks.data"))) {
+
+      out.writeInt(taskList.size());
 
       for (Task t : taskList) {
 
-        // 작업 번호
-        out.write(t.getNo() >> 24);
-        out.write(t.getNo() >> 16);
-        out.write(t.getNo() >> 8);
-        out.write(t.getNo());
-
-        // 작업 내용
-        byte[] buf = t.getContent().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 작업 마감일
-        buf = t.getDeadline().toString().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
-        // 작업 상태
-        out.write(t.getStatus() >> 24);
-        out.write(t.getStatus() >> 16);
-        out.write(t.getStatus() >> 8);
-        out.write(t.getStatus());
-
-        // 작업 담당자
-        buf = t.getOwner().getBytes("utf-8");
-        out.write(buf.length >> 8);
-        out.write(buf.length);
-        out.write(buf);
-
+        out.writeInt(t.getNo());
+        out.writeUTF(t.getContent());
+        out.writeUTF(t.getDeadline().toString());
+        out.writeInt(t.getStatus());
+        out.writeUTF(t.getOwner());
       }
       System.out.println("작업 데이터 저장!");
 
