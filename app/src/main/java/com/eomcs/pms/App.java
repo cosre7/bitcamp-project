@@ -149,10 +149,10 @@ public class App {
         System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
       }
 
-    saveBoards();
-    saveMembers();
-    saveProjects();
-    saveTasks();
+    saveObjects(boardFile, boardList);
+    saveObjects(memberFile, memberList);
+    saveObjects(projectFile, projectList);
+    saveObjects(taskFile, taskList);
 
     Prompt.close();
   }
@@ -185,16 +185,16 @@ public class App {
     }
   }
 
-  static void saveBoards() {
+  static void saveObjects(File file, List<?> dataList) {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(
-            new FileOutputStream(boardFile)))) {
+            new FileOutputStream(file)))) {
 
-      out.writeObject(boardList);
-      System.out.println("게시글 데이터 저장!");
+      out.writeObject(dataList);
+      System.out.printf("파일 %s 저장!\n", file.getName());
 
     } catch (Exception e) {
-      System.out.println("게시글 데이터를 파일로 저장하는 중에 오류 발생!");
+      System.out.printf("파일 %s 저장 중 오류 발생!\n", file.getName());
     } 
   }
 
@@ -213,19 +213,6 @@ public class App {
     }
   }
 
-  static void saveMembers() {
-    try (ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(
-            new FileOutputStream(memberFile)))) {
-
-      out.writeObject(memberList);
-      System.out.println("회원 데이터 저장!");
-
-    } catch (Exception e) {
-      System.out.println("회원 데이터를 파일로 저장하는 중에 오류 발생!");
-    }
-  }
-
   @SuppressWarnings("unchecked")
   static void loadProjects() {
     try (ObjectInputStream in = new ObjectInputStream(
@@ -241,19 +228,6 @@ public class App {
     }
   }
 
-  static void saveProjects() {
-    try (ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(
-            new FileOutputStream(projectFile)))) {
-
-      out.writeObject(projectList);
-      System.out.println("프로젝트 데이터 저장!");
-
-    } catch (Exception e) {
-      System.out.println("프로젝트 데이터를 파일로 저장하는 중에 오류 발생!");
-    }
-  }
-
   @SuppressWarnings("unchecked")
   static void loadTasks() {
     try (ObjectInputStream in = new ObjectInputStream(
@@ -266,19 +240,6 @@ public class App {
     } catch (Exception e){
       System.out.println("작업 데이터 로딩 중 오류 발생!");
       taskList = new LinkedList<>();
-    }
-  }
-
-  static void saveTasks() {
-    try (ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(
-            new FileOutputStream(taskFile)))) {
-
-      out.writeObject(taskList);
-      System.out.println("작업 데이터 저장!");
-
-    } catch (Exception e) {
-      System.out.println("작업 데이터를 파일로 저장하는 중에 오류 발생!");
     }
   }
 }
