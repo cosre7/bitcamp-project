@@ -272,6 +272,9 @@ public class App {
           project.setEndDate(Date.valueOf(fields[4]));
           project.setOwner(fields[5]);
           project.setMembers(fields[6].replace("|", ","));
+          // members의 경우 |를 다시 ,로 바꿔서 읽어들이도록 
+          // member를 구분할 때 |로 구분하도록 한다
+          // 아니면 ,로 나눠져서 다른 값으로 되어버려 출력되지 않는다.
           projectList.add(project);
 
         } catch (NoSuchElementException e) {
@@ -297,6 +300,9 @@ public class App {
             project.getEndDate().toString(),
             project.getOwner(),
             project.getMembers().replace(",", "|")));
+        // members의 경우 ,를 |로 설정하도록
+        // member를 구분할 때 |로 구분하도록 한다
+        // 아니면 ,로 나눠져서 다른 값으로 되어버려 출력되지 않는다.
       }
       System.out.println("프로젝트 데이터 저장!");
 
