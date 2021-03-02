@@ -12,9 +12,21 @@ public class Board implements CsvObject {
   private int viewCount;
   private int like;
 
+  public Board() {}
+
+  public Board(String csv) {
+    String[] fields = csv.split(","); // 번호,제목,내용,작성자,등록일,조회수
+    this.setNo(Integer.parseInt(fields[0]));
+    this.setTitle(fields[1]);
+    this.setContent(fields[2]);
+    this.setWriter(fields[3]);
+    this.setRegisteredDate(Date.valueOf(fields[4]));
+    this.setViewCount(Integer.parseInt(fields[5]));
+  }
+
   @Override
   public String toCsvString() {
-    return String.format("%d,%s,%s,%s,%s,%s\n",
+    return String.format("%d,%s,%s,%s,%s,%d", 
         this.getNo(),
         this.getTitle(),
         this.getContent(),
@@ -23,10 +35,10 @@ public class Board implements CsvObject {
         this.getViewCount());
   }
 
-  // 다음과 같이 인스턴스를 생성해주는 메서드를
+  // 다음과 같이 인스턴스를 생성해주는 메서드를 
   // "factory method"라 부른다.
   // 팩토리 메서드 패턴
-  // - 인스턴스 생성 과정이 복잡할 때
+  // - 인스턴스 생성 과정이 복잡할 때 
   //   인스턴스 생성을 대신 해주는 메서드를 만들어
   //   그 메서드를 통해 객체를 생성하는 프로그래밍 방식이다.
   public static Board valueOfCsv(String csv) {

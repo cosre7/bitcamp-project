@@ -42,9 +42,8 @@ import com.eomcs.pms.handler.TaskUpdateHandler;
 import com.eomcs.util.CsvObject;
 import com.eomcs.util.ObjectFactory;
 import com.eomcs.util.Prompt;
-import com.google.gson.Gson;
 
-public class App {
+public class App01 {
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
   static ArrayDeque<String> commandStack = new ArrayDeque<>();
@@ -57,19 +56,19 @@ public class App {
   static LinkedList<Task> taskList = new LinkedList<>();
 
   // 데이터 파일 정보
-  static File boardFile = new File("boards.json");
-  static File memberFile = new File("members.json");
-  static File projectFile = new File("projects.json");
-  static File taskFile = new File("tasks.json");
+  static File boardFile = new File("boards.csv");
+  static File memberFile = new File("members.csv");
+  static File projectFile = new File("projects.csv");
+  static File taskFile = new File("tasks.csv");
 
   public static void main(String[] args) {
 
 
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
-    loadObjects(boardFile, boardList, Board::new);
-    loadObjects(memberFile, memberList, Member::new);
-    loadObjects(projectFile, projectList, Project::new);
-    loadObjects(taskFile, taskList, Task::new);
+    loadObjects(boardFile, boardList, Board::valueOfCsv);
+    loadObjects(memberFile, memberList, Member::valueOfCsv);
+    loadObjects(projectFile, projectList, Project::valueOfCsv);
+    loadObjects(taskFile, taskList, Task::valueOfCsv);
 
     // 사용자 명령을 처리하는 객체를 맵에 보관한다.
     HashMap<String,Command> commandMap = new HashMap<>();
@@ -183,7 +182,9 @@ public class App {
 
   static <T extends CsvObject> void saveObjects(File file, List<T> list) {
     try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-      out.write(new Gson().toJson(list));
+      for (CsvObject csvObj : list) {
+        out.write(csvObj.toCsvString() + "\n");
+      }
       System.out.printf("파일 %s 데이터 저장!\n", file.getName());
 
     } catch (Exception e) {
