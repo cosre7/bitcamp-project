@@ -7,7 +7,7 @@ import com.eomcs.util.Prompt;
 public class MemberDetailHandler extends AbstractMemberHandler {
 
   public MemberDetailHandler(List<Member> memberList) {
-    super(memberList); 
+    super(memberList);
   }
 
   @Override
@@ -27,6 +27,7 @@ public class MemberDetailHandler extends AbstractMemberHandler {
     System.out.printf("사진: %s\n", member.getPhoto());
     System.out.printf("전화: %s\n", member.getTel());
     System.out.printf("가입일: %s\n", member.getRegisteredDate());
+
   }
 }
 

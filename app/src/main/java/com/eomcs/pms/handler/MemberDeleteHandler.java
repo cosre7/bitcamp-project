@@ -7,7 +7,7 @@ import com.eomcs.util.Prompt;
 public class MemberDeleteHandler extends AbstractMemberHandler {
 
   public MemberDeleteHandler(List<Member> memberList) {
-    super(memberList); 
+    super(memberList);
   }
 
   @Override
@@ -31,6 +31,7 @@ public class MemberDeleteHandler extends AbstractMemberHandler {
     } else {
       System.out.println("회원 삭제를 취소하였습니다.");
     }
+
   }
 }
 

@@ -31,5 +31,6 @@ public class TaskDeleteHandler extends AbstractTaskHandler {
     } else {
       System.out.println("작업 삭제를 취소하였습니다.");
     }
+
   }
 }

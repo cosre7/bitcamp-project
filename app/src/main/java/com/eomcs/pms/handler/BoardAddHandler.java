@@ -8,7 +8,7 @@ import com.eomcs.util.Prompt;
 public class BoardAddHandler extends AbstractBoardHandler {
 
   public BoardAddHandler(List<Board> boardList) {
-    super(boardList); // oop-ex05-g,h
+    super(boardList);
   }
 
   @Override

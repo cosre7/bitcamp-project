@@ -7,7 +7,7 @@ import com.eomcs.util.Prompt;
 public class MemberUpdateHandler extends AbstractMemberHandler {
 
   public MemberUpdateHandler(List<Member> memberList) {
-    super(memberList); 
+    super(memberList);
   }
 
   @Override

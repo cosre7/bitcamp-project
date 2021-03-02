@@ -8,9 +8,6 @@ public class BoardUpdateHandler extends AbstractBoardHandler {
 
   public BoardUpdateHandler(List<Board> boardList) {
     super(boardList);
-    // super클래스에 기본 생성자는 없다
-    // boardList가 있는 생성자만 있으므로
-    // 그걸 쓰겠다는 뜻!
   }
 
   @Override

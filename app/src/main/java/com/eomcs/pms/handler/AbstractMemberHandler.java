@@ -33,7 +33,7 @@ public abstract class AbstractMemberHandler implements Command {
 
   // 리팩토링 수행
   // - MemberValidatorHandler 클래스로 옮긴다.
-  //
+  // 
   //  public String inputMember(String promptTitle) {
   //    while (true) {
   //      String name = Prompt.inputString(promptTitle);
@@ -61,6 +61,8 @@ public abstract class AbstractMemberHandler implements Command {
   //      }
   //    }
   //  }
+
+
 }
 
 

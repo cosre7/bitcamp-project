@@ -12,14 +12,15 @@ public abstract class AbstractProjectHandler implements Command {
   }
 
   protected Project findByNo(int projectNo) {
-    Project[] arr =  projectList.toArray(new Project[projectList.size()]);
-    for (Project p : arr) {
+    Project[] list = projectList.toArray(new Project[projectList.size()]);
+    for (Project p : list) {
       if (p.getNo() == projectNo) {
         return p;
       }
     }
     return null;
   }
+
 }
 
 

@@ -18,7 +18,7 @@ public class ProjectDeleteHandler extends AbstractProjectHandler {
 
     Project project = findByNo(no);
     if (project == null) {
-      System.out.println("해당 번호의 프로젝트이 없습니다.");
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
       return;
     }
 
@@ -31,6 +31,7 @@ public class ProjectDeleteHandler extends AbstractProjectHandler {
     } else {
       System.out.println("프로젝트 삭제를 취소하였습니다.");
     }
+
   }
 }
 
