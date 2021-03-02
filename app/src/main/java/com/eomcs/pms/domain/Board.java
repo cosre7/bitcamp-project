@@ -11,38 +11,6 @@ public class Board {
   private int viewCount;
   private int like;
 
-  public String toCsvString() {
-    // toString이 있기 때문에 일관성있게 toCsvString으로
-    // 인스턴스 필드의 값을 가지고 인스턴스 메서드를 만든다.
-
-    // Board의 내용은 Board에서 형식을 정할 수 있도록 이곳에 메서드를 둔다 -> 리팩토링
-    // 게시글에 필요한 필드는 Board 클래스가 안다. -> 정보를 알고있는 전문가에게 맡긴다.
-    return  String.format("%d,%s,%s,%s,%s,%d\n", 
-        this.getNo(),
-        this.getTitle(),
-        this.getContent(),
-        this.getWriter(),
-        this.getRegisteredDate().toString(),
-        this.getViewCount());
-  }
-
-  // 다음과 같이 인스턴스를 생성해주는 메서드를
-  // "factory method"라 부른다.
-  // 팩토리 메서드 패턴
-  // - 인스턴스 생성 과정이 복잡할 때 
-  //   인스턴스 생성을 대신 해주는 메서드를 만들어 
-  //   그 메서드를 통해 객체를 생성하는 프로그래밍 방식이다.
-  public static Board valueOfCsv(String csv) {
-    String[] fields = csv.split(","); // 번호,제목,내용,작성자,등록일,조회수
-    Board b = new Board();
-    b.setNo(Integer.parseInt(fields[0]));
-    b.setTitle(fields[1]);
-    b.setContent(fields[2]);
-    b.setWriter(fields[3]);
-    b.setRegisteredDate(Date.valueOf(fields[4]));
-    b.setViewCount(Integer.parseInt(fields[5]));
-    return b;
-  }
 
   @Override
   public int hashCode() {
