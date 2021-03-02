@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.sql.Date;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,23 +159,10 @@ public class App {
   }
 
   static void loadBoards() {
-
     try (BufferedReader in = new BufferedReader(new FileReader("boards.csv"))) {
-      // FileReader에 BufferedReader 붙이기
-      // BufferedReader는 Scanner와 달리 정식 데코레이터 -> FileReader와 같은 Reader의 자식
-
-      String record = null;
-      // in.readLine(): 한줄씩 읽어주는 BufferedReader의 기능
-      while ((record = in.readLine()) != null) {
-        String[] fields = record.split(","); // 번호,제목,내용,작성자,등록일,조회수
-        Board b = new Board();
-        b.setNo(Integer.parseInt(fields[0]));
-        b.setTitle(fields[1]);
-        b.setContent(fields[2]);
-        b.setWriter(fields[3]);
-        b.setRegisteredDate(Date.valueOf(fields[4]));
-        b.setViewCount(Integer.parseInt(fields[5]));
-        boardList.add(b);
+      String csvStr = null;
+      while ((csvStr = in.readLine()) != null) {
+        boardList.add(Board.valueOfCsv(csvStr));
       }
       System.out.println("게시글 데이터 로딩!");
 
@@ -186,46 +172,24 @@ public class App {
   }
 
   static void saveBoards() {
-    long start = System.currentTimeMillis();
     try (BufferedWriter out = new BufferedWriter(new FileWriter("boards.csv"))) {
-
       // boards.csv 파일 포맷
       // - 번호,제목,내용,작성자,등록일,조회수(CRLF)
       for (Board b : boardList) {
-        out.write(String.format("%d,%s,%s,%s,%s,%d\n", 
-            b.getNo(),
-            b.getTitle(),
-            b.getContent(),
-            b.getWriter(),
-            b.getRegisteredDate().toString(),
-            b.getViewCount()));
-        // csv에서는 공백 자체가 값이 되어버린다
-        // 공백 없도록!
+        out.write(b.toCsvString() + "\n");
       }
       System.out.println("게시글 데이터 저장!");
 
     } catch (Exception e) {
       System.out.println("게시글 데이터를 파일로 저장하는 중에 오류 발생!");
     }
-    long end = System.currentTimeMillis();
-    System.out.printf("게시글 쓰기 시간: %d\n", end - start);
-    // 실행시간 측정해보기
   }
 
   static void loadMembers() {
     try (BufferedReader in = new BufferedReader(new FileReader("members.csv"))) {
-      String record = null;
-      while ((record = in.readLine()) != null) {
-        String[] fields = record.split(",");
-        Member member = new Member();
-        member.setNo(Integer.parseInt(fields[0]));
-        member.setName(fields[1]);
-        member.setEmail(fields[2]);
-        member.setPassword(fields[3]);
-        member.setPhoto(fields[4]);
-        member.setTel(fields[5]);
-        member.setRegisteredDate(Date.valueOf(fields[6]));
-        memberList.add(member);
+      String csvStr = null;
+      while ((csvStr = in.readLine()) != null) {
+        memberList.add(Member.valueOfCsv(csvStr));
       }
       System.out.println("회원 데이터 로딩!");
 
@@ -237,14 +201,7 @@ public class App {
   static void saveMembers() {
     try (BufferedWriter out = new BufferedWriter(new FileWriter("members.csv"))) {
       for (Member member : memberList) {
-        out.write(String.format("%d,%s,%s,%s,%s,%s,%s\n",
-            member.getNo(),
-            member.getName(),
-            member.getEmail(),
-            member.getPassword(),
-            member.getPhoto(),
-            member.getTel(),
-            member.getRegisteredDate()));
+        out.write(member.toCsvString() + "\n");
       }
       System.out.println("회원 데이터 저장!");
 
@@ -256,21 +213,9 @@ public class App {
   static void loadProjects() {
 
     try (BufferedReader in = new BufferedReader(new FileReader("projects.csv"))) {
-      String record = null;
-      while ((record = in.readLine()) != null) {
-        String[] fields = record.split(",");
-        Project project = new Project();
-        project.setNo(Integer.parseInt(fields[0]));
-        project.setTitle(fields[1]);
-        project.setContent(fields[2]);
-        project.setStartDate(Date.valueOf(fields[3]));
-        project.setEndDate(Date.valueOf(fields[4]));
-        project.setOwner(fields[5]);
-        project.setMembers(fields[6].replace("|", ","));
-        // members의 경우 |를 다시 ,로 바꿔서 읽어들이도록 
-        // member를 구분할 때 |로 구분하도록 한다
-        // 아니면 ,로 나눠져서 다른 값으로 되어버려 출력되지 않는다.
-        projectList.add(project);
+      String csvStr = null;
+      while ((csvStr = in.readLine()) != null) {
+        projectList.add(Project.valueOfCsv(csvStr));
       }
       System.out.println("프로젝트 데이터 로딩!");
 
@@ -283,17 +228,7 @@ public class App {
 
     try (BufferedWriter out = new BufferedWriter(new FileWriter("projects.csv"))) {
       for (Project project : projectList) {
-        out.write(String.format("%d,%s,%s,%s,%s,%s,%s\n", 
-            project.getNo(),
-            project.getTitle(),
-            project.getContent(),
-            project.getStartDate().toString(),
-            project.getEndDate().toString(),
-            project.getOwner(),
-            project.getMembers().replace(",", "|")));
-        // members의 경우 ,를 |로 설정하도록
-        // member를 구분할 때 |로 구분하도록 한다
-        // 아니면 ,로 나눠져서 다른 값으로 되어버려 출력되지 않는다.
+        out.write(project.toCsvString() + "\n");
       }
       System.out.println("프로젝트 데이터 저장!");
 
@@ -305,16 +240,9 @@ public class App {
   static void loadTasks() {
 
     try (BufferedReader in = new BufferedReader(new FileReader("tasks.csv"))) {
-      String record = null;
-      while ((record = in.readLine()) != null) {
-        String[] fields = record.split(",");
-        Task task = new Task();
-        task.setNo(Integer.parseInt(fields[0]));
-        task.setContent(fields[1]);
-        task.setDeadline(Date.valueOf(fields[2]));
-        task.setStatus(Integer.parseInt(fields[3]));
-        task.setOwner(fields[4]);
-        taskList.add(task);
+      String csvStr = null;
+      while ((csvStr = in.readLine()) != null) {
+        taskList.add(Task.valueOfCsv(csvStr));
       }
       System.out.println("작업 데이터 로딩!");
 
@@ -327,12 +255,7 @@ public class App {
 
     try (BufferedWriter out = new BufferedWriter(new FileWriter("tasks.csv"))) {
       for (Task task : taskList) {
-        out.write(String.format("%d,%s,%s,%d,%s\n", 
-            task.getNo(),
-            task.getContent(),
-            task.getDeadline().toString(),
-            task.getStatus(),
-            task.getOwner()));
+        out.write(task.toCsvString() + "\n");
       }
       System.out.println("작업 데이터 저장!");
 
