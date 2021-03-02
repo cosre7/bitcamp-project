@@ -1,14 +1,16 @@
 package com.eomcs.pms.domain;
 
 import java.sql.Date;
+import com.eomcs.util.CsvObject;
 
-public class Task {
+public class Task implements CsvObject {
   private int no;
   private String content;
   private Date deadline;
   private String owner;
   private int status;
 
+  @Override
   public String toCsvString() {
     return String.format("%d,%s,%s,%d,%s\n", 
         this.getNo(),
