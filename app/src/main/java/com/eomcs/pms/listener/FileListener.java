@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import com.eomcs.context.ApplicationContextListener;
@@ -29,18 +27,18 @@ public class FileListener implements ApplicationContextListener {
   File taskFile = new File("tasks.json");
 
   // VO 를 저장할 컬렉션 객체
-  ArrayList<Board> boardList = new ArrayList<>();
-  ArrayList<Member> memberList = new ArrayList<>();
-  LinkedList<Project> projectList = new LinkedList<>();
-  LinkedList<Task> taskList = new LinkedList<>();
+  List<Board> boardList;
+  List<Member> memberList;
+  List<Project> projectList;
+  List<Task> taskList;
 
   @Override
   public void contextInitialized(Map<String,Object> context) {
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
-    loadObjects(boardFile, boardList, Board.class);
-    loadObjects(memberFile, memberList, Member.class);
-    loadObjects(projectFile, projectList, Project.class);
-    loadObjects(taskFile, taskList, Task.class);
+    boardList = loadObjects(boardFile, Board.class);
+    memberList = loadObjects(memberFile, Member.class);
+    projectList = loadObjects(projectFile, Project.class);
+    taskList = loadObjects(taskFile, Task.class);
 
     // App 클래스에서 사용할 수 있도록 컬렉션 객체를 맵 객체에 담는다.
     // "boardList"라는 이름으로 boardList를 담는다.
@@ -59,26 +57,24 @@ public class FileListener implements ApplicationContextListener {
     saveObjects(taskFile, taskList);
   }
 
-  private <T> void loadObjects(File file, List<T> list, Class<T> elementType) {
+  private <T> List<T> loadObjects(File file, Class<T> elementType) {
     try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 
-      // 1) 파일의 모든 데이터를 읽어서 StringBuilder객체에 보관한다.
       StringBuilder strBuilder = new StringBuilder();
       String str = null;
       while ((str = in.readLine()) != null) {
         strBuilder.append(str);
       }
 
-      Type collectionType = TypeToken.getParameterized(Collection.class, elementType).getType();
-      Collection<T> collection = new Gson().fromJson(strBuilder.toString(), collectionType);
-      // 위 두 코드는 그냥 복붙해서 쓰자
-
-      list.addAll(collection); 
-
+      Type listType = TypeToken.getParameterized(ArrayList.class, elementType).getType();
+      List<T> list = new Gson().fromJson(strBuilder.toString(), listType);
       System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
+
+      return list;
 
     } catch (Exception e) {
       System.out.printf("%s 파일 데이터 로딩 중 오류 발생!\n", file.getName());
+      return null;
     }
   }
 
