@@ -46,26 +46,31 @@ import com.eomcs.util.Prompt;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+// 1) 스태틱 멤버를 인스턴스 멤버로 전환한다.
 public class App {
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
-  static ArrayDeque<String> commandStack = new ArrayDeque<>();
-  static LinkedList<String> commandQueue = new LinkedList<>();
+  ArrayDeque<String> commandStack = new ArrayDeque<>();
+  LinkedList<String> commandQueue = new LinkedList<>();
 
   // VO 를 저장할 컬렉션 객체
-  static ArrayList<Board> boardList = new ArrayList<>();
-  static ArrayList<Member> memberList = new ArrayList<>();
-  static LinkedList<Project> projectList = new LinkedList<>();
-  static LinkedList<Task> taskList = new LinkedList<>();
+  ArrayList<Board> boardList = new ArrayList<>();
+  ArrayList<Member> memberList = new ArrayList<>();
+  LinkedList<Project> projectList = new LinkedList<>();
+  LinkedList<Task> taskList = new LinkedList<>();
 
   // 데이터 파일 정보
-  static File boardFile = new File("boards.json");
-  static File memberFile = new File("members.json");
-  static File projectFile = new File("projects.json");
-  static File taskFile = new File("tasks.json");
+  File boardFile = new File("boards.json");
+  File memberFile = new File("members.json");
+  File projectFile = new File("projects.json");
+  File taskFile = new File("tasks.json");
 
   public static void main(String[] args) {
+    App app = new App();
+    app.service();
+  }
 
+  public void service() { // 기존의 main() 메서드를 service() 메서드로 변경
 
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
     loadObjects(boardFile, boardList, Board[].class);
@@ -157,7 +162,7 @@ public class App {
     Prompt.close();
   }
 
-  static void printCommandHistory(Iterator<String> iterator) {
+  private void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
     while (iterator.hasNext()) {
       System.out.println(iterator.next());
@@ -170,7 +175,7 @@ public class App {
     }
   }
 
-  static <T> void loadObjects(File file, List<T> list, Class<T[]> arrType) {
+  private <T> void loadObjects(File file, List<T> list, Class<T[]> arrType) {
     try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 
       // 1) 파일의 모든 데이터를 읽어서 StringBuilder객체에 보관한다.
@@ -179,32 +184,10 @@ public class App {
       while ((str = in.readLine()) != null) {
         strBuilder.append(str);
       }
-      // 파일에서 읽은 JSON 문자열
-      //      System.out.println(strBuilder.toString());
 
-      // 2) StringBuilder 객체에 보관된 값을 꺼내 자바 객체로 만든다.
-      Gson gson = new Gson();
-
-      // JSON 문자열 ==> 컬렉션 객체
-      // 1단계: 긴 코드
-      //      class MyTypeToken extends com.google.gson.reflect.TypeToken<Collection<T>> {
-      //        // 상속 받기만 하고 아무것도 구현하지 않는다.
-      //        // 어떤 타입의 정보를 다루는지 알려주기 위함이다. 
-      //      }
-      //      MyTypeToken typeToken = new MyTypeToken();
-      //      Type collectionType = typeToken.getType();
-
-      // 2단계: 익명 클래스 문법을 사용하여 조금 줄인 코드
-      //      TypeToken<T> typeToken = new TypeToken<Collection<T>>() {};
-      //      Type collectionType = typeToken.getType();
-
-      // 3단계: 리팩토링 기법 중에서 replace temp with query를 적용하여 코드를 더 줄인다.
       Type collectionType = new TypeToken<Collection<T>>() {}.getType(); // 그냥 복붙해서 쓰자
+      Collection<T> collection = new Gson().fromJson(strBuilder.toString(), collectionType);
 
-      // JSON 문자열을 배열 객체로 변환
-      Collection<T> collection = gson.fromJson(strBuilder.toString(), collectionType);
-
-      // JSON 문자열을 읽어 만든 객체 목록을 해당 컬렉션에 옮긴다.
       list.addAll(collection); 
 
       System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
@@ -214,7 +197,7 @@ public class App {
     }
   }
 
-  static <T extends CsvObject> void saveObjects(File file, List<T> list) {
+  private <T extends CsvObject> void saveObjects(File file, List<T> list) {
     try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
       out.write(new Gson().toJson(list));
       System.out.printf("파일 %s 데이터 저장!\n", file.getName());
