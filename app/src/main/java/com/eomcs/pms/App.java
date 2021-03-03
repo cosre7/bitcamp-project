@@ -167,10 +167,7 @@ public class App {
     }
   }
 
-  static <T> void loadObjects(File file, List<T> list, Class<T[]> elementType) {
-    // Class<T[]>: 특정 클래스의 배열 타입이 파라미터로 받아진다는 뜻
-    System.out.println(elementType.getName());
-    // 출력하면 [L 이 붙는다 -> 배열이라는 뜻
+  static <T> void loadObjects(File file, List<T> list, Class<T[]> arrType) {
     try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 
       // 1) 파일의 모든 데이터를 읽어서 StringBuilder객체에 보관한다.
@@ -179,14 +176,17 @@ public class App {
       while ((str = in.readLine()) != null) {
         strBuilder.append(str);
       }
+      // 파일에서 읽은 JSON 문자열
+      System.out.println(strBuilder.toString());
 
       // 2) StringBuilder 객체에 보관된 값을 꺼내 자바 객체로 만든다.
       Gson gson = new Gson();
-      gson.fromJson(strBuilder.toString(), null);
+      T[] arr = gson.fromJson(strBuilder.toString(), arrType);
 
-      // elementType의 이름을 알고 싶다.
-
-      System.out.println(strBuilder.toString());
+      // JSON 문자열을 배열 객체로 바꾼 값
+      for (T obj : arr) {
+        System.out.println(obj);
+      }
 
       System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
 

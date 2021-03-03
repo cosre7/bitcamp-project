@@ -25,6 +25,13 @@ public class Member implements CsvObject {
     this.setRegisteredDate(Date.valueOf(fields[6]));
   }
 
+
+  @Override
+  public String toString() {
+    return "Member [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password
+        + ", photo=" + photo + ", tel=" + tel + ", registeredDate=" + registeredDate + "]";
+  }
+
   @Override
   public String toCsvString() {
     return String.format("%d,%s,%s,%s,%s,%s,%s", 
