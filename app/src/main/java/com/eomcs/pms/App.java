@@ -50,6 +50,7 @@ import com.google.gson.reflect.TypeToken;
 // 1) 스태틱 멤버를 인스턴스 멤버로 전환한다.
 // 2) Observer(=Listener) 의 호출 규칙을 정의한다.
 // 3) Observer를 등록/제거하는 메서드를 정의한다.
+// 4) 애플리케이션 실행 전후에 리스너에게 보고하는 기능을 추가한다.
 public class App {
 
   // 옵저버 객체 (ApplicationContextListener 구현체) 목록을 저장할 컬렉션 준비
@@ -84,7 +85,13 @@ public class App {
     listeners.remove(listener);
   }
 
-  public void service() { // 기존의 main() 메서드를 service() 메서드로 변경
+  public void service() { 
+
+    // 애플리케이션의 서비스가 시작되면 이 이벤트를 통지 받을 리스너에게 알린다.
+    // 어떻게? 리스너의 메서드를 호출하는 것이 곧 리스너에게 알리는 것이다.
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitialized();
+    }
 
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
     loadObjects(boardFile, boardList, Board[].class);
@@ -174,6 +181,12 @@ public class App {
     saveObjects(taskFile, taskList);
 
     Prompt.close();
+
+    // 애플리케이션의 서비스가 종료되면 이 이벤트를 통지 받을 리스너에게 알린다.
+    // 어떻게? 리스너의 메서드를 호출하는 것이 곧 리스너에게 알리는 것이다.
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed();
+    }
   }
 
   private void printCommandHistory(Iterator<String> iterator) {
