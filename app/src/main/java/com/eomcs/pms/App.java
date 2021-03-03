@@ -187,7 +187,7 @@ public class App {
       T[] arr = gson.fromJson(strBuilder.toString(), arrType);
 
       // 배열에 보관된 객체 주소를 컬렉션에 옮긴다.(복사하는 것)
-      // 방법1) 배열에 보과노딘 객체를 한 개씩 컬렉션에 담기
+      // 방법1) 배열에 보관된 객체를 한 개씩 컬렉션에 담기
       //      for (T obj : arr) {
       //        list.add(obj);
       //      }
