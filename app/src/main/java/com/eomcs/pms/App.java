@@ -87,11 +87,7 @@ public class App {
 
   public void service() { 
 
-    // 애플리케이션의 서비스가 시작되면 이 이벤트를 통지 받을 리스너에게 알린다.
-    // 어떻게? 리스너의 메서드를 호출하는 것이 곧 리스너에게 알리는 것이다.
-    for (ApplicationContextListener listener : listeners) {
-      listener.contextInitialized();
-    }
+    notifyOnServiceStarted();
 
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
     loadObjects(boardFile, boardList, Board[].class);
@@ -182,6 +178,20 @@ public class App {
 
     Prompt.close();
 
+    notifyOnServiceStopped(); 
+    // 메서드 이름만으로 알아볼 수 있게 한다 -> 리팩토링
+    // 소스코드를 간결하게 만든다 -> 리팩토링
+  }
+
+  private void notifyOnServiceStarted() {
+    // 애플리케이션의 서비스가 시작되면 이 이벤트를 통지 받을 리스너에게 알린다.
+    // 어떻게? 리스너의 메서드를 호출하는 것이 곧 리스너에게 알리는 것이다.
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitialized();
+    }
+  }
+
+  private void notifyOnServiceStopped() {
     // 애플리케이션의 서비스가 종료되면 이 이벤트를 통지 받을 리스너에게 알린다.
     // 어떻게? 리스너의 메서드를 호출하는 것이 곧 리스너에게 알리는 것이다.
     for (ApplicationContextListener listener : listeners) {
