@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -186,9 +187,13 @@ public class App {
       T[] arr = gson.fromJson(strBuilder.toString(), arrType);
 
       // 배열에 보관된 객체 주소를 컬렉션에 옮긴다.(복사하는 것)
-      for (T obj : arr) {
-        list.add(obj);
-      }
+      // 방법1) 배열에 보과노딘 객체를 한 개씩 컬렉션에 담기
+      //      for (T obj : arr) {
+      //        list.add(obj);
+      //      }
+
+      // 방법2) Arrays.asList() 메서드를 사용하여 컬렉션 객체 만들기 -> 더 추천하는 방법!
+      list.addAll(Arrays.asList(arr)); // 컬렉션의 모든 객체를 list에 담아라!
 
       System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
 
