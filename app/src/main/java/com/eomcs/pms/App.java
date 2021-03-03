@@ -42,6 +42,7 @@ import com.eomcs.pms.handler.TaskDeleteHandler;
 import com.eomcs.pms.handler.TaskDetailHandler;
 import com.eomcs.pms.handler.TaskListHandler;
 import com.eomcs.pms.handler.TaskUpdateHandler;
+import com.eomcs.pms.listener.AppListener;
 import com.eomcs.util.CsvObject;
 import com.eomcs.util.Prompt;
 import com.google.gson.Gson;
@@ -51,6 +52,7 @@ import com.google.gson.reflect.TypeToken;
 // 2) Observer(=Listener) 의 호출 규칙을 정의한다.
 // 3) Observer를 등록/제거하는 메서드를 정의한다.
 // 4) 애플리케이션 실행 전후에 리스너에게 보고하는 기능을 추가한다.
+// 5) 옵저버 디자인 패턴 테스트
 public class App {
 
   // 옵저버 객체 (ApplicationContextListener 구현체) 목록을 저장할 컬렉션 준비
@@ -74,6 +76,16 @@ public class App {
 
   public static void main(String[] args) {
     App app = new App();
+
+    // 애플리케이션을 시작하기 전에 리스너(옵저버)를 등록한다.
+    // - 애플리케이션을 시작하거나 종료할 때 어떤 작업을 추가하고 싶다면
+    //   다음과 같이 해당 작업을 수행하는 객체를 생성한 후 등록하면 된다.
+    // - 기존 클래스에 메서드를 추가하는 방식 보다 훨씬 간결하다.
+    //   기존 코드를 최소로 손대는 것이 버그 발생을 줄이는 비결이다.
+    // - 언제든지 기능을 빼고 싶다면 다음 문장을 제거하면 된다.
+    //   이것이 디자인 패턴(이 예제에서는 옵저버 패턴)을 사용하는 이유다!
+    app.addApplicationContextListener(new AppListener());
+
     app.service();
   }
 
@@ -90,10 +102,10 @@ public class App {
     notifyOnServiceStarted();
 
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
-    loadObjects(boardFile, boardList, Board[].class);
-    loadObjects(memberFile, memberList, Member[].class);
-    loadObjects(projectFile, projectList, Project[].class);
-    loadObjects(taskFile, taskList, Task[].class);
+    loadObjects(boardFile, boardList, Board.class);
+    loadObjects(memberFile, memberList, Member.class);
+    loadObjects(projectFile, projectList, Project.class);
+    loadObjects(taskFile, taskList, Task.class);
 
     // 사용자 명령을 처리하는 객체를 맵에 보관한다.
     HashMap<String,Command> commandMap = new HashMap<>();
@@ -212,7 +224,7 @@ public class App {
     }
   }
 
-  private <T> void loadObjects(File file, List<T> list, Class<T[]> arrType) {
+  private <T> void loadObjects(File file, List<T> list, Class<T> elementType) {
     try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 
       // 1) 파일의 모든 데이터를 읽어서 StringBuilder객체에 보관한다.
@@ -222,8 +234,9 @@ public class App {
         strBuilder.append(str);
       }
 
-      Type collectionType = new TypeToken<Collection<T>>() {}.getType(); // 그냥 복붙해서 쓰자
+      Type collectionType = TypeToken.getParameterized(Collection.class, elementType).getType();
       Collection<T> collection = new Gson().fromJson(strBuilder.toString(), collectionType);
+      // 위 두 코드는 그냥 복붙해서 쓰자
 
       list.addAll(collection); 
 
