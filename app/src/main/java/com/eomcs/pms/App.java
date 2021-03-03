@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
@@ -48,8 +49,11 @@ import com.google.gson.reflect.TypeToken;
 
 // 1) 스태틱 멤버를 인스턴스 멤버로 전환한다.
 // 2) Observer(=Listener) 의 호출 규칙을 정의한다.
-//
+// 3) Observer를 등록/제거하는 메서드를 정의한다.
 public class App {
+
+  // 옵저버 객체 (ApplicationContextListener 구현체) 목록을 저장할 컬렉션 준비
+  List<ApplicationContextListener> listeners = new ArrayList<>();
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
   ArrayDeque<String> commandStack = new ArrayDeque<>();
@@ -70,6 +74,14 @@ public class App {
   public static void main(String[] args) {
     App app = new App();
     app.service();
+  }
+
+  public void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
+
+  public void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
   }
 
   public void service() { // 기존의 main() 메서드를 service() 메서드로 변경
