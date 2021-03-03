@@ -65,13 +65,10 @@ public class App {
 
 
     // 파일에서 데이터를 읽어온다.(데이터 로딩)
-    // 메서드 4개를 하나로 합쳤으면 그만큼 더 많은 정보를 줘야 한다.
-    // -> 파라미터가 많아졌다 
-    // 하지만 메서드가 왕창있는 것보다 훨씬 편하다.
-    loadObjects(boardFile, boardList, Board.class);
-    loadObjects(memberFile, memberList, Member.class);
-    loadObjects(projectFile, projectList, Project.class);
-    loadObjects(taskFile, taskList, Task.class);
+    loadObjects(boardFile, boardList, Board[].class);
+    loadObjects(memberFile, memberList, Member[].class);
+    loadObjects(projectFile, projectList, Project[].class);
+    loadObjects(taskFile, taskList, Task[].class);
 
     // 사용자 명령을 처리하는 객체를 맵에 보관한다.
     HashMap<String,Command> commandMap = new HashMap<>();
@@ -170,8 +167,10 @@ public class App {
     }
   }
 
-  static <T> void loadObjects(File file, List<T> list, Class<T> elementType) {
+  static <T> void loadObjects(File file, List<T> list, Class<T[]> elementType) {
+    // Class<T[]>: 특정 클래스의 배열 타입이 파라미터로 받아진다는 뜻
     System.out.println(elementType.getName());
+    // 출력하면 [L 이 붙는다 -> 배열이라는 뜻
     try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 
       // 1) 파일의 모든 데이터를 읽어서 StringBuilder객체에 보관한다.
