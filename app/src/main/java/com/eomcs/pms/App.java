@@ -47,6 +47,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 // 1) 스태틱 멤버를 인스턴스 멤버로 전환한다.
+// 2) Observer(=Listener) 의 호출 규칙을 정의한다.
+//
 public class App {
 
   // 사용자가 입력한 명령을 저장할 컬렉션 객체 준비
