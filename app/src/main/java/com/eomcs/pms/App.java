@@ -177,15 +177,17 @@ public class App {
         strBuilder.append(str);
       }
       // 파일에서 읽은 JSON 문자열
-      System.out.println(strBuilder.toString());
+      //      System.out.println(strBuilder.toString());
 
       // 2) StringBuilder 객체에 보관된 값을 꺼내 자바 객체로 만든다.
       Gson gson = new Gson();
+
+      // JSON 문자열을 배열 객체로 변환
       T[] arr = gson.fromJson(strBuilder.toString(), arrType);
 
-      // JSON 문자열을 배열 객체로 바꾼 값
+      // 배열에 보관된 객체 주소를 컬렉션에 옮긴다.(복사하는 것)
       for (T obj : arr) {
-        System.out.println(obj);
+        list.add(obj);
       }
 
       System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
