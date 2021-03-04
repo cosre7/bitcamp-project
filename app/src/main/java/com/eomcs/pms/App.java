@@ -8,6 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import com.eomcs.context.ApplicationContextListener;
+import com.eomcs.pms.domain.Board;
+import com.eomcs.pms.domain.Member;
+import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.domain.Task;
 import com.eomcs.pms.handler.BoardAddHandler;
 import com.eomcs.pms.handler.BoardDeleteHandler;
 import com.eomcs.pms.handler.BoardDetailHandler;
@@ -65,9 +69,16 @@ public class App {
     listeners.remove(listener);
   }
 
+  @SuppressWarnings("unchecked")
   public void service() { 
 
     notifyOnServiceStarted();
+
+    // FileListener가 준비한 List 객체를 꺼낸다.
+    List<Board> boardList = (List<Board>) appContext.get("boardList");
+    List<Member> memberList = (List<Member>) appContext.get("memberList");
+    List<Project> projectList = (List<Project>) appContext.get("projectList");
+    List<Task> taskList = (List<Task>) appContext.get("taskList");
 
     // 사용자 명령을 처리하는 객체를 맵에 보관한다.
     HashMap<String,Command> commandMap = new HashMap<>();
